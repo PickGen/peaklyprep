@@ -117,7 +117,7 @@ export function AdminLessons() {
               <Err errors={errors} name="summary" />
             </div>
             <div className="md:col-span-2">
-              <label className="label">Content (use “## Heading”, “- bullet”, blank line between paragraphs)</label>
+              <label className="label">Content (use "## Heading", "- bullet", blank line between paragraphs)</label>
               <textarea name="content" rows={8} className="field" defaultValue={cur?.content} aria-invalid={!!errors.content} />
               <Err errors={errors} name="content" />
             </div>
@@ -160,7 +160,7 @@ export function AdminLessons() {
               <button className="btn btn-ghost !min-h-10 !px-3" aria-label="Edit" onClick={() => { setErrors({}); setEditing(l) }}>
                 <EditIcon className="h-5 w-5" />
               </button>
-              <button className="btn btn-danger !min-h-10 !px-3" aria-label="Delete" onClick={() => confirmDelete(`“${l.title}”`) && del.mutate(l.id)}>
+              <button className="btn btn-danger !min-h-10 !px-3" aria-label="Delete" onClick={() => confirmDelete(`"${l.title}"`) && del.mutate(l.id)}>
                 <TrashIcon className="h-5 w-5" />
               </button>
             </li>
@@ -273,7 +273,7 @@ export function AdminTests() {
                   </p>
                   <button
                     className="btn btn-danger !min-h-9 !px-3 !py-1.5 text-xs"
-                    onClick={() => confirmDelete(`the whole practice test “${g.form}” (${g.tests.length} modules, all questions and student attempts)`) && delMany.mutate(g.tests.map((t) => t.id))}
+                    onClick={() => confirmDelete(`the whole practice test "${g.form}" (${g.tests.length} modules, all questions and student attempts)`) && delMany.mutate(g.tests.map((t) => t.id))}
                   >
                     <TrashIcon className="h-4 w-4" /> Delete all modules
                   </button>
@@ -295,7 +295,7 @@ export function AdminTests() {
               <button className="btn btn-ghost !min-h-10 !px-3" aria-label="Edit" onClick={() => { setErrors({}); setEditing(t) }}>
                 <EditIcon className="h-5 w-5" />
               </button>
-              <button className="btn btn-danger !min-h-10 !px-3" aria-label="Delete" onClick={() => confirmDelete(`“${t.title}” and all its questions`) && del.mutate(t.id)}>
+              <button className="btn btn-danger !min-h-10 !px-3" aria-label="Delete" onClick={() => confirmDelete(`"${t.title}" and all its questions`) && del.mutate(t.id)}>
                 <TrashIcon className="h-5 w-5" />
               </button>
             </li>
@@ -647,8 +647,8 @@ export function AdminNews() {
               <button className="btn btn-ghost !min-h-10 !px-3" aria-label="Edit" onClick={() => { setErrors({}); setEditing(n) }}>
                 <EditIcon className="h-5 w-5" />
               </button>
-              <button className=”btn btn-danger !min-h-10 !px-3” aria-label=”Delete” onClick={() => confirmDelete(`”${n.title}”`) && del.mutate(n.id)}>
-                <TrashIcon className=”h-5 w-5” />
+              <button className="btn btn-danger !min-h-10 !px-3" aria-label="Delete" onClick={() => confirmDelete(`"${n.title}"`) && del.mutate(n.id)}>
+                <TrashIcon className="h-5 w-5" />
               </button>
             </li>
           ))}
@@ -676,40 +676,40 @@ export function AdminPayments() {
   const done = requests.data?.filter((r) => r.status !== 'pending') ?? []
 
   return (
-    <div className=”space-y-6”>
-      <h1 className=”text-2xl font-extrabold”>Заявки на оплату {pending.length > 0 && <span className=”ml-2 rounded-full bg-brand-600 px-2 py-0.5 text-sm text-white”>{pending.length}</span>}</h1>
+    <div className="space-y-6">
+      <h1 className="text-2xl font-extrabold">Заявки на оплату {pending.length > 0 && <span className="ml-2 rounded-full bg-brand-600 px-2 py-0.5 text-sm text-white">{pending.length}</span>}</h1>
       {requests.isLoading ? <Spinner /> : (
         <>
-          {pending.length === 0 && done.length === 0 && <p className=”text-muted text-sm”>Нет заявок.</p>}
-          <div className=”space-y-3”>
+          {pending.length === 0 && done.length === 0 && <p className="text-muted text-sm">Нет заявок.</p>}
+          <div className="space-y-3">
             {[...pending, ...done].map((r) => (
-              <div key={r.id} className=”glass rounded-2xl p-4 space-y-2”>
-                <div className=”flex flex-wrap items-center justify-between gap-2”>
+              <div key={r.id} className="glass rounded-2xl p-4 space-y-2">
+                <div className="flex flex-wrap items-center justify-between gap-2">
                   <div>
-                    <p className=”font-bold”>{(r.profiles as {email:string}|undefined)?.email ?? r.user_id}</p>
-                    <p className=”text-xs text-muted”>{PLAN_LABEL[r.plan]} · ${r.amount_usd} · {new Date(r.created_at).toLocaleString('ru')}</p>
+                    <p className="font-bold">{(r.profiles as {email:string}|undefined)?.email ?? r.user_id}</p>
+                    <p className="text-xs text-muted">{PLAN_LABEL[r.plan]} · ${r.amount_usd} · {new Date(r.created_at).toLocaleString('ru')}</p>
                   </div>
                   <span className={`text-xs font-semibold px-2 py-1 rounded-lg ${r.status === 'pending' ? 'bg-amber-100 text-amber-800' : r.status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                     {STATUS_LABEL[r.status]}
                   </span>
                 </div>
                 {r.receipt_url && (
-                  <a href={r.receipt_url} target=”_blank” rel=”noreferrer” className=”text-xs text-brand-600 underline”>📎 Посмотреть чек</a>
+                  <a href={r.receipt_url} target="_blank" rel="noreferrer" className="text-xs text-brand-600 underline">📎 Посмотреть чек</a>
                 )}
                 {r.status === 'pending' && (
-                  <div className=”flex flex-wrap gap-2 pt-1”>
+                  <div className="flex flex-wrap gap-2 pt-1">
                     <input
-                      type=”text”
-                      placeholder=”Комментарий (необязательно)”
-                      className=”field flex-1 text-sm”
+                      type="text"
+                      placeholder="Комментарий (необязательно)"
+                      className="field flex-1 text-sm"
                       value={note[r.id] ?? ''}
                       onChange={(e) => setNote((p) => ({ ...p, [r.id]: e.target.value }))}
                     />
-                    <button className=”btn btn-primary !min-h-9 !py-1.5 text-sm” onClick={() => handle(r.id, 'approved', r.user_id, r.plan)} disabled={update.isPending}>✅ Одобрить</button>
-                    <button className=”btn btn-danger !min-h-9 !py-1.5 text-sm” onClick={() => handle(r.id, 'rejected', r.user_id, r.plan)} disabled={update.isPending}>❌ Отклонить</button>
+                    <button className="btn btn-primary !min-h-9 !py-1.5 text-sm" onClick={() => handle(r.id, 'approved', r.user_id, r.plan)} disabled={update.isPending}>✅ Одобрить</button>
+                    <button className="btn btn-danger !min-h-9 !py-1.5 text-sm" onClick={() => handle(r.id, 'rejected', r.user_id, r.plan)} disabled={update.isPending}>❌ Отклонить</button>
                   </div>
                 )}
-                {r.admin_note && <p className=”text-xs text-muted”>Комментарий: {r.admin_note}</p>}
+                {r.admin_note && <p className="text-xs text-muted">Комментарий: {r.admin_note}</p>}
               </div>
             ))}
           </div>
@@ -726,7 +726,7 @@ export function AdminSettings() {
   const [card, setCard] = useState('')
   const [saved, setSaved] = useState(false)
 
-  const currentCard = (cardSetting.data ?? '').replace(/”/g, '')
+  const currentCard = (cardSetting.data ?? '').replace(/"/g, '')
 
   async function saveCard(e: React.FormEvent) {
     e.preventDefault()
@@ -738,24 +738,24 @@ export function AdminSettings() {
   }
 
   return (
-    <div className=”space-y-6 max-w-md”>
-      <h1 className=”text-2xl font-extrabold”>Настройки</h1>
-      <div className=”glass rounded-2xl p-5 space-y-4”>
-        <h2 className=”font-bold text-lg”>Номер карты для оплаты</h2>
-        <p className=”text-sm text-muted”>Текущий: <span className=”font-mono font-bold text-ink”>{cardSetting.isLoading ? '...' : currentCard || '—'}</span></p>
-        <form onSubmit={saveCard} className=”space-y-3”>
+    <div className="space-y-6 max-w-md">
+      <h1 className="text-2xl font-extrabold">Настройки</h1>
+      <div className="glass rounded-2xl p-5 space-y-4">
+        <h2 className="font-bold text-lg">Номер карты для оплаты</h2>
+        <p className="text-sm text-muted">Текущий: <span className="font-mono font-bold text-ink">{cardSetting.isLoading ? '...' : currentCard || '—'}</span></p>
+        <form onSubmit={saveCard} className="space-y-3">
           <input
-            type=”text”
-            className=”field”
-            placeholder=”Новый номер карты (напр. 4400 4303 7236 1391)”
+            type="text"
+            className="field"
+            placeholder="Новый номер карты (напр. 4400 4303 7236 1391)"
             value={card}
             onChange={(e) => setCard(e.target.value)}
           />
-          <button className=”btn btn-primary w-full” disabled={updateSetting.isPending || !card.trim()}>
+          <button className="btn btn-primary w-full" disabled={updateSetting.isPending || !card.trim()}>
             {saved ? '✓ Сохранено' : updateSetting.isPending ? 'Сохраняю...' : 'Сохранить'}
           </button>
         </form>
-        <p className=”text-xs text-muted”>Меняй каждую неделю. Студенты сразу увидят новый номер на странице оплаты.</p>
+        <p className="text-xs text-muted">Меняй каждую неделю. Студенты сразу увидят новый номер на странице оплаты.</p>
       </div>
     </div>
   )
