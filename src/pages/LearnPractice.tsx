@@ -168,24 +168,64 @@ function youtubeEmbed(url: string): string | null {
   return m ? `https://www.youtube.com/embed/${m[1]}` : null
 }
 
-/** Minimal formatter: "## Heading", "- bullet", blank line = paragraph break */
+function inlineFormat(text: string): ReactNode {
+  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g)
+  return parts.map((p, i) => {
+    if (p.startsWith('**') && p.endsWith('**')) return <strong key={i}>{p.slice(2, -2)}</strong>
+    if (p.startsWith('*') && p.endsWith('*')) return <em key={i}>{p.slice(1, -1)}</em>
+    return p
+  })
+}
+
 export function RichText({ text }: { text: string }) {
   const blocks = text.split(/\n{2,}/)
   return (
     <div className="prose-lesson">
       {blocks.map((b, i) => {
-        const lines = b.split('\n')
-        if (lines.every((l) => l.startsWith('- '))) {
+        const trimmed = b.trim()
+        if (!trimmed || trimmed === '---') return <hr key={i} className="my-4 border-brand-100" />
+        const lines = trimmed.split('\n')
+
+        // Table: lines starting with |
+        if (lines.length >= 2 && lines[0].startsWith('|')) {
+          const cells = (row: string) =>
+            row.split('|').filter((_, idx, arr) => idx > 0 && idx < arr.length - 1).map(c => c.trim())
+          const header = cells(lines[0])
+          const body = lines.slice(2).filter(l => !l.match(/^\|[-| :]+\|$/))
           return (
-            <ul key={i}>
-              {lines.map((l, j) => (
-                <li key={j}>{l.slice(2)}</li>
-              ))}
+            <div key={i} className="overflow-x-auto my-4">
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr className="bg-brand-50">
+                    {header.map((h, j) => <th key={j} className="border border-brand-200 px-3 py-2 text-left font-semibold">{h}</th>)}
+                  </tr>
+                </thead>
+                <tbody>
+                  {body.map((row, j) => (
+                    <tr key={j} className={j % 2 === 0 ? '' : 'bg-gray-50'}>
+                      {cells(row).map((c, k) => <td key={k} className="border border-brand-200 px-3 py-2">{inlineFormat(c)}</td>)}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )
+        }
+
+        // Lists
+        if (lines.every(l => l.startsWith('- ') || l.startsWith('* '))) {
+          return (
+            <ul key={i} className="list-disc pl-6 my-2 space-y-1">
+              {lines.map((l, j) => <li key={j}>{inlineFormat(l.slice(2))}</li>)}
             </ul>
           )
         }
-        if (b.startsWith('## ')) return <h3 key={i}>{b.slice(3)}</h3>
-        return <p key={i}>{b}</p>
+
+        if (trimmed.startsWith('### ')) return <h3 key={i} className="text-lg font-bold mt-5 mb-2">{inlineFormat(trimmed.slice(4))}</h3>
+        if (trimmed.startsWith('## ')) return <h2 key={i} className="text-xl font-extrabold mt-6 mb-2">{inlineFormat(trimmed.slice(3))}</h2>
+        if (trimmed.startsWith('# ')) return <h1 key={i} className="text-2xl font-extrabold mt-6 mb-3">{inlineFormat(trimmed.slice(2))}</h1>
+
+        return <p key={i} className="my-2 leading-relaxed">{inlineFormat(trimmed)}</p>
       })}
     </div>
   )
