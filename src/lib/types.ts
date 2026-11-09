@@ -1,6 +1,12 @@
 export type Role = 'student' | 'admin'
 export type Section = 'Reading & Writing' | 'Math'
 export const SECTIONS: Section[] = ['Reading & Writing', 'Math']
+export type LessonKind = 'lesson' | 'word_list'
+
+/** Before the word-lists migration runs there is no `kind` column, so "SAT Words …" titles mark word lists. */
+export function lessonKind(l: { kind?: LessonKind | null; title: string }): LessonKind {
+  return l.kind ?? (/sat\s*words?/i.test(l.title) ? 'word_list' : 'lesson')
+}
 
 export interface Profile {
   id: string
@@ -14,10 +20,15 @@ export interface Profile {
   email_updates: boolean
 }
 
+export const lessonPath = (l: { id: string; kind?: LessonKind | null; title: string }) =>
+  `${lessonKind(l) === 'word_list' ? '/app/words' : '/app/learn'}/${l.id}`
+
 export interface Lesson {
   id: string
   title: string
   section: Section
+  /** 'word_list' items live under Word Lists, not Lessons. Missing until the word-lists migration runs. */
+  kind?: LessonKind
   summary: string
   content: string
   video_url: string | null

@@ -9,7 +9,7 @@ import Landing from './pages/Landing'
 import { LoginPage, RegisterPage } from './pages/AuthPages'
 import { HomePage, ProfilePage } from './pages/StudentPages'
 import StatisticsPage from './pages/Statistics'
-import { AttemptReviewPage, LearnPage, LessonPage, PracticePage, TestRunnerPage } from './pages/LearnPractice'
+import { AttemptReviewPage, LearnPage, LessonPage, PracticePage, TestRunnerPage, WordListsPage } from './pages/LearnPractice'
 import { PrivacyPage, TermsPage } from './pages/Legal'
 import PlansPage from './pages/Plans'
 import CheckoutPage from './pages/Checkout'
@@ -51,6 +51,8 @@ export default function App() {
                   <Route index element={<HomePage />} />
                   <Route path="learn" element={<LearnPage />} />
                   <Route path="learn/:id" element={<LessonPage />} />
+                  <Route path="words" element={<WordListsPage />} />
+                  <Route path="words/:id" element={<LessonPage />} />
                   <Route path="practice" element={<PracticePage />} />
                   <Route path="attempts/:id" element={<AttemptReviewPage />} />
                   <Route path="plans" element={<PlansPage />} />

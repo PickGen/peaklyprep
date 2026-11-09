@@ -26,7 +26,7 @@ import {
   useUpdateAppSetting,
 } from '../../lib/api'
 import { fieldErrors, lessonSchema, newsSchema, questionImportSchema, questionSchema, testSchema, type FieldErrors } from '../../lib/schemas'
-import { SECTIONS, type Lesson, type NewsItem, type Question, type Test } from '../../lib/types'
+import { SECTIONS, lessonKind, type Lesson, type LessonKind, type NewsItem, type Question, type Test } from '../../lib/types'
 import { ArrowLeft, EditIcon, PlusIcon, TrashIcon } from '../../components/Icons'
 import { Spinner } from '../../components/Layouts'
 import { SectionBadge } from '../LearnPractice'
@@ -71,6 +71,8 @@ export function AdminLessons() {
   const del = useDeleteLesson()
   const [editing, setEditing] = useState<Lesson | 'new' | null>(null)
   const [errors, setErrors] = useState<FieldErrors>({})
+  const [kindFilter, setKindFilter] = useState<LessonKind | 'all'>('all')
+  const shown = (lessons.data ?? []).filter((l) => kindFilter === 'all' || lessonKind(l) === kindFilter)
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -94,6 +96,18 @@ export function AdminLessons() {
         </button>
       </div>
 
+      <div className="mb-4 flex gap-2">
+        {([['all', 'All'], ['lesson', 'Lessons'], ['word_list', 'Word lists']] as const).map(([k, label]) => (
+          <button
+            key={k}
+            onClick={() => setKindFilter(k)}
+            className={`rounded-full px-4 py-2 text-sm font-semibold ${kindFilter === k ? 'bg-brand-600 text-white' : 'glass !shadow-none text-muted'}`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
       {editing && (
         <Panel title={cur ? 'Edit lesson' : 'New lesson'} onClose={() => setEditing(null)}>
           <form key={cur?.id ?? 'new'} onSubmit={onSubmit} className="grid grid-cols-1 gap-4 md:grid-cols-2" noValidate>
@@ -105,6 +119,13 @@ export function AdminLessons() {
             <div>
               <label className="label">Section</label>
               <SectionSelect defaultValue={cur?.section} />
+            </div>
+            <div>
+              <label className="label">Type</label>
+              <select name="kind" className="field" defaultValue={cur ? lessonKind(cur) : kindFilter === 'word_list' ? 'word_list' : 'lesson'}>
+                <option value="lesson">Lesson</option>
+                <option value="word_list">Word list (shown under Word Lists)</option>
+              </select>
             </div>
             <div>
               <label className="label">Duration (min)</label>
@@ -147,12 +168,13 @@ export function AdminLessons() {
         <Spinner />
       ) : (
         <ul className="space-y-3">
-          {lessons.data?.map((l) => (
+          {shown.map((l) => (
             <li key={l.id} className="glass flex items-center gap-3 rounded-2xl p-4">
               <span className="w-6 text-center text-sm font-bold text-muted">{l.position}</span>
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-2">
                   <SectionBadge section={l.section} />
+                  {lessonKind(l) === 'word_list' && <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-bold text-emerald-800">Word list</span>}
                   {!l.published && <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-bold text-amber-800">Draft</span>}
                 </div>
                 <p className="mt-1 truncate font-bold">{l.title}</p>

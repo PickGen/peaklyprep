@@ -7,7 +7,7 @@ import { nameSchema, studyMinutesSchema, targetScoreSchema } from '../lib/schema
 import { ExamDatePicker, RangeSlider } from '../components/ProfileControls'
 import { fmtDate, todayIso, useSatDates } from '../lib/satDates'
 import { Reveal } from '../components/Reveal'
-import { BarsIcon, BookIcon, CalendarIcon, CheckSquareIcon, ChevronRight, ClockIcon, EditIcon, GlassTile, GlobeIcon, LogoutIcon, MailIcon, NewsIcon, ShieldIcon, StarIcon, TargetIcon, UserIcon } from '../components/Icons'
+import { BarsIcon, BookIcon, CalendarIcon, LayersIcon, CheckSquareIcon, ChevronRight, ClockIcon, EditIcon, GlassTile, GlobeIcon, LogoutIcon, MailIcon, NewsIcon, ShieldIcon, StarIcon, TargetIcon, UserIcon } from '../components/Icons'
 import { Spinner } from '../components/Layouts'
 import { DailyTasks } from '../components/DailyTasks'
 import { PlanCard, SubscriptionBadge } from '../components/SubscriptionBadge'
@@ -165,6 +165,9 @@ export function HomePage() {
 
           <Reveal delay={140}>
             <NavCard to="/app/learn" label="Lessons" icon={<BookIcon className="h-7 w-7" />} />
+          </Reveal>
+          <Reveal delay={170}>
+            <NavCard to="/app/words" label="Word Lists" icon={<LayersIcon className="h-7 w-7" />} />
           </Reveal>
           <Reveal delay={200}>
             <NavCard to="/app/practice" label="Practice Tests" icon={<CheckSquareIcon className="h-7 w-7" />} />
