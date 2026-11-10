@@ -12,6 +12,10 @@ interface AuthState {
   signIn: (email: string, password: string) => Promise<void>
   signUp: (fullName: string, email: string, password: string) => Promise<{ needsConfirmation: boolean }>
   signOut: () => Promise<void>
+  /** Emails a reset link that opens /reset-password. */
+  requestPasswordReset: (email: string) => Promise<void>
+  /** Sets a new password for the signed-in (or recovery-link) session. */
+  updatePassword: (password: string) => Promise<void>
 }
 
 const Ctx = createContext<AuthState | null>(null)
@@ -64,6 +68,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signOut: async () => {
         await supabase.auth.signOut()
         qc.clear()
+      },
+      requestPasswordReset: async (email) => {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/reset-password`,
+        })
+        if (error) throw error
+      },
+      updatePassword: async (password) => {
+        const { error } = await supabase.auth.updateUser({ password })
+        if (error) throw error
       },
     }),
     [session, profileQ.data, profileQ.isLoading, booting, userId, qc],

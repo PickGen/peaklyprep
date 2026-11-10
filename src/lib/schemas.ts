@@ -11,6 +11,17 @@ export const registerSchema = z.object({
   password: z.string().min(8, 'At least 8 characters'),
 })
 
+export const forgotPasswordSchema = z.object({
+  email: z.string().trim().email('Enter a valid email'),
+})
+
+export const resetPasswordSchema = z
+  .object({
+    password: z.string().min(8, 'At least 8 characters'),
+    confirm: z.string(),
+  })
+  .refine((v) => v.password === v.confirm, { path: ['confirm'], message: 'Passwords do not match' })
+
 export const nameSchema = z.string().trim().min(2, 'Enter your name').max(60)
 export const targetScoreSchema = z.coerce.number().int().min(400).max(1600).multipleOf(10)
 export const studyMinutesSchema = z.coerce.number().int().min(15).max(600)
