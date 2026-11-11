@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { useI18n } from '../lib/i18n'
 import { shuffle, type Flashcard } from '../lib/flashcards'
@@ -194,7 +194,7 @@ function FlashcardStudy({ cards, known, onChange, onClose }: { cards: Flashcard[
             <div className="w-full max-w-xl">
               <button
                 key={`${i}-${defFirst}`}
-                className="relative block min-h-[min(22rem,52dvh)] w-full touch-pan-y select-none rounded-3xl bg-white p-6 text-center shadow-[0_24px_50px_-28px_rgba(74,20,184,.6)] ring-1 ring-brand-100 transition-transform duration-150 md:p-10"
+                className="relative block w-full touch-pan-y select-none text-center transition-transform duration-150 [perspective:1400px]"
                 style={{ transform: `translateX(${drag}px) rotate(${drag / 30}deg)` }}
                 onClick={() => Math.abs(drag) < 6 && setFlipped((f) => !f)}
                 onPointerDown={(e) => {
@@ -217,13 +217,20 @@ function FlashcardStudy({ cards, known, onChange, onClose }: { cards: Flashcard[
                 }}
                 aria-label={flipped ? tr('Hide the answer') : tr('Show the answer')}
               >
-                <span className="absolute left-4 top-4 rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-brand-700">
-                  {flipped ? tr(defFirst ? 'Word' : 'Definition') : tr(defFirst ? 'Definition' : 'Word')}
+                {/* Quizlet-style 3D flip: both sides share one grid cell, the inner block turns 180° around Y */}
+                <span
+                  className="grid min-h-[min(22rem,52dvh)] transition-transform duration-500 ease-[cubic-bezier(.3,.7,.3,1)] [transform-style:preserve-3d] motion-reduce:transition-none"
+                  style={{ transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}
+                >
+                  <Face label={tr(defFirst ? 'Definition' : 'Word')} hint={tr('Tap the card to flip it')} hidden={flipped}>
+                    {front(card)}
+                  </Face>
+                  <Face label={tr(defFirst ? 'Word' : 'Definition')} back hidden={!flipped}>
+                    {back(card)}
+                  </Face>
                 </span>
-                {drag > 30 && <span className="absolute right-4 top-4 rounded-full bg-green-100 px-2.5 py-1 text-xs font-bold text-green-700">{tr('I know it')}</span>}
-                {drag < -30 && <span className="absolute right-4 top-4 rounded-full bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-800">{tr('Still learning')}</span>}
-                <span className="flex min-h-[min(18rem,42dvh)] flex-col items-center justify-center">{flipped ? back(card) : front(card)}</span>
-                <span className="absolute inset-x-0 bottom-4 text-xs font-semibold text-muted">{flipped ? '' : tr('Tap the card to flip it')}</span>
+                {drag > 30 && <span className="absolute right-4 top-4 z-10 rounded-full bg-green-100 px-2.5 py-1 text-xs font-bold text-green-700">{tr('I know it')}</span>}
+                {drag < -30 && <span className="absolute right-4 top-4 z-10 rounded-full bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-800">{tr('Still learning')}</span>}
               </button>
             </div>
           )
@@ -245,6 +252,21 @@ function FlashcardStudy({ cards, known, onChange, onClose }: { cards: Flashcard[
       )}
     </div>,
     document.body,
+  )
+}
+
+/** One side of a flashcard. `back` is pre-turned 180° so it reads correctly after the flip. */
+function Face({ label, hint, back = false, hidden, children }: { label: string; hint?: string; back?: boolean; hidden: boolean; children: ReactNode }) {
+  return (
+    <span
+      aria-hidden={hidden}
+      className="relative col-start-1 row-start-1 flex flex-col items-center justify-center rounded-3xl bg-white px-6 pb-12 pt-14 shadow-[0_24px_50px_-28px_rgba(74,20,184,.6)] ring-1 ring-brand-100 [backface-visibility:hidden] [-webkit-backface-visibility:hidden] md:px-10"
+      style={back ? { transform: 'rotateY(180deg)' } : undefined}
+    >
+      <span className={`absolute left-4 top-4 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide ${back ? 'bg-green-50 text-green-700' : 'bg-brand-50 text-brand-700'}`}>{label}</span>
+      {children}
+      {hint && <span className="absolute inset-x-0 bottom-4 text-xs font-semibold text-muted">{hint}</span>}
+    </span>
   )
 }
 
