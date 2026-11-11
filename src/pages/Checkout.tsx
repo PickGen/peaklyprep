@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../lib/auth'
@@ -39,6 +39,26 @@ export default function CheckoutPage() {
   const fileRef = useRef<HTMLInputElement>(null)
   const [status, setStatus] = useState<'idle' | 'uploading' | 'done' | 'error'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
+  const [receipt, setReceipt] = useState<File | null>(null)
+  const preview = useMemo(() => (receipt && receipt.type.startsWith('image/') ? URL.createObjectURL(receipt) : null), [receipt])
+  useEffect(() => () => { if (preview) URL.revokeObjectURL(preview) }, [preview])
+
+  function pickReceipt(file: File | undefined) {
+    setErrorMsg('')
+    if (!file) return
+    if (file.size > 10 * 1024 * 1024) {
+      setReceipt(null)
+      if (fileRef.current) fileRef.current.value = ''
+      setErrorMsg('Файл больше 10 МБ. Прикрепите скриншот поменьше.')
+      return
+    }
+    setReceipt(file)
+  }
+
+  function clearReceipt() {
+    setReceipt(null)
+    if (fileRef.current) fileRef.current.value = ''
+  }
 
   const hasPending = myRequests.data?.some((r) => r.status === 'pending' && r.plan === plan)
 
@@ -56,7 +76,7 @@ export default function CheckoutPage() {
     setErrorMsg('')
 
     let receiptUrl: string | null = null
-    const file = fileRef.current?.files?.[0]
+    const file = receipt
 
     if (file) {
       const ext = file.name.split('.').pop()
@@ -152,15 +172,34 @@ export default function CheckoutPage() {
           </ol>
 
           {/* Receipt upload */}
-          <div
-            className="mb-5 cursor-pointer rounded-2xl border-2 border-dashed border-brand-200 bg-brand-50 p-5 text-center hover:border-brand-400 transition-colors"
-            onClick={() => fileRef.current?.click()}
-          >
-            <input ref={fileRef} type="file" accept="image/*,.pdf" className="hidden" />
-            <div className="text-2xl mb-1">📎</div>
-            <p className="text-sm font-semibold text-brand-700">Прикрепить чек</p>
-            <p className="text-xs text-muted">PDF, JPG или PNG</p>
-          </div>
+          <input ref={fileRef} type="file" accept="image/*,.pdf" className="hidden" onChange={(e) => pickReceipt(e.target.files?.[0])} />
+          {receipt ? (
+            <div className="mb-5 flex items-center gap-3 rounded-2xl border-2 border-green-300 bg-green-50 p-4">
+              {preview ? (
+                <img src={preview} alt="" className="h-14 w-14 shrink-0 rounded-lg object-cover" />
+              ) : (
+                <div className="grid h-14 w-14 shrink-0 place-items-center rounded-lg bg-white text-2xl">📄</div>
+              )}
+              <div className="min-w-0 flex-1 text-left">
+                <p className="text-sm font-semibold text-green-800">✓ Чек прикреплён</p>
+                <p className="truncate text-xs text-muted">{receipt.name} · {Math.max(1, Math.round(receipt.size / 1024))} КБ</p>
+              </div>
+              <div className="flex shrink-0 flex-col items-end gap-1 text-xs font-semibold">
+                <button type="button" onClick={() => fileRef.current?.click()} className="text-brand-600 hover:text-brand-700">Заменить</button>
+                <button type="button" onClick={clearReceipt} className="text-muted hover:text-red-600">Убрать</button>
+              </div>
+            </div>
+          ) : (
+            <button
+              type="button"
+              className="mb-5 w-full cursor-pointer rounded-2xl border-2 border-dashed border-brand-200 bg-brand-50 p-5 text-center hover:border-brand-400 transition-colors"
+              onClick={() => fileRef.current?.click()}
+            >
+              <div className="text-2xl mb-1">📎</div>
+              <p className="text-sm font-semibold text-brand-700">Прикрепить чек</p>
+              <p className="text-xs text-muted">PDF, JPG или PNG</p>
+            </button>
+          )}
 
           {errorMsg && <p className="mb-3 rounded-xl bg-red-50 px-3 py-2 text-xs text-red-700">{errorMsg}</p>}
 
