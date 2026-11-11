@@ -1,6 +1,9 @@
 import { Fragment, useState, type FormEvent, type ReactNode } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import {
+  findGarbledText,
+  useFixGarbledText,
+  type GarbledItem,
   useDeleteLesson,
   useDeleteNews,
   useDeleteQuestion,
@@ -25,6 +28,7 @@ import {
   useAppSetting,
   useUpdateAppSetting,
 } from '../../lib/api'
+import { hasGarbled } from '../../lib/textFix'
 import { fieldErrors, lessonSchema, newsSchema, questionImportSchema, questionSchema, testSchema, type FieldErrors } from '../../lib/schemas'
 import { SECTIONS, type Lesson, type NewsItem, type Question, type Test } from '../../lib/types'
 import { ArrowLeft, EditIcon, PlusIcon, TrashIcon } from '../../components/Icons'
@@ -171,6 +175,74 @@ export function AdminLessons() {
   )
 }
 
+/* =============== Garbled text check =============== */
+/** Finds questions / lessons / news whose symbols were broken by a wrong encoding ("x¬≤" instead of "x²") and repairs them. */
+function GarbledTextCheck() {
+  const fix = useFixGarbledText()
+  const [found, setFound] = useState<GarbledItem[] | null>(null)
+  const [scanning, setScanning] = useState(false)
+  const [error, setError] = useState('')
+  const [fixedCount, setFixedCount] = useState<number | null>(null)
+
+  async function scan() {
+    setError('')
+    setFixedCount(null)
+    setScanning(true)
+    try {
+      setFound(await findGarbledText())
+    } catch (err) {
+      setError((err as Error).message)
+    } finally {
+      setScanning(false)
+    }
+  }
+
+  async function repair() {
+    if (!found) return
+    try {
+      await fix.mutateAsync(found)
+      setFixedCount(found.length)
+      setFound(null)
+    } catch (err) {
+      setError((err as Error).message)
+    }
+  }
+
+  return (
+    <section className="glass mb-6 rounded-2xl p-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="min-w-0">
+          <h2 className="font-bold">Broken symbols check</h2>
+          <p className="text-sm text-muted">Finds text like <code>x¬≤</code> or <code>вИТ</code> (wrong encoding) in questions, lessons and news and turns it back into <code>x²</code>, <code>−</code>.</p>
+        </div>
+        <button className="btn btn-ghost !min-h-10 !px-4 !py-2 text-sm" onClick={scan} disabled={scanning || fix.isPending}>
+          {scanning ? 'Checking…' : 'Check now'}
+        </button>
+      </div>
+      {error && <p className="err mt-3">{error}</p>}
+      {fixedCount !== null && <p className="mt-3 rounded-xl bg-green-50 px-3 py-2 text-sm font-semibold text-green-800">Fixed {fixedCount} item{fixedCount === 1 ? '' : 's'}.</p>}
+      {found && found.length === 0 && <p className="mt-3 rounded-xl bg-green-50 px-3 py-2 text-sm font-semibold text-green-800">All good: no broken symbols found.</p>}
+      {found && found.length > 0 && (
+        <div className="mt-3 space-y-3">
+          <p className="text-sm font-semibold text-amber-800">Found {found.length} item{found.length === 1 ? '' : 's'} with broken symbols:</p>
+          <ul className="max-h-72 space-y-2 overflow-y-auto">
+            {found.map((it) => (
+              <li key={it.table + it.id} className="rounded-xl bg-white/70 p-3 text-sm">
+                <p className="text-xs font-bold text-muted">{it.where}</p>
+                <p className="line-clamp-2 text-red-700 line-through decoration-red-300">{it.before}</p>
+                <p className="line-clamp-2 font-semibold text-green-800">{it.after}</p>
+              </li>
+            ))}
+          </ul>
+          <button className="btn btn-primary !min-h-10 !px-4 !py-2 text-sm" onClick={repair} disabled={fix.isPending}>
+            {fix.isPending ? 'Fixing…' : `Fix all ${found.length}`}
+          </button>
+        </div>
+      )}
+    </section>
+  )
+}
+
 /* =============== Tests =============== */
 export function AdminTests() {
   const tests = useTests()
@@ -211,6 +283,8 @@ export function AdminTests() {
           <PlusIcon className="h-4 w-4" /> New test
         </button>
       </div>
+
+      <GarbledTextCheck />
 
       {editing && (
         <Panel title={cur ? 'Edit test' : 'New test'} onClose={() => setEditing(null)}>
@@ -477,6 +551,9 @@ export function AdminQuestions() {
               <div className="flex items-start gap-3">
                 <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-brand-100 text-sm font-bold text-brand-700">{n + 1}</span>
                 <div className="min-w-0 flex-1">
+                  {[q.prompt, q.passage, q.question_keys?.explanation, ...q.options].some(hasGarbled) && (
+                    <p className="mb-1 inline-block rounded-full bg-red-100 px-2 py-0.5 text-xs font-bold text-red-700">Broken symbols: open and save to fix</p>
+                  )}
                   <p className="font-semibold whitespace-pre-line">{q.prompt || q.passage}</p>
                   {q.options.length === 0 && <p className="mt-2 inline-block rounded-lg bg-green-50 px-2.5 py-1.5 text-sm font-semibold text-green-800">Answer: {q.question_keys?.correct_answers?.join(' or ')}</p>}
                   <ul className="mt-2 grid grid-cols-1 gap-1 text-sm sm:grid-cols-2">
