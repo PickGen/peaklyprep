@@ -6,7 +6,7 @@ import { AuthProvider } from './lib/auth'
 import { IconDefs } from './components/Icons'
 import { AdminShell, AppShell, GuestOnly, PublicLayout, RequireAdmin, RequireAuth, Spinner } from './components/Layouts'
 import Landing from './pages/Landing'
-import { LoginPage, RegisterPage } from './pages/AuthPages'
+import { ForgotPasswordPage, LoginPage, RegisterPage, ResetPasswordPage } from './pages/AuthPages'
 import { HomePage, ProfilePage } from './pages/StudentPages'
 import StatisticsPage from './pages/Statistics'
 import { AttemptReviewPage, LearnPage, LessonPage, PracticePage, TestRunnerPage } from './pages/LearnPractice'
@@ -42,7 +42,10 @@ export default function App() {
                 <Route element={<GuestOnly />}>
                   <Route path="login" element={<LoginPage />} />
                   <Route path="register" element={<RegisterPage />} />
+                  <Route path="forgot-password" element={<ForgotPasswordPage />} />
                 </Route>
+                {/* not GuestOnly: the reset link signs the user in before they set the new password */}
+                <Route path="reset-password" element={<ResetPasswordPage />} />
               </Route>
 
               <Route element={<RequireAuth />}>
