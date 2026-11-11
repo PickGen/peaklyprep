@@ -36,6 +36,7 @@ const section = z.enum(['Reading & Writing', 'Math'])
 export const lessonSchema = z.object({
   title: z.string().trim().min(3, 'Title is too short').max(120),
   section,
+  kind: z.enum(['lesson', 'word_list']).default('lesson'),
   summary: z.string().trim().min(3, 'Add a short summary').max(240),
   content: z.string().trim().min(10, 'Add lesson content'),
   video_url: z

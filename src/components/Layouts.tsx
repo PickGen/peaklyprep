@@ -12,6 +12,7 @@ import {
   CrownIcon,
   FileIcon,
   HomeIcon,
+  LayersIcon,
   LogoutIcon,
   MenuIcon,
   ShieldIcon,
@@ -168,6 +169,7 @@ export function PublicLayout() {
 const tabs = [
   { to: '/app', label: 'Home', end: true, icon: (a: boolean) => <HomeIcon className="h-6 w-6" filled={a} /> },
   { to: '/app/learn', label: 'Learn', icon: () => <BookIcon className="h-6 w-6 !stroke-current" /> },
+  { to: '/app/words', label: 'Words', icon: () => <LayersIcon className="h-6 w-6 !stroke-current" /> },
   { to: '/app/practice', label: 'Practice', icon: () => <CheckSquareIcon className="h-6 w-6 !stroke-current" /> },
   { to: '/app/profile', label: 'Profile', icon: () => <UserIcon className="h-6 w-6" /> },
 ]
@@ -190,6 +192,7 @@ function Bell() {
 const sideItems = [
   { to: '/app', label: 'Home', end: true, icon: <HomeIcon className="h-5 w-5" /> },
   { to: '/app/learn', label: 'Lessons', icon: <BookIcon className="h-5 w-5 !stroke-current" /> },
+  { to: '/app/words', label: 'Word Lists', icon: <LayersIcon className="h-5 w-5 !stroke-current" /> },
   { to: '/app/practice', label: 'Practice Tests', icon: <FileIcon className="h-5 w-5" /> },
   { to: '/app/progress', label: 'Statistics', icon: <ChartIcon className="h-5 w-5" /> },
   { to: '/app/plans', label: 'Plans', icon: <CrownIcon className="h-5 w-5" /> },
@@ -263,7 +266,7 @@ export function AppShell() {
       </main>
 
       <nav className="safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-white/70 bg-white/85 backdrop-blur-xl md:hidden">
-        <ul className="mx-auto grid max-w-md grid-cols-4 px-2 pt-2 pb-2">
+        <ul className="mx-auto grid max-w-md grid-cols-5 px-1 pt-2 pb-2">
           {tabs.map((t) => (
             <li key={t.to}>
               <NavLink to={t.to} end={t.end} className={({ isActive }) => `flex flex-col items-center gap-0.5 py-1 text-[12px] font-semibold ${isActive ? 'text-brand-600' : 'text-muted'}`}>

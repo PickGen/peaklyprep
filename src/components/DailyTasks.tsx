@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../lib/auth'
 import { useI18n } from '../lib/i18n'
 import { useLessonProgress, useLessons, useMyAttempts, useQuestionCounts, useTests } from '../lib/api'
+import { lessonPath } from '../lib/types'
 import { CheckRingIcon, ClipboardCheckIcon, ClipboardIcon, PlayRingIcon } from './Icons'
 
 interface Task {
@@ -39,7 +40,7 @@ function useDailyTasks(): { tasks: Task[]; loading: boolean; minutesLeft: number
     const testsToday = new Set((attempts.data ?? []).filter((a) => sameDay(a.created_at)).map((a) => a.test_id))
 
     const done: Task[] = [
-      ...allLessons.filter((l) => doneTodayIds.has(l.id)).map<Task>((l) => ({ key: `l${l.id}`, kind: 'lesson', title: l.title, minutes: l.duration_min, to: `/app/learn/${l.id}`, done: true })),
+      ...allLessons.filter((l) => doneTodayIds.has(l.id)).map<Task>((l) => ({ key: `l${l.id}`, kind: 'lesson', title: l.title, minutes: l.duration_min, to: lessonPath(l), done: true })),
       ...allTests.filter((t) => testsToday.has(t.id)).map<Task>((t) => ({ key: `t${t.id}`, kind: 'test', title: t.title, minutes: t.duration_min, to: `/app/practice/${t.id}`, done: true })),
     ]
 
@@ -65,7 +66,7 @@ function useDailyTasks(): { tasks: Task[]; loading: boolean; minutesLeft: number
         kind,
         title: item.title,
         minutes,
-        to: kind === 'lesson' ? `/app/learn/${item.id}` : `/app/practice/${item.id}`,
+        to: kind === 'lesson' ? lessonPath(item) : `/app/practice/${item.id}`,
         done: false,
       })
     }

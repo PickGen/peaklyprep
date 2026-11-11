@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { formatDate, useI18n } from '../lib/i18n'
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useAttemptReview, useDeleteAttempts, useLesson, useLessonProgress, useLessons, useMyAttempts, useMySubscription, useQuestionCounts, useQuestions, useSubmitAttempt, useTest, useTests, useToggleLessonDone } from '../lib/api'
-import { SECTIONS, type AttemptResult, type Section, type Test } from '../lib/types'
+import { SECTIONS, lessonKind, lessonPath, type AttemptResult, type LessonKind, type Section, type Test } from '../lib/types'
 import { useAuth } from '../lib/auth'
 import { Reveal } from '../components/Reveal'
 import { ArrowLeft, CalculatorIcon, CheckIcon, ClockIcon, CloseIcon, FileIcon, PlayIcon, TrashIcon } from '../components/Icons'
@@ -63,14 +63,35 @@ function PlayCircle({ done }: { done?: boolean }) {
   )
 }
 
-export function LearnPage() {
+const listText: Record<LessonKind, { title: string; blurb: string; allDone: string; empty: string; badge: string }> = {
+  lesson: {
+    title: 'Your learning path',
+    blurb: 'Short lessons that build the skills tested on the SAT.',
+    allDone: 'All lessons completed',
+    empty: 'No lessons here yet.',
+    badge: 'Lesson',
+  },
+  word_list: {
+    title: 'Word Lists',
+    blurb: 'SAT vocabulary, list by list.',
+    allDone: 'All word lists completed',
+    empty: 'No word lists here yet.',
+    badge: 'Word list',
+  },
+}
+
+export const LearnPage = () => <LessonList kind="lesson" />
+export const WordListsPage = () => <LessonList kind="word_list" />
+
+function LessonList({ kind }: { kind: LessonKind }) {
   const { tr } = useI18n()
+  const text = listText[kind]
   const { loading: subLoading, active } = useHasActiveSub()
   const lessons = useLessons()
   const progress = useLessonProgress()
   const [filter, setFilter] = useState<Section | 'All'>('All')
   const done = new Set(progress.data?.map((p) => p.lesson_id))
-  const published = (lessons.data ?? []).filter((l) => l.published)
+  const published = (lessons.data ?? []).filter((l) => l.published && lessonKind(l) === kind)
   const remaining = published.filter((l) => !done.has(l.id))
   const doneCount = published.length - remaining.length
   const minLeft = remaining.reduce((s, l) => s + l.duration_min, 0)
@@ -90,20 +111,20 @@ export function LearnPage() {
           <div className="pointer-events-none absolute -right-10 -top-14 h-48 w-48 rounded-full bg-white/10 blur-2xl" />
           <div className="pointer-events-none absolute -bottom-16 left-1/4 h-40 w-64 rounded-full bg-brand-300/20 blur-3xl" />
           <div className="relative">
-            <h1 className="text-3xl font-extrabold">{tr('Your learning path')}</h1>
+            <h1 className="text-3xl font-extrabold">{tr(text.title)}</h1>
             <p className="mt-1 font-semibold text-white/90">{tr('{a}/{b} done · ~{m} min', { a: doneCount, b: published.length, m: minLeft })}</p>
-            <p className="mt-1 max-w-md text-sm text-white/80">{tr('Short lessons that build the skills tested on the SAT.')}</p>
+            <p className="mt-1 max-w-md text-sm text-white/80">{tr(text.blurb)}</p>
             <div className="mt-4 h-2.5 max-w-md overflow-hidden rounded-full bg-white/25" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
               <div className="h-full rounded-full bg-white transition-[width] duration-700" style={{ width: `${pct}%` }} />
             </div>
             {next ? (
-              <Link to={`/app/learn/${next.id}`} className="btn mt-5 bg-white !px-6 text-brand-700 shadow-lg hover:bg-brand-50">
+              <Link to={lessonPath(next)} className="btn mt-5 bg-white !px-6 text-brand-700 shadow-lg hover:bg-brand-50">
                 <PlayIcon className="h-5 w-5" /> {doneCount > 0 ? tr('Continue') : tr('Start')}
               </Link>
             ) : (
               published.length > 0 && (
                 <p className="mt-5 inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-sm font-bold">
-                  <CheckIcon className="h-4 w-4" /> {tr('All lessons completed')}
+                  <CheckIcon className="h-4 w-4" /> {tr(text.allDone)}
                 </p>
               )
             )}
@@ -116,7 +137,7 @@ export function LearnPage() {
       {lessons.isLoading ? (
         <Spinner />
       ) : groups.length === 0 ? (
-        <p className="glass rounded-2xl p-6 text-muted">{tr('No lessons here yet.')}</p>
+        <p className="glass rounded-2xl p-6 text-muted">{tr(text.empty)}</p>
       ) : (
         groups.map((g) => {
           const d = g.items.filter((l) => done.has(l.id)).length
@@ -138,14 +159,14 @@ export function LearnPage() {
                   return (
                     <Reveal key={l.id} delay={(i % 4) * 60}>
                       <Link
-                        to={`/app/learn/${l.id}`}
+                        to={lessonPath(l)}
                         className="group flex h-full items-center gap-4 rounded-3xl bg-brand-50/70 p-4 ring-1 ring-brand-100 transition-all hover:bg-white hover:shadow-soft active:scale-[0.99]"
                       >
                         <SectionTile section={l.section} />
                         <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-center gap-2">
                             <h3 className="font-bold leading-snug">{l.title}</h3>
-                            <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${isDone ? 'bg-green-100 text-green-700' : themeOf(l.section).chip}`}>{isDone ? tr('Completed') : tr('Lesson')}</span>
+                            <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${isDone ? 'bg-green-100 text-green-700' : themeOf(l.section).chip}`}>{isDone ? tr('Completed') : tr(text.badge)}</span>
                           </div>
                           <p className="line-clamp-1 text-sm text-muted">{l.summary}</p>
                           <p className="mt-0.5 text-xs font-semibold text-muted">{tr('~{n} min', { n: l.duration_min })}</p>
@@ -242,11 +263,12 @@ export function LessonPage() {
   const l = lesson.data
   const isDone = progress.data?.some((p) => p.lesson_id === l.id) ?? false
   const embed = l.video_url ? youtubeEmbed(l.video_url) : null
+  const isWordList = lessonKind(l) === 'word_list'
 
   return (
     <article className="mx-auto max-w-3xl space-y-5">
-      <Link to="/app/learn" className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600">
-        <ArrowLeft className="h-4 w-4" /> {tr("All lessons")}
+      <Link to={isWordList ? '/app/words' : '/app/learn'} className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600">
+        <ArrowLeft className="h-4 w-4" /> {tr(isWordList ? 'All word lists' : 'All lessons')}
       </Link>
       <Reveal>
         <div className="flex items-center gap-2">
