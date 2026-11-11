@@ -1,0 +1,28 @@
+# Autotests: on every push to main and every pull request GitHub runs the type check, the unit tests
+# (score forecast, flashcards, notifications, translations) and a production build. A red ✗ next to a commit means
+# something broke; open the "Actions" tab on GitHub to see which step failed.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Unit tests
+        run: pnpm test
+      - name: Type check and build
+        run: pnpm build

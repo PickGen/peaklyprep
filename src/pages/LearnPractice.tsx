@@ -10,6 +10,8 @@ import { CalculatorPanel, ReferencePanel, ToolButton, useMediaQuery } from '../c
 import { Spinner } from '../components/Layouts'
 import { InlineText, PassageText } from '../components/PassageText'
 import { SectionTile, themeOf } from '../components/SectionIcon'
+import { FlashcardsLauncher } from '../components/Flashcards'
+import { parseWordList } from '../lib/flashcards'
 
 export function Paywall() {
   return (
@@ -263,6 +265,7 @@ export function LessonPage() {
   const isDone = progress.data?.some((p) => p.lesson_id === l.id) ?? false
   const embed = l.video_url ? youtubeEmbed(l.video_url) : null
   const isWordList = lessonKind(l) === 'word_list'
+  const cards = isWordList ? parseWordList(l.content) : []
 
   return (
     <article className="mx-auto max-w-3xl space-y-5">
@@ -289,6 +292,7 @@ export function LessonPage() {
           <PlayIcon className="h-5 w-5" /> {tr("Watch video")}
         </a>
       )}
+      {isWordList && cards.length >= 2 && <FlashcardsLauncher listId={l.id} cards={cards} />}
       <div className="glass rounded-2xl p-5 md:p-7">
         <RichText text={l.content} />
       </div>

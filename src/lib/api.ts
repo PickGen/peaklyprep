@@ -2,7 +2,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { supabase } from './supabase'
 import { useAuth } from './auth'
 import { fixGarbledDeep } from './textFix'
-import type { Attempt, AttemptResult, Lesson, LessonProgress, NewsItem, Profile, Question, Subscription, Test } from './types'
+import type { Attempt, AttemptResult, Lesson, LessonProgress, MistakeItem, NewsItem, Profile, Question, Subscription, Test } from './types'
+import { buildNotifications, type AppNotification } from './notifications'
 
 function unwrap<T>(res: { data: T | null; error: { message: string } | null }): T {
   if (res.error) throw new Error(res.error.message)
@@ -328,7 +329,7 @@ export function useMyAttempts() {
       unwrap(
         await supabase
           .from('test_attempts')
-          .select('*, tests(title, section)')
+          .select('*, tests(title, section, form_title, module_no)')
           .eq('user_id', session!.user.id)
           .order('created_at', { ascending: false }),
       ) as unknown as Attempt[],
@@ -343,7 +344,10 @@ export function useDeleteAttempts() {
       const { error } = await supabase.from('test_attempts').delete().in('id', ids)
       if (error) throw new Error(error.message)
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['attempts'] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['attempts'] })
+      qc.invalidateQueries({ queryKey: ['mistake_bank'] })
+    },
   })
 }
 
@@ -355,7 +359,10 @@ export function useSubmitAttempt() {
       if (error) throw new Error(error.message)
       return data as AttemptResult
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['attempts'] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['attempts'] })
+      qc.invalidateQueries({ queryKey: ['mistake_bank'] })
+    },
   })
 }
 
@@ -559,9 +566,10 @@ export function useMyPaymentRequests() {
   })
 }
 
-export function useAllPaymentRequests() {
+export function useAllPaymentRequests(enabled = true) {
   return useQuery({
     queryKey: ['all_payment_requests'],
+    enabled,
     queryFn: async () => {
       const { data, error } = await supabase.from('payment_requests').select('*, profiles(email, full_name)').order('created_at', { ascending: false })
       if (error) throw new Error(error.message)
@@ -599,6 +607,86 @@ export function useUpdatePaymentRequest() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['all_payment_requests'] })
       qc.invalidateQueries({ queryKey: ['students'] })
+    },
+  })
+}
+
+/* ---------- Notifications (bell) ---------- */
+/** Which notification keys the user has read (stored in notification_reads, so it works on every device). */
+function useNotificationReads() {
+  const { session } = useAuth()
+  return useQuery({
+    queryKey: ['notification_reads', session?.user.id],
+    enabled: Boolean(session),
+    queryFn: async () => {
+      const { data, error } = await supabase.from('notification_reads').select('key').eq('user_id', session!.user.id)
+      if (error) return new Set<string>() // table missing until the migration runs: everything counts as unread
+      return new Set((data as { key: string }[]).map((r) => r.key))
+    },
+  })
+}
+
+export function useNotifications() {
+  const { profile, isAdmin } = useAuth()
+  const sub = useMySubscription()
+  const payments = useMyPaymentRequests()
+  const all = useAllPaymentRequests(isAdmin)
+  const news = useNews()
+  const reads = useNotificationReads()
+  const items: AppNotification[] = buildNotifications({
+    now: new Date(),
+    isAdmin,
+    subscription: sub.data ?? null,
+    payments: payments.data ?? [],
+    news: news.data ?? [],
+    examDate: profile?.exam_date ?? null,
+    pendingPayments: isAdmin ? (all.data ?? []).filter((p) => p.status === 'pending') : undefined,
+  })
+  const read = reads.data ?? new Set<string>()
+  return { items, unread: items.filter((n) => !read.has(n.key)).length, isRead: (key: string) => read.has(key), loading: reads.isLoading }
+}
+
+export function useMarkNotificationsRead() {
+  const qc = useQueryClient()
+  const { session } = useAuth()
+  return useMutation({
+    mutationFn: async (keys: string[]) => {
+      if (!keys.length) return
+      const uid = session!.user.id
+      const { error } = await supabase.from('notification_reads').upsert(keys.map((key) => ({ user_id: uid, key })), { onConflict: 'user_id,key', ignoreDuplicates: true })
+      if (error) throw new Error(error.message)
+    },
+    onMutate: (keys) => {
+      // show them as read right away
+      const k = ['notification_reads', session?.user.id]
+      const prev = qc.getQueryData<Set<string>>(k) ?? new Set<string>()
+      qc.setQueryData(k, new Set([...prev, ...keys]))
+    },
+    onSettled: () => qc.invalidateQueries({ queryKey: ['notification_reads'] }),
+  })
+}
+
+/* ---------- Mistake bank ---------- */
+export function useMistakeBank(enabled = true) {
+  const { session } = useAuth()
+  return useQuery({
+    queryKey: ['mistake_bank', session?.user.id],
+    enabled: Boolean(session) && enabled,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc('get_mistake_bank')
+      if (error) throw new Error(error.message)
+      return (data ?? []) as MistakeItem[]
+    },
+  })
+}
+
+/** Retry a question from the mistake bank (graded on the server). A correct answer removes it from the bank. */
+export function useCheckMistake() {
+  return useMutation({
+    mutationFn: async ({ questionId, answer }: { questionId: string; answer: number | string }) => {
+      const { data, error } = await supabase.rpc('check_mistake', { p_question_id: questionId, p_answer: answer })
+      if (error) throw new Error(error.message)
+      return data as { correct: boolean }
     },
   })
 }

@@ -69,7 +69,25 @@ export interface Attempt {
   total: number
   answers: Record<string, number | string>
   created_at: string
-  tests?: { title: string; section: Section } | null
+  tests?: { title: string; section: Section; form_title?: string | null; module_no?: number | null } | null
+}
+
+/** One question in the mistake bank (see get_mistake_bank in the migrations) */
+export interface MistakeItem {
+  question_id: string
+  test_id: string
+  test_title: string
+  section: Section
+  position: number
+  passage: string | null
+  prompt: string
+  options: string[]
+  attempt_id: string
+  attempted_at: string
+  chosen: number | string | null
+  correct_index: number | null
+  correct_answers: string[] | null
+  explanation: string | null
 }
 
 export interface LessonProgress {

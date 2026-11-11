@@ -5,8 +5,10 @@ import { formatDate, useI18n } from '../lib/i18n'
 import { SECTIONS, type Attempt, type Section } from '../lib/types'
 import { Reveal } from '../components/Reveal'
 import { Spinner } from '../components/Layouts'
-import { GridIcon, PlayIcon } from '../components/Icons'
+import { ChevronRight, GlassTile, GridIcon, MistakeIcon, PlayIcon } from '../components/Icons'
 import { SectionIcon, SectionTile, themeOf } from '../components/SectionIcon'
+import { ScoreForecast } from '../components/ScoreForecast'
+import { useAuth } from '../lib/auth'
 
 type Tab = 'Overview' | Section
 
@@ -84,6 +86,7 @@ function Attempts({ attempts }: { attempts: Attempt[] }) {
 
 export default function StatisticsPage() {
   const { tr } = useI18n()
+  const { profile } = useAuth()
   const attemptsQ = useMyAttempts()
   const lessonsQ = useLessons()
   const doneQ = useLessonProgress()
@@ -146,6 +149,21 @@ export default function StatisticsPage() {
       </div>
 
       <div key={tab} className="animate-[fadein_.3s_ease] space-y-6">
+        {tab === 'Overview' && (
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-[1.4fr_1fr]">
+            <ScoreForecast target={profile?.target_score} />
+            <Link to="/app/mistakes" className="glass group flex items-center gap-4 rounded-2xl p-4 transition-transform active:scale-[0.99] md:p-6 md:hover:-translate-y-0.5">
+              <GlassTile className="h-12 w-12 !rounded-xl">
+                <MistakeIcon className="h-7 w-7" />
+              </GlassTile>
+              <span className="min-w-0 flex-1">
+                <span className="block text-[17px] font-bold">{tr('Mistake Bank')}</span>
+                <span className="block text-sm text-muted">{tr('Every question you missed, in one place. Retry them until they stick.')}</span>
+              </span>
+              <ChevronRight className="h-5 w-5 shrink-0 text-ink/80 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          </div>
+        )}
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
           {stats.map((s) => (
             <div key={s.label} className="glass rounded-2xl p-4">

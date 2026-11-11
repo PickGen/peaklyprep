@@ -9,6 +9,7 @@ import Landing from './pages/Landing'
 import { ForgotPasswordPage, LoginPage, RegisterPage, ResetPasswordPage } from './pages/AuthPages'
 import { HomePage, ProfilePage } from './pages/StudentPages'
 import StatisticsPage from './pages/Statistics'
+import MistakeBankPage from './pages/MistakeBank'
 import { AttemptReviewPage, LearnPage, LessonPage, PracticePage, TestRunnerPage, WordListsPage } from './pages/LearnPractice'
 import { PrivacyPage, TermsPage } from './pages/Legal'
 import PlansPage from './pages/Plans'
@@ -61,6 +62,7 @@ export default function App() {
                   <Route path="plans" element={<PlansPage />} />
                   <Route path="checkout" element={<CheckoutPage />} />
                   <Route path="progress" element={<StatisticsPage />} />
+                  <Route path="mistakes" element={<MistakeBankPage />} />
                   <Route path="profile" element={<ProfilePage />} />
                 </Route>
 

@@ -90,7 +90,6 @@ create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
 
-
 -- ===== 20260101000001_rls.sql =====
 -- PeaklyPrep: Row Level Security -----------------------------------------------
 
@@ -214,7 +213,6 @@ $$;
 revoke all on function public.submit_attempt(uuid, jsonb) from public, anon;
 grant execute on function public.submit_attempt(uuid, jsonb) to authenticated;
 
-
 -- ===== 20260101000002_seed.sql =====
 -- PeaklyPrep: seed data --------------------------------------------------------
 -- Default admin:   admin@peaklyprep.com   /   Admin12345!      (change the password after first login)
@@ -315,7 +313,6 @@ select public.seed_question('b1000000-0000-4000-8000-000000000003', 5, E'The dog
 
 drop function public.seed_question(uuid, int, text, jsonb, int, text);
 
-
 -- ===== 20260101000003_goals_passages.sql =====
 -- PeaklyPrep: student goals + question passages -------------------------------
 
@@ -339,7 +336,6 @@ set passage = split_part(prompt, E'\n\n', 1),
 where test_id::text like 'b1000000%'
   and passage is null
   and position(E'\n\n' in prompt) > 0;
-
 
 -- ===== 20260101000004_news.sql =====
 -- PeaklyPrep: news feed shown on the student home screen ------------------------
@@ -371,7 +367,6 @@ insert into public.news (id, title, body, created_at) values
  now() - interval '6 days')
 on conflict (id) do nothing;
 
-
 -- ===== 20260101000005_merge_reading_writing.sql =====
 -- PeaklyPrep: the SAT has two sections, "Reading & Writing" and "Math" ----------------
 
@@ -383,7 +378,6 @@ update public.tests   set section = 'Reading & Writing' where section in ('Readi
 
 alter table public.lessons add constraint lessons_section_check check (section in ('Reading & Writing', 'Math'));
 alter table public.tests   add constraint tests_section_check   check (section in ('Reading & Writing', 'Math'));
-
 
 -- ===== 20260101000006_test_forms.sql =====
 -- PeaklyPrep: practice tests made of several modules -----------------------------------
@@ -398,7 +392,6 @@ update public.tests set form_title = 'SAT Practice Test 1', module_no = 2 where 
 
 -- Remove the original demo tests (also removes their questions, answer keys and attempts)
 delete from public.tests where id::text like 'b1000000%';
-
 
 -- ===== 20260101000007_attempt_review.sql =====
 -- PeaklyPrep: let a student re-open a finished attempt and see which answers were wrong ----
@@ -446,7 +439,6 @@ $$;
 revoke all on function public.get_attempt_review(uuid) from public, anon;
 grant execute on function public.get_attempt_review(uuid) to authenticated;
 
-
 -- ===== 20260101000008_subscriptions.sql =====
 -- PeaklyPrep: subscriptions (which plan a student bought and until when) -------------------
 -- Until online payment (Paddle) is connected, an admin grants plans from the Students tab.
@@ -469,7 +461,6 @@ drop policy if exists "subs read"  on public.subscriptions;
 drop policy if exists "subs admin" on public.subscriptions;
 create policy "subs read"  on public.subscriptions for select to authenticated using (user_id = auth.uid() or public.is_admin());
 create policy "subs admin" on public.subscriptions for all    to authenticated using (public.is_admin()) with check (public.is_admin());
-
 
 -- ===== 20260101000009_test_checkout.sql =====
 -- PeaklyPrep: TEST checkout ------------------------------------------------------------------
@@ -536,14 +527,12 @@ $$;
 revoke all on function public.test_purchase(text) from public, anon;
 grant execute on function public.test_purchase(text) to authenticated;
 
-
 -- ===== 20260101000010_delete_attempts.sql =====
 -- Students can delete their own old attempts (admins can delete any).
 drop policy if exists "attempts delete own" on public.test_attempts;
 create policy "attempts delete own" on public.test_attempts
   for delete to authenticated
   using (user_id = auth.uid() or public.is_admin());
-
 
 -- ===== 20260101000011_free_response.sql =====
 -- PeaklyPrep: student-produced (free response) questions, like the "grid-in" questions of the Digital SAT ----
@@ -737,4 +726,344 @@ $$;
 revoke all on function public.get_attempt_review(uuid) from public, anon;
 grant execute on function public.get_attempt_review(uuid) to authenticated;
 
+-- ===== payment_migration.sql (manual payments; run before the paywall and receipts migrations) =====
+-- PeaklyPrep: Manual payment flow migration
+-- Run this in Supabase SQL Editor
 
+-- 1. payment_requests table
+create table if not exists public.payment_requests (
+  id          uuid primary key default gen_random_uuid(),
+  user_id     uuid not null references public.profiles(id) on delete cascade,
+  plan        text not null check (plan in ('1m','3m','6m','12m')),
+  amount_usd  numeric(10,2) not null,
+  receipt_url text,
+  status      text not null default 'pending' check (status in ('pending','approved','rejected')),
+  admin_note  text,
+  created_at  timestamptz not null default now()
+);
+
+alter table public.payment_requests enable row level security;
+
+drop policy if exists "requests read"   on public.payment_requests;
+drop policy if exists "requests insert" on public.payment_requests;
+drop policy if exists "requests update" on public.payment_requests;
+
+create policy "requests read" on public.payment_requests
+  for select to authenticated using (user_id = auth.uid() or public.is_admin());
+create policy "requests insert" on public.payment_requests
+  for insert to authenticated with check (user_id = auth.uid());
+create policy "requests update" on public.payment_requests
+  for update to authenticated using (public.is_admin()) with check (public.is_admin());
+
+-- 2. Card number in app_settings (update with your real card)
+insert into public.app_settings(key, value)
+values('card_number', '"4400 4303 7236 1391"'::jsonb)
+on conflict (key) do nothing;
+
+-- 3. Storage bucket for receipts (run separately if needed)
+-- Go to: Supabase Dashboard → Storage → New bucket → "receipts" → Public: ON
+-- Then add these policies on storage.objects:
+/*
+create policy "receipts insert" on storage.objects
+  for insert to authenticated
+  with check (bucket_id = 'receipts');
+
+create policy "receipts select" on storage.objects
+  for select to authenticated
+  using (bucket_id = 'receipts');
+*/
+
+-- ===== 20260101000012_word_lists.sql =====
+-- PeaklyPrep: word lists are shown in their own menu item, not among the lessons ----
+-- A word list is stored as a lesson with kind = 'word_list'.
+
+alter table public.lessons add column if not exists kind text not null default 'lesson';
+alter table public.lessons drop constraint if exists lessons_kind_check;
+alter table public.lessons add constraint lessons_kind_check check (kind in ('lesson', 'word_list'));
+
+-- the existing "SAT Words …" lessons become word lists
+update public.lessons set kind = 'word_list' where kind = 'lesson' and title ~* 'sat\s*words?';
+
+-- ===== 20260101000013_paywall.sql =====
+-- PeaklyPrep: lessons and tests only for students with an active subscription ------------------
+-- Before this, the paywall was only on the Lessons / Practice lists in the app: a lesson or test opened by a
+-- direct link (e.g. from Daily tasks) worked without a subscription, and the database gave lessons, questions
+-- and (through submit_attempt) answers to any signed-in user. Admins keep full access.
+
+-- 1. Test checkout ("Choose plan" activated a plan without payment) is switched off.
+update public.app_settings set value = 'false'::jsonb where key = 'test_checkout';
+
+-- 2. Who may study: admins, or a student whose newest subscription has not expired.
+create or replace function public.has_active_subscription()
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select exists (select 1 from public.subscriptions where user_id = auth.uid() and expires_at > now());
+$$;
+
+create or replace function public.can_study()
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select public.is_admin() or public.has_active_subscription();
+$$;
+
+revoke all on function public.has_active_subscription() from public, anon;
+revoke all on function public.can_study() from public, anon;
+grant execute on function public.has_active_subscription() to authenticated;
+grant execute on function public.can_study() to authenticated;
+
+-- 3. Lessons and questions are readable only with access. Test titles stay visible (lists, plans page).
+drop policy if exists "lessons read" on public.lessons;
+create policy "lessons read" on public.lessons for select to authenticated
+  using (public.is_admin() or (published and public.has_active_subscription()));
+
+drop policy if exists "questions read" on public.questions;
+create policy "questions read" on public.questions for select to authenticated
+  using (public.is_admin() or (public.has_active_subscription() and exists (select 1 from public.tests t where t.id = test_id and t.published)));
+
+-- 4. Submitting a test (which returns the correct answers) also needs access.
+create or replace function public.submit_attempt(p_test_id uuid, p_answers jsonb)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  uid        uuid := auth.uid();
+  r          record;
+  v_chosen   jsonb;
+  v_ok       boolean;
+  v_score    int := 0;
+  v_total    int := 0;
+  v_review   jsonb := '[]'::jsonb;
+  v_attempt  uuid;
+begin
+  if uid is null then
+    raise exception 'Not authenticated';
+  end if;
+  if not exists (select 1 from public.tests where id = p_test_id and (published or public.is_admin())) then
+    raise exception 'Test not available';
+  end if;
+  if not public.can_study() then
+    raise exception 'Subscription required';
+  end if;
+  if p_answers is null or jsonb_typeof(p_answers) <> 'object' then
+    p_answers := '{}'::jsonb;
+  end if;
+
+  for r in
+    select q.id, k.correct_index, k.correct_answers, k.explanation
+    from public.questions q
+    join public.question_keys k on k.question_id = q.id
+    where q.test_id = p_test_id
+    order by q.position, q.created_at
+  loop
+    v_total := v_total + 1;
+    v_chosen := p_answers -> r.id::text;
+    if r.correct_answers is not null then
+      v_ok := coalesce(jsonb_typeof(v_chosen) = 'string' and public.spr_correct(v_chosen #>> '{}', r.correct_answers), false);
+    else
+      v_ok := coalesce(jsonb_typeof(v_chosen) = 'number' and (v_chosen #>> '{}')::numeric = r.correct_index, false);
+    end if;
+    if v_ok then
+      v_score := v_score + 1;
+    end if;
+    v_review := v_review || jsonb_build_object(
+      'question_id', r.id,
+      'chosen', v_chosen,
+      'correct', v_ok,
+      'correct_index', r.correct_index,
+      'correct_answers', to_jsonb(r.correct_answers),
+      'explanation', r.explanation
+    );
+  end loop;
+
+  if v_total = 0 then
+    raise exception 'This test has no questions';
+  end if;
+
+  insert into public.test_attempts (user_id, test_id, score, total, answers)
+  values (uid, p_test_id, v_score, v_total, p_answers)
+  returning id into v_attempt;
+
+  return jsonb_build_object('attempt_id', v_attempt, 'score', v_score, 'total', v_total, 'review', v_review);
+end;
+$$;
+
+revoke all on function public.submit_attempt(uuid, jsonb) from public, anon;
+grant execute on function public.submit_attempt(uuid, jsonb) to authenticated;
+
+-- ===== 20260101000014_receipts_storage.sql =====
+-- PeaklyPrep: let students upload payment receipts ---------------------------------------------
+-- The "receipts" bucket existed but had no upload policy, so every upload failed with
+-- "new row violates row-level security policy" ("Ошибка загрузки чека" on the checkout page).
+-- Students may upload only into their own folder (<user id>/...); admins may read and delete all receipts.
+
+drop policy if exists "receipts insert own" on storage.objects;
+create policy "receipts insert own" on storage.objects
+  for insert to authenticated
+  with check (bucket_id = 'receipts' and (storage.foldername(name))[1] = auth.uid()::text);
+
+drop policy if exists "receipts read own or admin" on storage.objects;
+create policy "receipts read own or admin" on storage.objects
+  for select to authenticated
+  using (bucket_id = 'receipts' and ((storage.foldername(name))[1] = auth.uid()::text or public.is_admin()));
+
+drop policy if exists "receipts delete admin" on storage.objects;
+create policy "receipts delete admin" on storage.objects
+  for delete to authenticated
+  using (bucket_id = 'receipts' and public.is_admin());
+
+-- ===== 20260101000015_notifications_mistakes.sql =====
+-- PeaklyPrep: notifications (read marks) and the mistake bank -------------------------------------
+-- Notifications are built in the app from news, the subscription end date, payment decisions and the exam date;
+-- the database only remembers which ones a student has already read, so the bell works on every device.
+-- The mistake bank lists every question whose latest answer was wrong; retrying is graded here, never in the browser.
+
+-- 1. Read marks for notifications --------------------------------------------------------------
+create table if not exists public.notification_reads (
+  user_id    uuid not null references public.profiles (id) on delete cascade,
+  key        text not null check (length(key) between 1 and 200),
+  read_at    timestamptz not null default now(),
+  primary key (user_id, key)
+);
+alter table public.notification_reads enable row level security;
+
+drop policy if exists "notification reads own" on public.notification_reads;
+create policy "notification reads own" on public.notification_reads for all to authenticated
+  using (user_id = auth.uid()) with check (user_id = auth.uid());
+
+-- 2. Questions a student fixed in the mistake bank ----------------------------------------------
+create table if not exists public.mastered_questions (
+  user_id     uuid not null references public.profiles (id) on delete cascade,
+  question_id uuid not null references public.questions (id) on delete cascade,
+  mastered_at timestamptz not null default now(),
+  primary key (user_id, question_id)
+);
+alter table public.mastered_questions enable row level security;
+
+drop policy if exists "mastered read own" on public.mastered_questions;
+create policy "mastered read own" on public.mastered_questions for select to authenticated using (user_id = auth.uid());
+drop policy if exists "mastered delete own" on public.mastered_questions;
+create policy "mastered delete own" on public.mastered_questions for delete to authenticated using (user_id = auth.uid());
+-- rows are added only by check_mistake() below (a correct retry), not directly by the browser
+
+-- 3. Is a stored answer correct? (same rules as submit_attempt) ---------------------------------
+create or replace function public.answer_is_correct(p_chosen jsonb, p_correct_index int, p_correct_answers text[])
+returns boolean
+language sql
+immutable
+set search_path = public
+as $$
+  select case
+    when p_correct_answers is not null then coalesce(jsonb_typeof(p_chosen) = 'string' and public.spr_correct(p_chosen #>> '{}', p_correct_answers), false)
+    else coalesce(jsonb_typeof(p_chosen) = 'number' and (p_chosen #>> '{}')::numeric = p_correct_index, false)
+  end;
+$$;
+
+-- 4. The mistake bank: for each question the student has answered, the latest answer; wrong or skipped ones are listed,
+--    unless the student fixed the question in the bank after that attempt.
+create or replace function public.get_mistake_bank()
+returns jsonb
+language plpgsql
+stable
+security definer
+set search_path = public
+as $$
+declare
+  uid uuid := auth.uid();
+  v_out jsonb;
+begin
+  if uid is null then
+    raise exception 'Not authenticated';
+  end if;
+  if not public.can_study() then
+    raise exception 'Subscription required';
+  end if;
+
+  select coalesce(jsonb_agg(to_jsonb(x) - 'is_ok' order by x.attempted_at desc, x.test_title, x.position), '[]'::jsonb)
+  into v_out
+  from (
+    select distinct on (q.id)
+      q.id as question_id,
+      q.test_id,
+      t.title as test_title,
+      t.section,
+      q.position,
+      q.passage,
+      q.prompt,
+      q.options,
+      a.id as attempt_id,
+      a.created_at as attempted_at,
+      a.answers -> q.id::text as chosen,
+      k.correct_index,
+      k.correct_answers,
+      k.explanation,
+      public.answer_is_correct(a.answers -> q.id::text, k.correct_index, k.correct_answers) as is_ok
+    from public.test_attempts a
+    join public.tests t on t.id = a.test_id
+    join public.questions q on q.test_id = a.test_id
+    join public.question_keys k on k.question_id = q.id
+    where a.user_id = uid
+    order by q.id, a.created_at desc
+  ) x
+  where not x.is_ok
+    and not exists (
+      select 1 from public.mastered_questions m
+      where m.user_id = uid and m.question_id = x.question_id and m.mastered_at > x.attempted_at
+    );
+
+  return v_out;
+end;
+$$;
+
+revoke all on function public.get_mistake_bank() from public, anon;
+grant execute on function public.get_mistake_bank() to authenticated;
+
+-- 5. Retry one question from the bank. Only questions the student has already seen in an attempt may be checked.
+--    A correct answer moves the question out of the bank.
+create or replace function public.check_mistake(p_question_id uuid, p_answer jsonb)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  uid uuid := auth.uid();
+  k   record;
+  v_ok boolean;
+begin
+  if uid is null then
+    raise exception 'Not authenticated';
+  end if;
+  if not public.can_study() then
+    raise exception 'Subscription required';
+  end if;
+  if not exists (
+    select 1 from public.test_attempts a join public.questions q on q.test_id = a.test_id
+    where a.user_id = uid and q.id = p_question_id
+  ) then
+    raise exception 'Question not in your mistake bank';
+  end if;
+
+  select correct_index, correct_answers into k from public.question_keys where question_id = p_question_id;
+  v_ok := public.answer_is_correct(p_answer, k.correct_index, k.correct_answers);
+
+  if v_ok then
+    insert into public.mastered_questions (user_id, question_id) values (uid, p_question_id)
+    on conflict (user_id, question_id) do update set mastered_at = now();
+  end if;
+
+  return jsonb_build_object('correct', v_ok);
+end;
+$$;
+
+revoke all on function public.check_mistake(uuid, jsonb) from public, anon;
+grant execute on function public.check_mistake(uuid, jsonb) to authenticated;

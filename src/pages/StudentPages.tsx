@@ -7,10 +7,12 @@ import { nameSchema, studyMinutesSchema, targetScoreSchema } from '../lib/schema
 import { ExamDatePicker, RangeSlider } from '../components/ProfileControls'
 import { fmtDate, todayIso, useSatDates } from '../lib/satDates'
 import { Reveal } from '../components/Reveal'
-import { BarsIcon, BookIcon, CalendarIcon, LayersIcon, CheckSquareIcon, ChevronRight, ClockIcon, EditIcon, GlassTile, GlobeIcon, LogoutIcon, MailIcon, NewsIcon, ShieldIcon, StarIcon, TargetIcon, UserIcon } from '../components/Icons'
+import { BarsIcon, BookIcon, CalendarIcon, LayersIcon, CheckSquareIcon, MistakeIcon, ChevronRight, ClockIcon, EditIcon, GlassTile, GlobeIcon, LogoutIcon, MailIcon, NewsIcon, ShieldIcon, StarIcon, TargetIcon, UserIcon } from '../components/Icons'
 import { Spinner } from '../components/Layouts'
 import { DailyTasks } from '../components/DailyTasks'
-import { PlanCard, SubscriptionBadge } from '../components/SubscriptionBadge'
+import { PlanCard, PlanReminder, SubscriptionBadge } from '../components/SubscriptionBadge'
+import { ScoreForecast, toForecastAttempts } from '../components/ScoreForecast'
+import { forecast } from '../lib/score'
 
 function useReadiness() {
   const lessons = useLessons()
@@ -24,8 +26,7 @@ function useReadiness() {
     const testsTaken = new Set(attempts.data?.map((a) => a.test_id) ?? []).size
     const denom = totalLessons + totalTests
     const percent = denom ? Math.min(100, Math.round(((lessonsDone + testsTaken) / denom) * 100)) : 0
-    const recent = (attempts.data ?? []).slice(0, 5).filter((a) => a.total > 0)
-    const predicted = recent.length ? Math.round((400 + (recent.reduce((s, a) => s + a.score / a.total, 0) / recent.length) * 1200) / 10) * 10 : null
+    const predicted = forecast(toForecastAttempts(attempts.data ?? [])).total?.score ?? null
     return {
       predicted,
       loading: lessons.isLoading || tests.isLoading || done.isLoading || attempts.isLoading,
@@ -100,7 +101,7 @@ function GoalBanner({ predicted }: { predicted: number | null }) {
           </div>
           <p className="mt-8 text-sm font-medium text-white/90">
             {predicted === null
-              ? tr('Take your first practice test and your score projection will appear here.')
+              ? tr('Take a Reading & Writing and a Math test to see your projected total score.')
               : tr('Projected score: {s}', { s: predicted }) + (predicted < profile.target_score ? tr(' · {n} points to your goal', { n: profile.target_score - predicted }) : tr(' · you are on track for your goal'))}
           </p>
         </div>
@@ -139,6 +140,8 @@ export function HomePage() {
         <h1 className="pt-8 text-[2rem] font-extrabold md:pt-0 md:text-4xl">{tr("Hi, {name}!", { name: first })}</h1>
       </Reveal>
 
+      <PlanReminder className="mt-5 md:mt-6" />
+
       <Reveal delay={40} className="mt-6 hidden md:block">
         <GoalBanner predicted={r.predicted} />
       </Reveal>
@@ -172,12 +175,18 @@ export function HomePage() {
           <Reveal delay={200}>
             <NavCard to="/app/practice" label="Practice Tests" icon={<CheckSquareIcon className="h-7 w-7" />} />
           </Reveal>
+          <Reveal delay={230}>
+            <NavCard to="/app/mistakes" label="Mistake Bank" icon={<MistakeIcon className="h-7 w-7" />} />
+          </Reveal>
           <Reveal delay={260}>
             <NavCard to="/app/progress" label="My Progress" icon={<BarsIcon className="h-7 w-7" />} />
           </Reveal>
         </div>
 
         <div className="space-y-4 md:space-y-6">
+        <Reveal delay={220}>
+          <ScoreForecast target={profile?.target_score} />
+        </Reveal>
         <Reveal delay={240}>
           <DailyTasks />
         </Reveal>

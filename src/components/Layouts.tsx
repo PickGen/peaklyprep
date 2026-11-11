@@ -1,12 +1,16 @@
-import { useState } from 'react'
-import { LangSwitch, useI18n } from '../lib/i18n'
+import { useEffect, useRef, useState } from 'react'
+import { LangSwitch, formatDate, useI18n } from '../lib/i18n'
+import { useMarkNotificationsRead, useNotifications } from '../lib/api'
+import type { AppNotification, NotificationTone } from '../lib/notifications'
 import { Link, NavLink, Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../lib/auth'
 import { Brand } from './Brand'
 import {
   BellIcon,
   BookIcon,
+  CalendarIcon,
   ChartIcon,
+  CheckIcon,
   CheckSquareIcon,
   CloseIcon,
   CrownIcon,
@@ -15,6 +19,7 @@ import {
   LayersIcon,
   LogoutIcon,
   MenuIcon,
+  NewsIcon,
   ShieldIcon,
   UserIcon,
 } from './Icons'
@@ -174,16 +179,110 @@ const tabs = [
   { to: '/app/profile', label: 'Profile', icon: () => <UserIcon className="h-6 w-6" /> },
 ]
 
-function Bell() {
+const toneStyle: Record<NotificationTone, string> = {
+  info: 'bg-brand-100 text-brand-600',
+  warning: 'bg-amber-100 text-amber-700',
+  success: 'bg-green-100 text-green-700',
+  danger: 'bg-red-100 text-red-600',
+}
+
+function NotifIcon({ n }: { n: AppNotification }) {
+  const cls = 'h-4 w-4'
+  const icon =
+    n.icon === 'crown' ? <CrownIcon className={cls} /> : n.icon === 'check' ? <CheckIcon className={cls} /> : n.icon === 'news' ? <NewsIcon className={cls} /> : n.icon === 'calendar' ? <CalendarIcon className={cls} /> : <FileIcon className={cls} />
+  return <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl ${toneStyle[n.tone]}`}>{icon}</span>
+}
+
+export function Bell({ align = 'right' }: { align?: 'left' | 'right' }) {
   const { tr } = useI18n()
+  const nav = useNavigate()
   const [open, setOpen] = useState(false)
+  const box = useRef<HTMLDivElement>(null)
+  const { items, unread, isRead } = useNotifications()
+  const mark = useMarkNotificationsRead()
+  const unreadKeys = items.filter((n) => !isRead(n.key)).map((n) => n.key)
+
+  const close = () => {
+    setOpen(false)
+    if (unreadKeys.length) mark.mutate(unreadKeys) // seen once the panel is closed
+  }
+
+  useEffect(() => {
+    if (!open) return
+    const onDown = (e: PointerEvent) => {
+      if (box.current && !box.current.contains(e.target as Node)) close()
+    }
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && close()
+    document.addEventListener('pointerdown', onDown)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('pointerdown', onDown)
+      document.removeEventListener('keydown', onKey)
+    }
+  })
+
   return (
-    <div className="relative">
-      <button onClick={() => setOpen((v) => !v)} className="grid h-11 w-11 place-items-center rounded-full" aria-label={tr("Notifications")}>
+    <div className="relative" ref={box}>
+      <button
+        onClick={() => (open ? close() : setOpen(true))}
+        className="relative grid h-11 w-11 place-items-center rounded-full text-ink transition-colors hover:bg-white/70"
+        aria-label={unread ? tr('Notifications: {n} new', { n: unread }) : tr('Notifications')}
+        aria-expanded={open}
+      >
         <BellIcon className="h-6 w-6" />
+        {unread > 0 && (
+          <span className="absolute right-1.5 top-1.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-red-500 px-1 text-[10px] font-bold leading-none text-white ring-2 ring-white">
+            {unread > 9 ? '9+' : unread}
+          </span>
+        )}
       </button>
       {open && (
-        <div className="glass absolute right-0 top-12 z-40 w-60 rounded-2xl p-4 text-sm text-muted">{tr("You're all caught up. No new notifications.")}</div>
+        <div
+          className={`glass absolute top-12 z-50 w-[min(22rem,calc(100vw-2rem))] overflow-hidden rounded-2xl !bg-white/95 shadow-xl ${align === 'right' ? 'right-0' : 'left-0'}`}
+          role="dialog"
+          aria-label={tr('Notifications')}
+        >
+          <div className="flex items-center justify-between gap-3 border-b border-brand-100 px-4 py-3">
+            <p className="font-bold">{tr('Notifications')}</p>
+            {unreadKeys.length > 0 && (
+              <button className="text-xs font-bold text-brand-600 hover:underline" onClick={() => mark.mutate(unreadKeys)}>
+                {tr('Mark all as read')}
+              </button>
+            )}
+          </div>
+          {items.length === 0 ? (
+            <p className="px-4 py-6 text-center text-sm text-muted">{tr("You're all caught up. No new notifications.")}</p>
+          ) : (
+            <ul className="max-h-[min(26rem,65dvh)] divide-y divide-brand-100 overflow-y-auto overscroll-contain">
+              {items.map((n) => {
+                const fresh = !isRead(n.key)
+                const text = (s: string) => (n.raw ? s : tr(s, n.vars))
+                return (
+                  <li key={n.key}>
+                    <button
+                      className={`flex w-full gap-3 px-4 py-3 text-left transition-colors hover:bg-brand-50 ${fresh ? 'bg-brand-50/60' : ''}`}
+                      onClick={() => {
+                        if (fresh) mark.mutate([n.key])
+                        setOpen(false)
+                        if (n.link) nav(n.link)
+                      }}
+                    >
+                      <NotifIcon n={n} />
+                      <span className="min-w-0 flex-1">
+                        <span className="flex items-start justify-between gap-2">
+                          <span className={`text-sm leading-snug ${fresh ? 'font-bold' : 'font-semibold'}`}>{n.icon === 'news' ? n.title : tr(n.title, n.vars)}</span>
+                          {fresh && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-brand-600" aria-label={tr('New')} />}
+                        </span>
+                        {n.body && <span className="mt-0.5 line-clamp-2 block text-xs text-muted">{text(n.body)}</span>}
+                        <span className="mt-1 block text-[11px] font-semibold text-muted/80">{formatDate(n.date, { day: 'numeric', month: 'short' })}</span>
+                      </span>
+                    </button>
+                  </li>
+                )
+              })}
+            </ul>
+          )}
+        </div>
       )}
     </div>
   )
@@ -194,6 +293,7 @@ const sideItems = [
   { to: '/app/learn', label: 'Lessons', icon: <BookIcon className="h-5 w-5 !stroke-current" /> },
   { to: '/app/words', label: 'Word Lists', icon: <LayersIcon className="h-5 w-5 !stroke-current" /> },
   { to: '/app/practice', label: 'Practice Tests', icon: <FileIcon className="h-5 w-5" /> },
+  { to: '/app/mistakes', label: 'Mistake Bank', icon: <CloseIcon className="h-5 w-5" /> },
   { to: '/app/progress', label: 'Statistics', icon: <ChartIcon className="h-5 w-5" /> },
   { to: '/app/plans', label: 'Plans', icon: <CrownIcon className="h-5 w-5" /> },
 ]
@@ -213,8 +313,9 @@ export function AppShell() {
 
       {/* Desktop sidebar */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-white/70 bg-white/60 p-4 backdrop-blur-xl md:flex">
-        <div className="px-2 pb-6 pt-2">
+        <div className="flex items-center justify-between gap-2 pb-6 pl-2 pt-1">
           <Brand to="/app" size="sm" />
+          <Bell align="left" />
         </div>
         <nav className="flex flex-col gap-1.5">
           {sideItems.map((i) => (

@@ -54,6 +54,24 @@ export const LayersIcon = (p: P) => (
     <path d="m3 16.5 9 4.5 9-4.5" />
   </svg>
 )
+export const CardsIcon = (p: P) => (
+  <svg {...base} stroke="url(#ppStroke)" {...p}>
+    <rect x="7.5" y="3.5" width="12" height="15" rx="2.5" transform="rotate(8 13.5 11)" fill="url(#ppGlass2)" fillOpacity=".25" />
+    <rect x="4.5" y="5.5" width="12" height="15" rx="2.5" fill="url(#ppGlass2)" fillOpacity=".45" />
+    <path d="M8 11h5M8 14.5h3" />
+  </svg>
+)
+export const MistakeIcon = (p: P) => (
+  <svg {...base} stroke="url(#ppStroke)" {...p}>
+    <rect x="3.5" y="3.5" width="17" height="17" rx="4" fill="url(#ppGlass2)" fillOpacity=".3" />
+    <path d="m9 9 6 6M15 9l-6 6" />
+  </svg>
+)
+export const ShuffleIcon = (p: P) => (
+  <svg {...base} stroke="currentColor" {...p}>
+    <path d="M3.5 7h3.2c2 0 3.2 1 4.3 2.6l2 3c1.1 1.6 2.3 2.4 4.3 2.4h3.2M17.5 12.5 20.5 15l-3 2.5M17.5 4.5 20.5 7l-3 2.5M3.5 17h3.2c1.4 0 2.4-.5 3.3-1.4M14 8.4c.9-.9 1.9-1.4 3.3-1.4h3.2" />
+  </svg>
+)
 export const CapIcon = (p: P) => (
   <svg {...base} stroke="url(#ppStroke)" {...p}>
     <path d="m12 4 10 5-10 5L2 9l10-5Z" fill="url(#ppGlass2)" fillOpacity=".45" />
