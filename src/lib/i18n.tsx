@@ -299,6 +299,8 @@ const D: Record<string, [string, string]> = {
   'Up next': ['Дальше', 'Келесі'],
 
   // practice test forms & modules
+  'Daily tasks open with a subscription': ['Ежедневные задания доступны с подпиской', 'Күнделікті тапсырмалар жазылыммен ашылады'],
+  'Choose a plan →': ['Выбрать план →', 'Жоспарды таңдау →'],
   'Choose module': ['Выбрать модуль', 'Модульді таңдау'],
   'Modules: {n}': ['Модулей: {n}', 'Модуль саны: {n}'],
   'Full exam with multiple modules': ['Полный экзамен из нескольких модулей', 'Бірнеше модульден тұратын толық емтихан'],
