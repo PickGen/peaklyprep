@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { supabase } from './supabase'
 import { useAuth } from './auth'
+import { fixGarbledDeep } from './textFix'
 import type { Attempt, AttemptResult, Lesson, LessonProgress, NewsItem, Profile, Question, Subscription, Test } from './types'
 
 function unwrap<T>(res: { data: T | null; error: { message: string } | null }): T {
@@ -29,7 +30,8 @@ export function useSaveLesson() {
   const qc = useQueryClient()
   return useMutation({
     mutationFn: async (input: Partial<Lesson> & { id?: string }) => {
-      const { id, ...rest } = input
+      // repair text garbled by a wrong encoding before it was pasted in (e.g. "x¬≤" -> "x²")
+      const { id, ...rest } = fixGarbledDeep(input)
       if (id) unwrap(await supabase.from('lessons').update(rest).eq('id', id).select())
       else unwrap(await supabase.from('lessons').insert(rest).select())
     },
@@ -129,7 +131,8 @@ export function useSaveTest() {
   const qc = useQueryClient()
   return useMutation({
     mutationFn: async (input: Partial<Test> & { id?: string }) => {
-      const { id, ...rest } = input
+      // repair text garbled by a wrong encoding before it was pasted in (e.g. "x¬≤" -> "x²")
+      const { id, ...rest } = fixGarbledDeep(input)
       if (id) unwrap(await supabase.from('tests').update(rest).eq('id', id).select())
       else unwrap(await supabase.from('tests').insert(rest).select())
     },
@@ -179,7 +182,8 @@ interface QuestionInput {
   position: number
 }
 
-async function saveQuestion(q: QuestionInput) {
+async function saveQuestion(input: QuestionInput) {
+  const q = fixGarbledDeep(input)
   let id = q.id
   const base = { test_id: q.test_id, passage: q.passage ?? null, prompt: q.prompt, options: q.options, position: q.position }
   if (id) {
@@ -232,6 +236,70 @@ export function useDeleteQuestion() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['questions'] })
       qc.invalidateQueries({ queryKey: ['question_counts'] })
+    },
+  })
+}
+
+/* ---------- Garbled text repair (admin) ---------- */
+export interface GarbledItem {
+  table: 'questions' | 'lessons' | 'news'
+  id: string
+  /** where to find it in the admin, e.g. the test title */
+  where: string
+  before: string
+  after: string
+  /** the columns to write back */
+  patch: Record<string, unknown>
+  /** question_keys columns to write back (questions only) */
+  keyPatch?: Record<string, unknown>
+}
+
+function changed<T extends Record<string, unknown>>(row: T): Partial<T> {
+  const fixed = fixGarbledDeep(row)
+  return Object.fromEntries(Object.entries(fixed).filter(([k, v]) => JSON.stringify(v) !== JSON.stringify(row[k]))) as Partial<T>
+}
+
+/** Scans every question, lesson and news post for text garbled by a wrong encoding. */
+export async function findGarbledText(): Promise<GarbledItem[]> {
+  const [questions, lessons, news] = await Promise.all([
+    supabase.from('questions').select('id, prompt, passage, options, tests(title), question_keys(explanation, correct_answers)'),
+    supabase.from('lessons').select('id, title, summary, content'),
+    supabase.from('news').select('id, title, body'),
+  ])
+  const out: GarbledItem[] = []
+  type QRow = Pick<Question, 'id' | 'prompt' | 'passage' | 'options'> & {
+    tests: { title: string } | null
+    question_keys: { explanation: string | null; correct_answers: string[] | null } | null
+  }
+  for (const q of unwrap(questions) as unknown as QRow[]) {
+    const patch = changed({ prompt: q.prompt, passage: q.passage, options: q.options })
+    const keyPatch = q.question_keys ? changed({ explanation: q.question_keys.explanation, correct_answers: q.question_keys.correct_answers }) : {}
+    if (Object.keys(patch).length || Object.keys(keyPatch).length) {
+      out.push({ table: 'questions', id: q.id, where: q.tests?.title ?? 'Question', before: q.prompt, after: fixGarbledDeep(q.prompt), patch, keyPatch })
+    }
+  }
+  for (const l of unwrap(lessons) as Pick<Lesson, 'id' | 'title' | 'summary' | 'content'>[]) {
+    const patch = changed({ title: l.title, summary: l.summary, content: l.content })
+    if (Object.keys(patch).length) out.push({ table: 'lessons', id: l.id, where: 'Lesson', before: l.title, after: fixGarbledDeep(l.title), patch })
+  }
+  for (const n of unwrap(news) as Pick<NewsItem, 'id' | 'title' | 'body'>[]) {
+    const patch = changed({ title: n.title, body: n.body })
+    if (Object.keys(patch).length) out.push({ table: 'news', id: n.id, where: 'News', before: n.title, after: fixGarbledDeep(n.title), patch })
+  }
+  return out
+}
+
+export function useFixGarbledText() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (items: GarbledItem[]) => {
+      for (const it of items) {
+        if (Object.keys(it.patch).length) unwrap(await supabase.from(it.table).update(it.patch).eq('id', it.id).select('id'))
+        if (it.keyPatch && Object.keys(it.keyPatch).length) unwrap(await supabase.from('question_keys').update(it.keyPatch).eq('question_id', it.id).select('question_id'))
+      }
+    },
+    onSuccess: () => {
+      for (const key of ['questions', 'lessons', 'lesson', 'news']) qc.invalidateQueries({ queryKey: [key] })
     },
   })
 }
@@ -343,7 +411,8 @@ export function useSaveNews() {
   const qc = useQueryClient()
   return useMutation({
     mutationFn: async (input: Partial<NewsItem> & { id?: string }) => {
-      const { id, ...rest } = input
+      // repair text garbled by a wrong encoding before it was pasted in (e.g. "x¬≤" -> "x²")
+      const { id, ...rest } = fixGarbledDeep(input)
       if (id) unwrap(await supabase.from('news').update(rest).eq('id', id).select())
       else unwrap(await supabase.from('news').insert(rest).select())
     },
