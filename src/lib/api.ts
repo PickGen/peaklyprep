@@ -102,9 +102,14 @@ export function useQuestionCounts() {
   return useQuery({
     queryKey: ['question_counts'],
     queryFn: async () => {
-      const rows = unwrap(await supabase.from('questions').select('test_id')) as { test_id: string }[]
+      // Supabase returns at most 1000 rows per request, so read the question list page by page
       const out: Record<string, number> = {}
-      for (const r of rows) out[r.test_id] = (out[r.test_id] ?? 0) + 1
+      const PAGE = 1000
+      for (let from = 0; ; from += PAGE) {
+        const rows = unwrap(await supabase.from('questions').select('test_id').order('id').range(from, from + PAGE - 1)) as { test_id: string }[]
+        for (const r of rows) out[r.test_id] = (out[r.test_id] ?? 0) + 1
+        if (rows.length < PAGE) break
+      }
       return out
     },
   })
@@ -261,8 +266,17 @@ function changed<T extends Record<string, unknown>>(row: T): Partial<T> {
 
 /** Scans every question, lesson and news post for text garbled by a wrong encoding. */
 export async function findGarbledText(): Promise<GarbledItem[]> {
-  const [questions, lessons, news] = await Promise.all([
-    supabase.from('questions').select('id, prompt, passage, options, tests(title), question_keys(explanation, correct_answers)'),
+  // questions can exceed Supabase's 1000-row limit per request, so read them page by page
+  const questionRows: unknown[] = []
+  for (let from = 0; ; from += 1000) {
+    const page = unwrap(
+      await supabase.from('questions').select('id, prompt, passage, options, tests(title), question_keys(explanation, correct_answers)').order('id').range(from, from + 999),
+    ) as unknown[]
+    questionRows.push(...page)
+    if (page.length < 1000) break
+  }
+  const questions = { data: questionRows, error: null }
+  const [lessons, news] = await Promise.all([
     supabase.from('lessons').select('id, title, summary, content'),
     supabase.from('news').select('id, title, body'),
   ])
@@ -445,6 +459,14 @@ export function useAttemptReview(attemptId: string | undefined) {
 
 /* ---------- Subscriptions ---------- */
 const PLAN_MONTHS: Record<Subscription['plan'], number> = { '1m': 1, '3m': 3, '6m': 6, '12m': 12 }
+
+/** Whether the signed-in user may open lessons and tests: an active subscription, or an admin. */
+export function useHasAccess() {
+  const { isAdmin } = useAuth()
+  const sub = useMySubscription()
+  const active = isAdmin || (sub.data ? new Date(sub.data.expires_at) > new Date() : false)
+  return { loading: !isAdmin && sub.isLoading, active }
+}
 
 /** The signed-in student's newest subscription (it may already be expired - check expires_at). */
 export function useMySubscription() {

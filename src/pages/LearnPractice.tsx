@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { formatDate, useI18n } from '../lib/i18n'
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { useAttemptReview, useDeleteAttempts, useLesson, useLessonProgress, useLessons, useMyAttempts, useMySubscription, useQuestionCounts, useQuestions, useSubmitAttempt, useTest, useTests, useToggleLessonDone } from '../lib/api'
+import { useAttemptReview, useDeleteAttempts, useLesson, useLessonProgress, useLessons, useHasAccess, useMyAttempts, useQuestionCounts, useQuestions, useSubmitAttempt, useTest, useTests, useToggleLessonDone } from '../lib/api'
 import { SECTIONS, lessonKind, lessonPath, type AttemptResult, type LessonKind, type Section, type Test } from '../lib/types'
 import { useAuth } from '../lib/auth'
 import { Reveal } from '../components/Reveal'
@@ -11,7 +11,7 @@ import { Spinner } from '../components/Layouts'
 import { InlineText, PassageText } from '../components/PassageText'
 import { SectionTile, themeOf } from '../components/SectionIcon'
 
-function Paywall() {
+export function Paywall() {
   return (
     <div className="flex flex-col items-center justify-center py-20 text-center px-5">
       <div className="text-5xl mb-4">🔒</div>
@@ -22,10 +22,6 @@ function Paywall() {
   )
 }
 
-function useHasActiveSub() {
-  const sub = useMySubscription()
-  return { loading: sub.isLoading, active: sub.data ? new Date(sub.data.expires_at) > new Date() : false }
-}
 
 const sectionStyle: Record<Section, string> = {
   'Reading & Writing': 'bg-sky-100 text-sky-700',
@@ -86,7 +82,7 @@ export const WordListsPage = () => <LessonList kind="word_list" />
 function LessonList({ kind }: { kind: LessonKind }) {
   const { tr } = useI18n()
   const text = listText[kind]
-  const { loading: subLoading, active } = useHasActiveSub()
+  const { loading: subLoading, active } = useHasAccess()
   const lessons = useLessons()
   const progress = useLessonProgress()
   const [filter, setFilter] = useState<Section | 'All'>('All')
@@ -258,6 +254,9 @@ export function LessonPage() {
   const lesson = useLesson(id)
   const progress = useLessonProgress()
   const toggle = useToggleLessonDone()
+  const access = useHasAccess()
+  if (access.loading) return <Spinner />
+  if (!access.active) return <Paywall />
   if (lesson.isLoading) return <Spinner />
   if (!lesson.data) return <p className="glass rounded-2xl p-6">{tr("Lesson not found.")}</p>
   const l = lesson.data
@@ -386,7 +385,7 @@ function ModuleDialog({ form, modules, counts, best, onClose }: { form: string; 
 
 export function PracticePage() {
   const { tr } = useI18n()
-  const { loading: subLoading, active } = useHasActiveSub()
+  const { loading: subLoading, active } = useHasAccess()
   const tests = useTests()
   const counts = useQuestionCounts()
   const attempts = useMyAttempts()
@@ -527,6 +526,9 @@ interface PrevModule {
 /** Keyed by test id so moving from Module 1 to Module 2 starts with a clean player */
 export function TestRunnerPage() {
   const { id } = useParams()
+  const access = useHasAccess()
+  if (access.loading) return <Spinner />
+  if (!access.active) return <Paywall />
   return <TestRunnerInner key={id} />
 }
 

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../lib/auth'
 import { useI18n } from '../lib/i18n'
-import { useLessonProgress, useLessons, useMyAttempts, useQuestionCounts, useTests } from '../lib/api'
+import { useHasAccess, useLessonProgress, useLessons, useMyAttempts, useQuestionCounts, useTests } from '../lib/api'
 import { lessonPath } from '../lib/types'
 import { CheckRingIcon, ClipboardCheckIcon, ClipboardIcon, PlayRingIcon } from './Icons'
 
@@ -76,7 +76,9 @@ function useDailyTasks(): { tasks: Task[]; loading: boolean; minutesLeft: number
 
 export function DailyTasks() {
   const { tr } = useI18n()
-  const { tasks, loading, minutesLeft } = useDailyTasks()
+  const { tasks, loading: tasksLoading, minutesLeft } = useDailyTasks()
+  const access = useHasAccess()
+  const loading = tasksLoading || access.loading
   const doneCount = tasks.filter((t) => t.done).length
   const firstOpen = tasks.findIndex((t) => !t.done)
 
@@ -84,11 +86,16 @@ export function DailyTasks() {
     <section className="glass rounded-2xl p-4 md:p-6" aria-label={tr('Daily tasks')}>
       <div className="flex items-baseline justify-between gap-3">
         <h2 className="text-lg font-bold">{tr('Daily tasks')}</h2>
-        {!loading && tasks.length > 0 && <span className="text-xs font-semibold text-muted">{tr('{a}/{b} done · ~{m} min', { a: doneCount, b: tasks.length, m: minutesLeft })}</span>}
+        {!loading && access.active && tasks.length > 0 && <span className="text-xs font-semibold text-muted">{tr('{a}/{b} done · ~{m} min', { a: doneCount, b: tasks.length, m: minutesLeft })}</span>}
       </div>
 
       {loading ? (
         <p className="mt-3 text-sm text-muted">{tr('Loading…')}</p>
+      ) : !access.active ? (
+        <div className="mt-3 rounded-xl bg-brand-50 px-4 py-3 text-sm">
+          <p className="font-semibold">🔒 {tr('Daily tasks open with a subscription')}</p>
+          <Link to="/app/plans" className="mt-1 inline-block font-bold text-brand-700">{tr('Choose a plan →')}</Link>
+        </div>
       ) : tasks.length === 0 ? (
         <p className="mt-3 text-sm text-muted">{tr('No tasks yet')}</p>
       ) : (
