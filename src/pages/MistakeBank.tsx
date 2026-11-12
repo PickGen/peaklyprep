@@ -7,7 +7,7 @@ import { SECTIONS, type MistakeItem, type Section } from '../lib/types'
 import { Reveal } from '../components/Reveal'
 import { Spinner } from '../components/Layouts'
 import { CheckIcon, ChevronRight, PlayIcon } from '../components/Icons'
-import { InlineText, PassageText } from '../components/PassageText'
+import { InlineText, OptionText, PassageText } from '../components/PassageText'
 import { SectionTile, themeOf } from '../components/SectionIcon'
 import { Paywall } from './LearnPractice'
 
@@ -116,7 +116,7 @@ function MistakeCard({ m, n, onFixed }: { m: MistakeItem; n: number; onFixed: (i
                         {String.fromCharCode(65 + i)}
                       </span>
                       <span className="min-w-0 flex-1 pt-0.5">
-                        <InlineText text={o} />
+                        <OptionText text={o} />
                       </span>
                     </button>
                   </li>

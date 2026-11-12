@@ -10,9 +10,10 @@ export function InlineText({ text }: { text: string }) {
     <>
       {parts.map((p, i) => {
         if (p === '\\$') return <Fragment key={i}>$</Fragment>
-        if (p.startsWith('<u>')) return <u key={i} className="underline decoration-2 underline-offset-4">{p.slice(3, -4)}</u>
-        if (p.startsWith('<i>')) return <i key={i}>{p.slice(3, -4)}</i>
-        if (p.startsWith('**')) return <strong key={i}>{p.slice(2, -2)}</strong>
+        // styled pieces may contain math ("**The correct answer is $25$.**"), so their content is rendered again
+        if (p.startsWith('<u>')) return <u key={i} className="underline decoration-2 underline-offset-4"><InlineText text={p.slice(3, -4)} /></u>
+        if (p.startsWith('<i>')) return <i key={i}><InlineText text={p.slice(3, -4)} /></i>
+        if (p.startsWith('**')) return <strong key={i}><InlineText text={p.slice(2, -2)} /></strong>
         if (p.length > 2 && p.startsWith('$') && p.endsWith('$')) return <MathText key={i} src={p.slice(1, -1)} />
         return <Fragment key={i}>{p}</Fragment>
       })}
@@ -22,7 +23,14 @@ export function InlineText({ text }: { text: string }) {
 
 const isTable = (lines: string[]) => lines.length >= 2 && lines.every((l) => l.trim().startsWith('|'))
 const isBullets = (lines: string[]) => lines.every((l) => l.trim().startsWith('- '))
-const IMAGE = /^!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)$/
+// a full URL or a file of this site, e.g. /q/aug24/002.webp
+const IMAGE = /^!\[([^\]]*)\]\(((?:https?:\/\/|\/)[^\s)]+)\)$/
+
+/** An answer choice: usually a line of text, sometimes a small table or a graph */
+export function OptionText({ text }: { text: string }) {
+  if (/^\s*(\||!\[)/.test(text) || text.includes('\n')) return <PassageText text={text} compact className="!space-y-2 !text-base !leading-6" />
+  return <InlineText text={text} />
+}
 
 /**
  * Renders a test passage. Blocks are separated by a blank line:
@@ -30,8 +38,9 @@ const IMAGE = /^!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)$/
  *  - lines starting with "- "  -> bullet list (student notes)
  *  - ![alt](https://…)         -> figure (graph, drawing)
  *  - anything else             -> paragraph (supports <u>, <i>, **bold**)
+ * `compact` keeps tables and figures at their natural size (used inside answer choices).
  */
-export function PassageText({ text, className = '' }: { text: string; className?: string }) {
+export function PassageText({ text, className = '', compact = false }: { text: string; className?: string; compact?: boolean }) {
   const blocks = text.split(/\n{2,}/).map((b) => b.split('\n'))
   return (
     <div className={`space-y-4 text-[1.05rem] leading-8 text-ink ${className}`}>
@@ -41,7 +50,7 @@ export function PassageText({ text, className = '' }: { text: string; className?
           const [head, ...body] = rows
           return (
             <div key={i} className="overflow-x-auto">
-              <table className="w-full border-collapse text-left text-[0.95rem] leading-6">
+              <table className={`${compact ? 'w-auto' : 'w-full'} border-collapse text-left text-[0.95rem] leading-6`}>
                 <thead>
                   <tr>
                     {head.map((c, j) => (
@@ -69,8 +78,8 @@ export function PassageText({ text, className = '' }: { text: string; className?
         const img = lines.length === 1 ? lines[0].trim().match(IMAGE) : null
         if (img) {
           return (
-            <figure key={i} className="flex justify-center">
-              <img src={img[2]} alt={img[1] || 'Figure'} loading="lazy" className="max-h-96 max-w-full rounded-lg bg-white object-contain" />
+            <figure key={i} className={`flex ${compact ? 'justify-start' : 'justify-center'}`}>
+              <img src={img[2]} alt={img[1] || 'Figure'} loading="lazy" className={`${compact ? 'max-h-64' : 'max-h-96'} max-w-full rounded-lg bg-white object-contain`} />
             </figure>
           )
         }

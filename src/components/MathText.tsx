@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 /**
  * Tiny math renderer for question text written between dollar signs, e.g. "If $x = 7$, what is $x + 20$?"
- * Supports: ^ and _ (with {groups}), \frac{a}{b}, \sqrt{x}, \text{words}, \pi \theta \le \ge \neq \cdot \times \div \pm \infty \degree \ell \approx,
+ * Supports: ^ and _ (with {groups}), \frac{a}{b}, \sqrt{x}, \overline{AB}, \text{words}, \pi \theta \le \ge \neq \cdot \times \div \pm \infty \degree \ell \approx,
  * and \sin \cos \tan \log \ln. Latin letters are shown as italic variables, like the official test.
  */
 const SYMBOLS: Record<string, string> = {
@@ -68,6 +68,14 @@ function parse(s: string, base = 'm'): ReactNode[] {
         out.push(
           <span key={key()} className="whitespace-nowrap">
             √<span className="border-t border-current">{parse(a, key())}</span>
+          </span>,
+        )
+        i = ai
+      } else if (name === 'overline') {
+        const [a, ai] = group(s, j)
+        out.push(
+          <span key={key()} className="border-t border-current">
+            {parse(a, key())}
           </span>,
         )
         i = ai
