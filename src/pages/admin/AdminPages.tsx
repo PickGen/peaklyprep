@@ -1,5 +1,6 @@
-import { Fragment, useState, type FormEvent, type ReactNode } from 'react'
+import { Fragment, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import { supabase } from '../../lib/supabase'
 import {
   findGarbledText,
   useDeleteGroup,
@@ -79,6 +80,7 @@ function confirmDelete(what: string) {
 
 /* =============== Lessons =============== */
 export function AdminLessons() {
+  const videoUrlRef = useRef<HTMLInputElement>(null)
   const lessons = useLessons()
   const save = useSaveLesson()
   const del = useDeleteLesson()
@@ -157,8 +159,9 @@ export function AdminLessons() {
             </div>
             <div>
               <label className="label">Video URL (optional, YouTube works inline)</label>
-              <input name="video_url" className="field" defaultValue={cur?.video_url ?? ''} placeholder="https://" />
+              <input ref={videoUrlRef} name="video_url" className="field" defaultValue={cur?.video_url ?? ''} placeholder="https:// (YouTube link or upload a file below)" />
               <Err errors={errors} name="video_url" />
+              <VideoUpload onUploaded={(url) => { if (videoUrlRef.current) videoUrlRef.current.value = url }} />
             </div>
             <div>
               <label className="label">Order</label>
@@ -206,6 +209,48 @@ export function AdminLessons() {
           ))}
         </ul>
       )}
+    </div>
+  )
+}
+
+/* =============== Lesson video upload =============== */
+/** Uploads a video file to the public "lesson-videos" bucket and hands back its URL for the Video URL field. */
+function VideoUpload({ onUploaded }: { onUploaded: (url: string) => void }) {
+  const [state, setState] = useState<'idle' | 'uploading' | 'done' | 'error'>('idle')
+  const [msg, setMsg] = useState('')
+  async function upload(file: File | undefined) {
+    if (!file) return
+    if (!file.type.startsWith('video/')) {
+      setState('error')
+      setMsg('Choose a video file (mp4, webm, mov).')
+      return
+    }
+    if (file.size > 50 * 1024 * 1024) {
+      setState('error')
+      setMsg('The file is over 50 MB. Compress it or upload it to YouTube (unlisted) and paste the link.')
+      return
+    }
+    setState('uploading')
+    setMsg(`Uploading ${file.name}…`)
+    const safe = file.name.toLowerCase().replace(/[^a-z0-9.]+/g, '-').replace(/^-+|-+$/g, '')
+    const path = `${Date.now()}-${safe}`
+    const { error } = await supabase.storage.from('lesson-videos').upload(path, file, { contentType: file.type, cacheControl: '31536000' })
+    if (error) {
+      setState('error')
+      setMsg(error.message)
+      return
+    }
+    onUploaded(supabase.storage.from('lesson-videos').getPublicUrl(path).data.publicUrl)
+    setState('done')
+    setMsg(`Uploaded ${file.name}. Save the lesson to keep it.`)
+  }
+  return (
+    <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
+      <label className={`btn btn-ghost !min-h-9 !px-3 !py-1.5 text-sm ${state === 'uploading' ? 'pointer-events-none opacity-60' : 'cursor-pointer'}`}>
+        🎬 Upload video file
+        <input type="file" accept="video/*" className="hidden" onChange={(e) => upload(e.target.files?.[0])} />
+      </label>
+      {msg && <span className={state === 'error' ? 'text-red-700' : state === 'done' ? 'text-green-700' : 'text-muted'}>{msg}</span>}
     </div>
   )
 }
