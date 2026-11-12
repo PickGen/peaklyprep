@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { supabase } from './supabase'
 import { useAuth } from './auth'
 import { fixGarbledDeep } from './textFix'
-import type { Attempt, AttemptResult, Lesson, LessonProgress, MistakeItem, NewsItem, Profile, Question, Subscription, Test } from './types'
+import type { Attempt, AttemptResult, Leaderboard, Lesson, LessonProgress, MistakeItem, NewsItem, Profile, Question, StudyGroup, Subscription, Test } from './types'
 import { buildNotifications, type AppNotification } from './notifications'
 
 function unwrap<T>(res: { data: T | null; error: { message: string } | null }): T {
@@ -412,11 +412,14 @@ export function useUpdateProfile() {
   const qc = useQueryClient()
   const { session } = useAuth()
   return useMutation({
-    mutationFn: async (patch: Partial<Pick<Profile, 'full_name' | 'target_score' | 'exam_date' | 'study_minutes' | 'email_updates'>>) => {
+    mutationFn: async (patch: Partial<Pick<Profile, 'full_name' | 'target_score' | 'exam_date' | 'study_minutes' | 'email_updates' | 'hide_from_leaderboard'>>) => {
       const { error } = await supabase.from('profiles').update(patch).eq('id', session!.user.id)
       if (error) throw new Error(error.message)
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['profile'] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['profile'] })
+      qc.invalidateQueries({ queryKey: ['leaderboard'] })
+    },
   })
 }
 
@@ -700,5 +703,113 @@ export function useRevokePlan() {
       if (error) throw new Error(error.message)
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ['students'] }),
+  })
+}
+
+/* ---------- Weekly leaderboard & study groups ---------- */
+export function useLeaderboard(scope: 'all' | 'group', weekOffset = 0, groupId: string | null = null, enabled = true) {
+  const { session } = useAuth()
+  return useQuery({
+    queryKey: ['leaderboard', scope, weekOffset, groupId, session?.user.id],
+    enabled: Boolean(session) && enabled,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc('weekly_leaderboard', { p_scope: scope, p_week_offset: weekOffset, p_group_id: groupId })
+      if (error) throw new Error(error.message)
+      return data as Leaderboard
+    },
+  })
+}
+
+export function useMyGroup() {
+  const { profile } = useAuth()
+  const groupId = profile?.group_id ?? null
+  return useQuery({
+    queryKey: ['my-group', groupId],
+    enabled: Boolean(groupId),
+    queryFn: async () => unwrap(await supabase.from('study_groups').select('id, name').eq('id', groupId!).maybeSingle()) as Pick<StudyGroup, 'id' | 'name'> | null,
+  })
+}
+
+function invalidateGroupQueries(qc: ReturnType<typeof useQueryClient>) {
+  for (const key of ['profile', 'my-group', 'leaderboard', 'groups', 'group-members']) qc.invalidateQueries({ queryKey: [key] })
+}
+
+export function useJoinGroup() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (code: string) => {
+      const { data, error } = await supabase.rpc('join_group', { p_code: code })
+      if (error) throw new Error(error.message === 'Group not found' ? 'Группа с таким кодом не найдена' : error.message)
+      return data as { id: string; name: string }
+    },
+    onSuccess: () => invalidateGroupQueries(qc),
+  })
+}
+
+export function useLeaveGroup() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.rpc('leave_group')
+      if (error) throw new Error(error.message)
+    },
+    onSuccess: () => invalidateGroupQueries(qc),
+  })
+}
+
+/* admin */
+export function useGroups() {
+  return useQuery({
+    queryKey: ['groups'],
+    queryFn: async () => {
+      const [groups, members] = await Promise.all([
+        supabase.from('study_groups').select('*').order('created_at', { ascending: false }),
+        supabase.from('profiles').select('group_id').not('group_id', 'is', null),
+      ])
+      const counts: Record<string, number> = {}
+      for (const m of unwrap(members) as { group_id: string }[]) counts[m.group_id] = (counts[m.group_id] ?? 0) + 1
+      return (unwrap(groups) as StudyGroup[]).map((g) => ({ ...g, members: counts[g.id] ?? 0 }))
+    },
+  })
+}
+
+export function useGroupMembers(groupId: string | null) {
+  return useQuery({
+    queryKey: ['group-members', groupId],
+    enabled: Boolean(groupId),
+    queryFn: async () =>
+      unwrap(await supabase.from('profiles').select('id, email, full_name').eq('group_id', groupId!).order('full_name')) as Pick<Profile, 'id' | 'email' | 'full_name'>[],
+  })
+}
+
+export function useSaveGroup() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async ({ id, name }: { id?: string; name: string }) => {
+      if (id) unwrap(await supabase.from('study_groups').update({ name }).eq('id', id).select())
+      else unwrap(await supabase.from('study_groups').insert({ name }).select())
+    },
+    onSuccess: () => invalidateGroupQueries(qc),
+  })
+}
+
+export function useDeleteGroup() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (id: string) => {
+      unwrap(await supabase.from('study_groups').delete().eq('id', id).select())
+    },
+    onSuccess: () => invalidateGroupQueries(qc),
+  })
+}
+
+export function useSetStudentGroup() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async ({ email, groupId }: { email: string; groupId: string | null }) => {
+      const { error } = await supabase.rpc('admin_set_student_group', { p_email: email, p_group_id: groupId })
+      if (error) throw new Error(error.message === 'No student with this e-mail' ? 'Ученик с такой почтой не найден' : error.message)
+    },
+    onSuccess: () => invalidateGroupQueries(qc),
   })
 }

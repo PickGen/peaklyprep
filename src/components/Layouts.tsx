@@ -21,6 +21,7 @@ import {
   MenuIcon,
   NewsIcon,
   ShieldIcon,
+  StarIcon,
   UserIcon,
 } from './Icons'
 import { isConfigured } from '../lib/supabase'
@@ -295,6 +296,7 @@ const sideItems = [
   { to: '/app/practice', label: 'Practice Tests', icon: <FileIcon className="h-5 w-5" /> },
   { to: '/app/mistakes', label: 'Mistake Bank', icon: <CloseIcon className="h-5 w-5" /> },
   { to: '/app/progress', label: 'Statistics', icon: <ChartIcon className="h-5 w-5" /> },
+  { to: '/app/leaderboard', label: 'Leaderboard', icon: <StarIcon className="h-5 w-5" /> },
   { to: '/app/plans', label: 'Plans', icon: <CrownIcon className="h-5 w-5" /> },
 ]
 
@@ -392,6 +394,7 @@ const adminTabs = [
   { to: '/admin/news', label: 'News' },
   { to: '/admin/students', label: 'Students' },
   { to: '/admin/payments', label: 'Payments' },
+  { to: '/admin/groups', label: 'Groups' },
   { to: '/admin/settings', label: 'Settings' },
 ]
 

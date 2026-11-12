@@ -181,6 +181,9 @@ export function HomePage() {
           <Reveal delay={260}>
             <NavCard to="/app/progress" label="My Progress" icon={<BarsIcon className="h-7 w-7" />} />
           </Reveal>
+          <Reveal delay={290}>
+            <NavCard to="/app/leaderboard" label="Weekly leaderboard" icon={<StarIcon className="h-7 w-7" />} />
+          </Reveal>
         </div>
 
         <div className="space-y-4 md:space-y-6">
