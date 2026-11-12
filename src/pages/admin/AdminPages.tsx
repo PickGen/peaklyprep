@@ -3,6 +3,9 @@ import { Link, useParams } from 'react-router-dom'
 import {
   findGarbledText,
   useDeleteGroup,
+  useDeleteLeaderboardExtra,
+  useLeaderboardExtras,
+  useSaveLeaderboardExtra,
   useGroupMembers,
   useGroups,
   useLeaderboard,
@@ -36,7 +39,7 @@ import {
 } from '../../lib/api'
 import { hasGarbled } from '../../lib/textFix'
 import { fieldErrors, lessonSchema, newsSchema, questionImportSchema, questionSchema, testSchema, type FieldErrors } from '../../lib/schemas'
-import { SECTIONS, lessonKind, type Lesson, type LessonKind, type NewsItem, type Question, type Test } from '../../lib/types'
+import { SECTIONS, lessonKind, type LeaderboardExtra, type Lesson, type LessonKind, type NewsItem, type Question, type Test } from '../../lib/types'
 import { ArrowLeft, EditIcon, PlusIcon, TrashIcon } from '../../components/Icons'
 import { Spinner } from '../../components/Layouts'
 import { SectionBadge } from '../LearnPractice'
@@ -934,6 +937,121 @@ function GroupDetails({ id, name }: { id: string; name: string }) {
   )
 }
 
+function ExtraRow({ x, groups }: { x: LeaderboardExtra; groups: { id: string; name: string }[] }) {
+  const save = useSaveLeaderboardExtra()
+  const del = useDeleteLeaderboardExtra()
+  const [points, setPoints] = useState(String(x.points))
+  const dirty = points !== String(x.points)
+  return (
+    <li className={`flex flex-wrap items-center gap-2 rounded-xl bg-white/70 px-3 py-2 text-sm ${x.active ? '' : 'opacity-60'}`}>
+      <span className="min-w-0 flex-1 truncate font-semibold">{x.name}</span>
+      <span className="text-xs text-muted">{x.group_id ? groups.find((g) => g.id === x.group_id)?.name ?? 'group' : 'All students'}</span>
+      <input
+        type="number"
+        min={0}
+        max={100000}
+        value={points}
+        onChange={(e) => setPoints(e.target.value)}
+        className="field !min-h-9 w-24 text-sm"
+        aria-label="Points"
+      />
+      {dirty && (
+        <button className="btn btn-primary !min-h-9 !px-3 !py-1 text-xs" disabled={save.isPending} onClick={() => save.mutate({ id: x.id, points: Math.max(0, Number(points) || 0) })}>
+          Save
+        </button>
+      )}
+      <label className="flex items-center gap-1 text-xs font-semibold">
+        <input type="checkbox" checked={x.active} onChange={(e) => save.mutate({ id: x.id, active: e.target.checked })} className="h-4 w-4 accent-[#5b1fd6]" /> Shown
+      </label>
+      <button className="text-xs font-semibold text-muted hover:text-red-600" onClick={() => window.confirm(`Delete "${x.name}"?`) && del.mutate(x.id)}>
+        Delete
+      </button>
+    </li>
+  )
+}
+
+function LeaderboardExtras({ groups }: { groups: { id: string; name: string }[] }) {
+  const extras = useLeaderboardExtras()
+  const save = useSaveLeaderboardExtra()
+  const [name, setName] = useState('')
+  const [points, setPoints] = useState('50')
+  const [groupId, setGroupId] = useState('')
+  return (
+    <section className="glass space-y-3 rounded-2xl p-4">
+      <div>
+        <h2 className="font-bold">Extra participants</h2>
+        <p className="text-sm text-muted">
+          Names you add here appear in the weekly leaderboard with the points you set (any week, until you hide or delete them). Use it to fill a new leaderboard; real students are ranked among them. Students see
+          them like everyone else, as «Имя Ф.».
+        </p>
+      </div>
+      <form
+        className="flex flex-wrap gap-2"
+        onSubmit={(e) => {
+          e.preventDefault()
+          if (name.trim().length < 2) return
+          save.mutate(
+            { name: name.trim(), points: Math.max(0, Number(points) || 0), group_id: groupId || null, active: true },
+            { onSuccess: () => setName('') },
+          )
+        }}
+      >
+        <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Name Surname" maxLength={60} className="field !min-h-10 flex-1 text-sm" />
+        <input value={points} onChange={(e) => setPoints(e.target.value)} type="number" min={0} max={100000} className="field !min-h-10 w-24 text-sm" aria-label="Points" />
+        <select value={groupId} onChange={(e) => setGroupId(e.target.value)} className="field !min-h-10 text-sm">
+          <option value="">All students</option>
+          {groups.map((g) => (
+            <option key={g.id} value={g.id}>
+              {g.name}
+            </option>
+          ))}
+        </select>
+        <button className="btn btn-primary !min-h-10 !px-4 !py-2 text-sm" disabled={save.isPending || name.trim().length < 2}>
+          <PlusIcon className="h-4 w-4" /> Add
+        </button>
+      </form>
+      {save.error && <p className="err">{(save.error as Error).message}</p>}
+      {extras.isLoading ? (
+        <Spinner />
+      ) : (
+        <ul className="space-y-1">
+          {extras.data?.map((x) => (
+            <ExtraRow key={x.id} x={x} groups={groups} />
+          ))}
+        </ul>
+      )}
+    </section>
+  )
+}
+
+function OverallRanking() {
+  const lb = useLeaderboard('all', 0)
+  return (
+    <section className="glass rounded-2xl p-4">
+      <h2 className="font-bold">All students — this week</h2>
+      {lb.isLoading ? (
+        <Spinner />
+      ) : lb.error ? (
+        <p className="err mt-2">{(lb.error as Error).message}</p>
+      ) : (lb.data?.rows.length ?? 0) === 0 ? (
+        <p className="mt-2 text-sm text-muted">No points yet this week.</p>
+      ) : (
+        <ol className="mt-2 space-y-1">
+          {lb.data!.rows.slice(0, 20).map((r) => (
+            <li key={`${r.rank}-${r.name}`} className="flex justify-between rounded-xl bg-white/70 px-3 py-2 text-sm">
+              <span>
+                <b className="mr-2">{r.rank}.</b>
+                {r.name}
+              </span>
+              <b className="text-brand-700">{r.points}</b>
+            </li>
+          ))}
+        </ol>
+      )}
+    </section>
+  )
+}
+
 export function AdminGroups() {
   const groups = useGroups()
   const save = useSaveGroup()
@@ -961,6 +1079,8 @@ export function AdminGroups() {
         </button>
         {save.error && <p className="err w-full">{(save.error as Error).message}</p>}
       </form>
+      <OverallRanking />
+      <LeaderboardExtras groups={groups.data ?? []} />
       {groups.isLoading ? (
         <Spinner />
       ) : (groups.data?.length ?? 0) === 0 ? (
