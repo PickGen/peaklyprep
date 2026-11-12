@@ -35,6 +35,8 @@ export interface Lesson {
   duration_min: number
   position: number
   published: boolean
+  /** open without a subscription (free tier) */
+  is_free?: boolean
   created_at: string
 }
 
@@ -49,6 +51,8 @@ export interface Test {
   created_at: string
   form_title: string | null
   module_no: number | null
+  /** open without a subscription (free tier) */
+  is_free?: boolean
 }
 
 export interface Question {

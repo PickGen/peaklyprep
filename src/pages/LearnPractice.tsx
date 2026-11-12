@@ -13,6 +13,19 @@ import { SectionTile, themeOf } from '../components/SectionIcon'
 import { FlashcardsLauncher } from '../components/Flashcards'
 import { parseWordList } from '../lib/flashcards'
 
+/** Shown to students without a subscription on lists that still have free items. */
+function FreeModeBanner() {
+  const { tr } = useI18n()
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-brand-50 px-4 py-3 ring-1 ring-brand-100">
+      <p className="text-sm font-semibold text-brand-800">🔓 {tr('Free mode: some items are open, the rest need a subscription.')}</p>
+      <Link to="/app/plans" className="text-sm font-bold text-brand-700 hover:text-brand-800">{tr('Choose a plan →')}</Link>
+    </div>
+  )
+}
+
+const freeChip = 'rounded-full bg-sky-100 px-2 py-0.5 text-[11px] font-bold text-sky-800'
+
 export function Paywall() {
   return (
     <div className="flex flex-col items-center justify-center py-20 text-center px-5">
@@ -100,10 +113,12 @@ function LessonList({ kind }: { kind: LessonKind }) {
     .filter((g) => g.items.length > 0)
 
   if (subLoading) return <Spinner />
-  if (!active) return <Paywall />
+  // without a subscription the server only returns free items; with none of them, show the paywall
+  if (!active && !lessons.isLoading && published.length === 0) return <Paywall />
 
   return (
     <div className="space-y-6">
+      {!active && <FreeModeBanner />}
       <Reveal>
         <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-500 via-brand-600 to-brand-800 p-6 text-white shadow-[0_24px_50px_-24px_rgba(74,20,184,.8)]">
           <div className="pointer-events-none absolute -right-10 -top-14 h-48 w-48 rounded-full bg-white/10 blur-2xl" />
@@ -165,6 +180,7 @@ function LessonList({ kind }: { kind: LessonKind }) {
                           <div className="flex flex-wrap items-center gap-2">
                             <h3 className="font-bold leading-snug">{l.title}</h3>
                             <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${isDone ? 'bg-green-100 text-green-700' : themeOf(l.section).chip}`}>{isDone ? tr('Completed') : tr(text.badge)}</span>
+                            {!active && l.is_free && <span className={freeChip}>{tr('Free')}</span>}
                           </div>
                           <p className="line-clamp-1 text-sm text-muted">{l.summary}</p>
                           <p className="mt-0.5 text-xs font-semibold text-muted">{tr('~{n} min', { n: l.duration_min })}</p>
@@ -257,10 +273,10 @@ export function LessonPage() {
   const progress = useLessonProgress()
   const toggle = useToggleLessonDone()
   const access = useHasAccess()
-  if (access.loading) return <Spinner />
-  if (!access.active) return <Paywall />
-  if (lesson.isLoading) return <Spinner />
-  if (!lesson.data) return <p className="glass rounded-2xl p-6">{tr("Lesson not found.")}</p>
+  if (access.loading || lesson.isLoading) return <Spinner />
+  // a paid lesson is not returned at all without a subscription
+  if (!lesson.data) return access.active ? <p className="glass rounded-2xl p-6">{tr("Lesson not found.")}</p> : <Paywall />
+  if (!access.active && !lesson.data.is_free) return <Paywall />
   const l = lesson.data
   const isDone = progress.data?.some((p) => p.lesson_id === l.id) ?? false
   const embed = l.video_url ? youtubeEmbed(l.video_url) : null
@@ -400,7 +416,11 @@ export function PracticePage() {
     const pct = a.total ? Math.round((a.score / a.total) * 100) : 0
     best.set(a.test_id, Math.max(best.get(a.test_id) ?? 0, pct))
   }
-  const list = (tests.data ?? []).filter((x) => x.published && (filter === 'All' || x.section === filter))
+  const locked = (t: Test) => !active && !t.is_free
+  // without a subscription, free tests come first
+  const list = (tests.data ?? [])
+    .filter((x) => x.published && (filter === 'All' || x.section === filter))
+    .sort((a, b) => Number(locked(a)) - Number(locked(b)))
 
   // tests sharing a form_title are the modules of one full practice test
   const forms = new Map<string, Test[]>()
@@ -414,13 +434,13 @@ export function PracticePage() {
   const empty = forms.size === 0 && singles.length === 0
 
   if (subLoading) return <Spinner />
-  if (!active) return <Paywall />
 
   return (
     <div className="space-y-5">
       <Reveal>
         <h1 className="text-3xl font-extrabold">{tr('Practice Tests')}</h1>
       </Reveal>
+      {!active && <FreeModeBanner />}
       <Filter value={filter} onChange={setFilter} />
       {tests.isLoading ? (
         <Spinner />
@@ -431,6 +451,7 @@ export function PracticePage() {
           {[...forms.entries()].map(([title, mods], i) => {
             const q = mods.reduce((s, m) => s + (c[m.id] ?? 0), 0)
             const min = mods.reduce((s, m) => s + m.duration_min, 0)
+            const formLocked = mods.every(locked)
             return (
               <Reveal key={title} delay={(i % 4) * 60}>
                 <article className="glass flex h-full flex-col rounded-3xl p-5">
@@ -438,7 +459,10 @@ export function PracticePage() {
                     <SectionTile section={mods[0].section} size="h-11 w-11" />
                     <div className="min-w-0">
                       <h2 className="truncate text-xl font-extrabold leading-tight">{title}</h2>
-                      <p className="text-sm text-muted">{tr(mods[0].section)}</p>
+                      <p className="text-sm text-muted">
+                        {tr(mods[0].section)}
+                        {!active && !formLocked && <span className={`ml-2 ${freeChip}`}>{tr('Free')}</span>}
+                      </p>
                     </div>
                   </div>
                   <ul className="mt-5 space-y-2.5 text-[15px] text-muted">
@@ -446,15 +470,19 @@ export function PracticePage() {
                       <FileIcon className="h-5 w-5 shrink-0 text-ink" /> {tr('Modules: {n}', { n: mods.length })}
                     </li>
                     <li className="flex items-center gap-3">
-                      <ClockIcon className="h-5 w-5 shrink-0 text-ink" /> {tr('{q} questions · ~{m} min', { q, m: min })}
+                      <ClockIcon className="h-5 w-5 shrink-0 text-ink" /> {formLocked ? tr('~{n} min', { n: min }) : tr('{q} questions · ~{m} min', { q, m: min })}
                     </li>
                     <li className="flex items-center gap-3">
                       <CheckIcon className="h-5 w-5 shrink-0 text-ink" /> {tr('Full exam with multiple modules')}
                     </li>
                   </ul>
-                  <button className="btn btn-primary mt-6 w-full" onClick={() => setOpenForm(title)}>
-                    {tr('Choose module')}
-                  </button>
+                  {formLocked ? (
+                    <Link to="/app/plans" className="btn btn-ghost mt-6 w-full">🔒 {tr('With subscription')}</Link>
+                  ) : (
+                    <button className="btn btn-primary mt-6 w-full" onClick={() => setOpenForm(title)}>
+                      {tr('Choose module')}
+                    </button>
+                  )}
                 </article>
               </Reveal>
             )
@@ -469,10 +497,12 @@ export function PracticePage() {
                   <div className="flex flex-wrap items-center gap-2">
                     <h2 className="font-bold leading-snug">{x.title}</h2>
                     <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${themeOf(x.section).chip}`}>{tr('Full practice')}</span>
+                    {!active && x.is_free && <span className={freeChip}>{tr('Free')}</span>}
                   </div>
                   <p className="line-clamp-1 text-sm text-muted">{x.description}</p>
                   <p className="mt-0.5 text-xs font-semibold text-muted">
-                    {tr('~{n} min', { n: x.duration_min })} · {tr('{n} questions', { n })}
+                    {tr('~{n} min', { n: x.duration_min })}
+                    {!locked(x) && <> · {tr('{n} questions', { n })}</>}
                     {best.has(x.id) && <span className="ml-2 rounded-full bg-brand-100 px-2 py-0.5 text-brand-700">{tr('Best: {p}%', { p: best.get(x.id) ?? 0 })}</span>}
                   </p>
                 </div>
@@ -480,7 +510,16 @@ export function PracticePage() {
             )
             return (
               <Reveal key={x.id} delay={((forms.size + i) % 4) * 60}>
-                {n > 0 ? (
+                {locked(x) ? (
+                  <Link
+                    to="/app/plans"
+                    aria-label={`${tr('With subscription')}: ${x.title}`}
+                    className="flex h-full items-center gap-4 rounded-3xl bg-brand-50/50 p-4 ring-1 ring-brand-100 transition-all hover:bg-white"
+                  >
+                    {body}
+                    <span className="shrink-0 text-xs font-bold text-muted">🔒 {tr('With subscription')}</span>
+                  </Link>
+                ) : n > 0 ? (
                   <Link
                     to={`/app/practice/${x.id}`}
                     aria-label={`${best.has(x.id) ? tr('Retake') : tr('Start')}: ${x.title}`}
@@ -531,8 +570,9 @@ interface PrevModule {
 export function TestRunnerPage() {
   const { id } = useParams()
   const access = useHasAccess()
-  if (access.loading) return <Spinner />
-  if (!access.active) return <Paywall />
+  const test = useTest(id)
+  if (access.loading || test.isLoading) return <Spinner />
+  if (!access.active && !test.data?.is_free) return <Paywall />
   return <TestRunnerInner key={id} />
 }
 

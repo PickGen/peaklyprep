@@ -86,12 +86,12 @@ export function DailyTasks() {
     <section className="glass rounded-2xl p-4 md:p-6" aria-label={tr('Daily tasks')}>
       <div className="flex items-baseline justify-between gap-3">
         <h2 className="text-lg font-bold">{tr('Daily tasks')}</h2>
-        {!loading && access.active && tasks.length > 0 && <span className="text-xs font-semibold text-muted">{tr('{a}/{b} done · ~{m} min', { a: doneCount, b: tasks.length, m: minutesLeft })}</span>}
+        {!loading && tasks.length > 0 && <span className="text-xs font-semibold text-muted">{tr('{a}/{b} done · ~{m} min', { a: doneCount, b: tasks.length, m: minutesLeft })}</span>}
       </div>
 
       {loading ? (
         <p className="mt-3 text-sm text-muted">{tr('Loading…')}</p>
-      ) : !access.active ? (
+      ) : !access.active && tasks.length === 0 ? (
         <div className="mt-3 rounded-xl bg-brand-50 px-4 py-3 text-sm">
           <p className="font-semibold">🔒 {tr('Daily tasks open with a subscription')}</p>
           <Link to="/app/plans" className="mt-1 inline-block font-bold text-brand-700">{tr('Choose a plan →')}</Link>
@@ -119,6 +119,11 @@ export function DailyTasks() {
               )
             })}
           </ul>
+          {!access.active && (
+            <p className="mt-3 text-xs font-semibold text-muted">
+              🔓 {tr('Free mode')} · <Link to="/app/plans" className="text-brand-700">{tr('Choose a plan →')}</Link>
+            </p>
+          )}
           {firstOpen === -1 && <p className="mt-3 rounded-xl bg-green-50 px-3 py-2 text-sm font-semibold text-green-700">{tr('All tasks for today are done')}</p>}
         </>
       )}
