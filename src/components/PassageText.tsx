@@ -22,11 +22,13 @@ export function InlineText({ text }: { text: string }) {
 
 const isTable = (lines: string[]) => lines.length >= 2 && lines.every((l) => l.trim().startsWith('|'))
 const isBullets = (lines: string[]) => lines.every((l) => l.trim().startsWith('- '))
+const IMAGE = /^!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)$/
 
 /**
  * Renders a test passage. Blocks are separated by a blank line:
  *  - lines starting with "|"   -> table (first row = header)
  *  - lines starting with "- "  -> bullet list (student notes)
+ *  - ![alt](https://…)         -> figure (graph, drawing)
  *  - anything else             -> paragraph (supports <u>, <i>, **bold**)
  */
 export function PassageText({ text, className = '' }: { text: string; className?: string }) {
@@ -62,6 +64,14 @@ export function PassageText({ text, className = '' }: { text: string; className?
                 </tbody>
               </table>
             </div>
+          )
+        }
+        const img = lines.length === 1 ? lines[0].trim().match(IMAGE) : null
+        if (img) {
+          return (
+            <figure key={i} className="flex justify-center">
+              <img src={img[2]} alt={img[1] || 'Figure'} loading="lazy" className="max-h-96 max-w-full rounded-lg bg-white object-contain" />
+            </figure>
           )
         }
         if (isBullets(lines)) {

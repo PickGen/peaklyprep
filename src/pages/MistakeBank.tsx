@@ -136,7 +136,7 @@ function MistakeCard({ m, n, onFixed }: { m: MistakeItem; n: number; onFixed: (i
             </p>
           )}
           {check.isError && <p className="err mt-2">{check.error.message}</p>}
-          {showKey && m.explanation && <p className="mt-3 rounded-lg bg-brand-50 p-3 text-sm text-brand-900">{m.explanation}</p>}
+          {showKey && m.explanation && <p className="mt-3 whitespace-pre-line rounded-lg bg-brand-50 p-3 text-sm text-brand-900"><InlineText text={m.explanation} /></p>}
 
           {result !== 'correct' && (
             <div className="mt-4 flex flex-wrap gap-2">

@@ -1043,7 +1043,7 @@ function ResultView({ result, questions, answers, title, onRetry, onExit, prev, 
                 </li>
               ))}
             </ul>
-            {r?.explanation && <p className="mt-3 rounded-lg bg-brand-50 p-3 text-sm text-brand-900">{r.explanation}</p>}
+            {r?.explanation && <p className="mt-3 whitespace-pre-line rounded-lg bg-brand-50 p-3 text-sm text-brand-900"><InlineText text={r.explanation} /></p>}
           </article>
         )
       })}
