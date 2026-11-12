@@ -198,6 +198,11 @@ function LessonList({ kind }: { kind: LessonKind }) {
     </div>
   )
 }
+/** A link straight to a video file (uploaded to Supabase Storage, or any .mp4/.webm/.mov) plays in our own player */
+function isVideoFile(url: string): boolean {
+  return /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(url) || url.includes('/storage/v1/object/public/lesson-videos/')
+}
+
 function youtubeEmbed(url: string): string | null {
   const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]{11})/)
   return m ? `https://www.youtube.com/embed/${m[1]}` : null
@@ -303,7 +308,14 @@ export function LessonPage() {
           <iframe src={embed} title={l.title} className="h-full w-full" allowFullScreen loading="lazy" />
         </div>
       )}
-      {l.video_url && !embed && (
+      {l.video_url && !embed && isVideoFile(l.video_url) && (
+        <div className="aspect-video overflow-hidden rounded-2xl bg-black shadow-soft">
+          <video src={l.video_url} controls playsInline preload="metadata" className="h-full w-full" controlsList="nodownload">
+            <a href={l.video_url}>{tr('Watch video')}</a>
+          </video>
+        </div>
+      )}
+      {l.video_url && !embed && !isVideoFile(l.video_url) && (
         <a href={l.video_url} target="_blank" rel="noreferrer" className="btn btn-ghost">
           <PlayIcon className="h-5 w-5" /> {tr("Watch video")}
         </a>
