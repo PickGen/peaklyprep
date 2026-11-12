@@ -8,7 +8,7 @@ import { Reveal } from '../components/Reveal'
 import { ArrowLeft, CalculatorIcon, CheckIcon, ClockIcon, CloseIcon, FileIcon, PlayIcon, TrashIcon } from '../components/Icons'
 import { CalculatorPanel, ReferencePanel, ToolButton, useMediaQuery } from '../components/math/MathTools'
 import { Spinner } from '../components/Layouts'
-import { InlineText, PassageText } from '../components/PassageText'
+import { InlineText, OptionText, PassageText } from '../components/PassageText'
 import { SectionTile, themeOf } from '../components/SectionIcon'
 import { FlashcardsLauncher } from '../components/Flashcards'
 import { parseWordList } from '../lib/flashcards'
@@ -852,8 +852,8 @@ function TestRunnerInner() {
                       } ${struck ? 'opacity-50' : ''}`}
                     >
                       <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full border-2 text-sm font-bold ${picked ? 'border-brand-600 bg-brand-600 text-white' : 'border-ink'}`}>{String.fromCharCode(65 + i)}</span>
-                      <span className={`font-medium ${struck ? 'line-through' : ''}`}>
-                        <InlineText text={opt} />
+                      <span className={`min-w-0 font-medium ${struck ? 'line-through' : ''}`}>
+                        <OptionText text={opt} />
                       </span>
                     </button>
                     {elimMode && (
@@ -1039,11 +1039,13 @@ function ResultView({ result, questions, answers, title, onRetry, onExit, prev, 
             <ul className="mt-3 space-y-1.5 text-sm">
               {q.options.map((o, i) => (
                 <li key={i} className={`rounded-lg px-3 py-2 ${i === r?.correct_index ? 'bg-green-50 font-semibold text-green-800' : i === chosen ? 'bg-red-50 text-red-700' : 'text-muted'}`}>
-                  {String.fromCharCode(65 + i)}. <InlineText text={o} />
+                  <span className="flex gap-1.5">
+                    {String.fromCharCode(65 + i)}. <OptionText text={o} />
+                  </span>
                 </li>
               ))}
             </ul>
-            {r?.explanation && <p className="mt-3 rounded-lg bg-brand-50 p-3 text-sm text-brand-900">{r.explanation}</p>}
+            {r?.explanation && <p className="mt-3 whitespace-pre-line rounded-lg bg-brand-50 p-3 text-sm text-brand-900"><InlineText text={r.explanation} /></p>}
           </article>
         )
       })}
