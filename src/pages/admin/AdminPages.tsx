@@ -81,7 +81,7 @@ export function AdminLessons() {
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const fd = new FormData(e.currentTarget)
-    const raw = { ...Object.fromEntries(fd), published: fd.get('published') === 'on' }
+    const raw = { ...Object.fromEntries(fd), published: fd.get('published') === 'on', is_free: fd.get('is_free') === 'on' }
     const parsed = lessonSchema.safeParse(raw)
     if (!parsed.success) return setErrors(fieldErrors(parsed.error))
     setErrors({})
@@ -158,6 +158,9 @@ export function AdminLessons() {
             <label className="flex items-center gap-2 text-sm font-semibold">
               <input type="checkbox" name="published" defaultChecked={cur?.published ?? true} className="h-5 w-5 accent-[#5b1fd6]" /> Published
             </label>
+            <label className="flex items-center gap-2 text-sm font-semibold">
+              <input type="checkbox" name="is_free" defaultChecked={cur?.is_free ?? false} className="h-5 w-5 accent-[#5b1fd6]" /> Free (open without a subscription)
+            </label>
             <div className="md:col-span-2">
               {save.error && <p className="err mb-2">{(save.error as Error).message}</p>}
               <button className="btn btn-primary" disabled={save.isPending}>
@@ -180,6 +183,7 @@ export function AdminLessons() {
                   <SectionBadge section={l.section} />
                   {lessonKind(l) === 'word_list' && <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-bold text-emerald-800">Word list</span>}
                   {!l.published && <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-bold text-amber-800">Draft</span>}
+                  {l.is_free && <span className="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-bold text-sky-800">Free</span>}
                 </div>
                 <p className="mt-1 truncate font-bold">{l.title}</p>
               </div>
@@ -289,7 +293,7 @@ export function AdminTests() {
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const fd = new FormData(e.currentTarget)
-    const parsed = testSchema.safeParse({ ...Object.fromEntries(fd), published: fd.get('published') === 'on' })
+    const parsed = testSchema.safeParse({ ...Object.fromEntries(fd), published: fd.get('published') === 'on', is_free: fd.get('is_free') === 'on' })
     if (!parsed.success) return setErrors(fieldErrors(parsed.error))
     setErrors({})
     await save.mutateAsync({ ...parsed.data, id: editing !== 'new' ? editing?.id : undefined })
@@ -346,6 +350,9 @@ export function AdminTests() {
             <label className="flex items-center gap-2 self-end pb-3 text-sm font-semibold">
               <input type="checkbox" name="published" defaultChecked={cur?.published ?? true} className="h-5 w-5 accent-[#5b1fd6]" /> Published
             </label>
+            <label className="flex items-center gap-2 text-sm font-semibold">
+              <input type="checkbox" name="is_free" defaultChecked={cur?.is_free ?? false} className="h-5 w-5 accent-[#5b1fd6]" /> Free (open without a subscription)
+            </label>
             <div className="md:col-span-2">
               {save.error && <p className="err mb-2">{(save.error as Error).message}</p>}
               <button className="btn btn-primary" disabled={save.isPending}>
@@ -381,6 +388,7 @@ export function AdminTests() {
                 <div className="flex flex-wrap items-center gap-2">
                   <SectionBadge section={t.section} />
                   {!t.published && <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-bold text-amber-800">Draft</span>}
+                  {t.is_free && <span className="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-bold text-sky-800">Free</span>}
                   <span className="text-xs text-muted">{counts.data?.[t.id] ?? 0} questions</span>
                 </div>
                 <p className="mt-1 truncate font-bold">{t.title}</p>

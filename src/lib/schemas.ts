@@ -48,6 +48,7 @@ export const lessonSchema = z.object({
   duration_min: z.coerce.number().int().min(1, 'Min 1').max(240),
   position: z.coerce.number().int().min(0).max(9999),
   published: z.boolean(),
+  is_free: z.boolean(),
 })
 
 export const testSchema = z.object({
@@ -69,6 +70,7 @@ export const testSchema = z.object({
   duration_min: z.coerce.number().int().min(1).max(300),
   position: z.coerce.number().int().min(0).max(9999),
   published: z.boolean(),
+  is_free: z.boolean(),
 })
 
 export const newsSchema = z.object({

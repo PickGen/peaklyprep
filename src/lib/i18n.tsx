@@ -299,6 +299,10 @@ const D: Record<string, [string, string]> = {
   'Up next': ['Дальше', 'Келесі'],
 
   // practice test forms & modules
+  'Free': ['Бесплатно', 'Тегін'],
+  'Free mode': ['Бесплатный режим', 'Тегін режим'],
+  'With subscription': ['По подписке', 'Жазылыммен'],
+  'Free mode: some items are open, the rest need a subscription.': ['Бесплатный режим: часть материалов открыта, остальное — по подписке.', 'Тегін режим: материалдардың бір бөлігі ашық, қалғаны — жазылыммен.'],
   'Daily tasks open with a subscription': ['Ежедневные задания доступны с подпиской', 'Күнделікті тапсырмалар жазылыммен ашылады'],
   'Choose a plan →': ['Выбрать план →', 'Жоспарды таңдау →'],
   'Choose module': ['Выбрать модуль', 'Модульді таңдау'],
