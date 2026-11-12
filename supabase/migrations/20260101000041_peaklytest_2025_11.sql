@@ -4,7 +4,7 @@
 
 -- PeaklyTest Nov 2025 · Reading & Writing · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('283ea9a3-b735-569b-bd25-66ad47879bbc', 'PeaklyTest Nov 2025 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the Nov 2025 PeaklyTest · 27 questions · 32 minutes', 32, 110, true, 'PeaklyTest Nov 2025 · Reading & Writing', 1)
+values ('283ea9a3-b735-569b-bd25-66ad47879bbc', 'PeaklyTest Nov 2025 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the Nov 2025 PeaklyTest · 27 questions · 32 minutes', 32, 170, true, 'PeaklyTest Nov 2025 · Reading & Writing', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -190,7 +190,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Nov 2025 · Reading & Writing · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('03b47ec3-38f5-5b7a-93ce-b1a809ac576d', 'PeaklyTest Nov 2025 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the Nov 2025 PeaklyTest · 27 questions · 32 minutes', 32, 111, true, 'PeaklyTest Nov 2025 · Reading & Writing', 2)
+values ('03b47ec3-38f5-5b7a-93ce-b1a809ac576d', 'PeaklyTest Nov 2025 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the Nov 2025 PeaklyTest · 27 questions · 32 minutes', 32, 171, true, 'PeaklyTest Nov 2025 · Reading & Writing', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -411,7 +411,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Nov 2025 · Math · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('df53c45a-1833-5367-98ad-9cdc85cf51c7', 'PeaklyTest Nov 2025 · Math · Module 1', 'Math', 'Math, Module 1 of the Nov 2025 PeaklyTest · 22 questions · 35 minutes', 35, 112, true, 'PeaklyTest Nov 2025 · Math', 1)
+values ('df53c45a-1833-5367-98ad-9cdc85cf51c7', 'PeaklyTest Nov 2025 · Math · Module 1', 'Math', 'Math, Module 1 of the Nov 2025 PeaklyTest · 22 questions · 35 minutes', 35, 172, true, 'PeaklyTest Nov 2025 · Math', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -446,7 +446,7 @@ How many distinct real solutions does the given equation have?', '["Zero", "Exac
   ('d05eec0e-bb96-57ce-8369-3a04d0e487d9', 'df53c45a-1833-5367-98ad-9cdc85cf51c7', '$a,26,29,b,31,47,c$
 For the given data set, the data values are listed in ascending order, where $a$, $b$, and $c$ are constants. For this data set, the mean is $36$, the median is $29$, and the range is $72$. What is the value of $c$?', '["$54$", "$72$", "$81$", "$98$"]'::jsonb, 19, null),
   ('34c2adde-83e1-538c-b44f-a0dbafec5d3e', 'df53c45a-1833-5367-98ad-9cdc85cf51c7', 'In triangle $QRS$ shown, $QR < RS$. Which expression represents the length of $QS$?', '["$37\\cos Q$", "$37\\sin Q$", "$\\frac{37}{\\cos Q}$", "$\\frac{37}{\\sin Q}$"]'::jsonb, 20, '![figure](/q/nov25/004.webp)'),
-  ('11311ba4-25df-5c15-a830-13811a333c84', 'df53c45a-1833-5367-98ad-9cdc85cf51c7', '$y = 9(\frac{a}{7})^{x-c}$$- b$
+  ('11311ba4-25df-5c15-a830-13811a333c84', 'df53c45a-1833-5367-98ad-9cdc85cf51c7', '$y = 9(\frac{a}{7})^{x-c}- b$
 How many times does the graph of the given equation in the $xy$-plane cross the $x$-axis, where $a$, $b$, and $c$ are positive constants such that $a > 7$ and $b > c$?', '["Zero", "One", "Two", "Three"]'::jsonb, 21, null),
   ('b9139c10-4686-5922-815b-df4441ace1db', 'df53c45a-1833-5367-98ad-9cdc85cf51c7', 'A certain town has an area of $4.29$ square miles. What is the area, in <u>square yards</u>, of this town? ($1$ mile $= 1,760$ yards)', '["$410$", "$7,550$", "$722,051$", "$13,288,704$"]'::jsonb, 22, null)
 on conflict (id) do update set test_id = excluded.test_id, prompt = excluded.prompt, options = excluded.options,
@@ -509,7 +509,7 @@ insert into public.question_keys (question_id, correct_index, correct_answers, e
 **Choice B is incorrect.** $6$ is not related to the given segment length; it is the scale factor, not the image length.
 **Choice C is incorrect.** $24$ is $18 + 6$ or $\frac{4}{3} \cdot 18$, neither of which corresponds to a dilation by $6$.
 **Faster approach:** Multiply the given segment length by the dilation scale factor: $18 \times 6 = 108.$'),
-  ('391111a2-7b36-5dff-ad11-2380b4499264', null, array['19']::text[], '**The correct answer is 19.** The given equation is in standard circle form $(x - h)^{2} + (y - k)^{2} = r^{2}$, where the radius is $r$. Here $(x + 3)^{2} + (y + 9)^{2} = 361$ matches that form with $r^{2} = 361$. Taking the positive square root (radius is nonnegative) gives $r =$$\sqrt{361} = 19$.
+  ('391111a2-7b36-5dff-ad11-2380b4499264', null, array['19']::text[], '**The correct answer is 19.** The given equation is in standard circle form $(x - h)^{2} + (y - k)^{2} = r^{2}$, where the radius is $r$. Here $(x + 3)^{2} + (y + 9)^{2} = 361$ matches that form with $r^{2} = 361$. Taking the positive square root (radius is nonnegative) gives $r =\sqrt{361} = 19$.
 **Faster approach:** Recognize the standard form and take the square root of the constant on the right: $r =$ $\sqrt{361} = 19$. This works for any equation written as $(x - h)^{2} + (y - k)^{2} = r^{2}$.'),
   ('7618e91e-b7ef-5dbc-8db1-4fb9b669797a', 3, null, '**Choice D is correct.** Rearranging the inequality gives $y < \frac{5}{7}x - 5$, so the solution set is all points strictly below the line $y = \frac{5}{7}x - 5$. In region D, $x < 0$ and $y > 0$, so $5x \le 0$ and $-7y < 0$, making $5x - 7y \le 0$, which can never be greater than $35$. Thus no point with $x < 0,y > 0$ satisfies the inequality.
 **Choice A is incorrect.** Points on the $x$-axis have $y = 0$; the inequality becomes $5x > 35$, i.e. $x > 7$, so points like $(8,0)$ are in the solution set.
@@ -550,7 +550,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Nov 2025 · Math · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('145fa397-7bf7-51c4-ae71-bd6af659984f', 'PeaklyTest Nov 2025 · Math · Module 2', 'Math', 'Math, Module 2 of the Nov 2025 PeaklyTest · 22 questions · 35 minutes', 35, 113, true, 'PeaklyTest Nov 2025 · Math', 2)
+values ('145fa397-7bf7-51c4-ae71-bd6af659984f', 'PeaklyTest Nov 2025 · Math · Module 2', 'Math', 'Math, Module 2 of the Nov 2025 PeaklyTest · 22 questions · 35 minutes', 35, 173, true, 'PeaklyTest Nov 2025 · Math', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -581,7 +581,7 @@ How many solutions does the given equation have?', '["Zero", "One", "Two", "Infi
 In the given equation, $k$ is a constant. The equation has exactly one real solution. What is the value of $k$', '["171", "168", "165", "45"]'::jsonb, 14, null),
   ('6c554659-e6f4-53de-afd0-49d169e9aa78', '145fa397-7bf7-51c4-ae71-bd6af659984f', '$x^{2} + y^{2} = 36$
 $y = mx - \frac{b}{4}$
-In the given system of equations, $m$ and $b$ are negative constants. In the $xy$-plane, the graphs of the equations in the given system intersect at the point $(-5,y)$, where $y < 0$. Which expression represents the value of $b$?', '["$\\frac{5m}{4} +$$\\frac{\\sqrt{11}}{4}$", "$\\frac{5m}{4} -$$\\frac{\\sqrt{11}}{4}$", "$-20m + 4\\sqrt{11}$", "$20m - 4\\sqrt{11}$"]'::jsonb, 15, null),
+In the given system of equations, $m$ and $b$ are negative constants. In the $xy$-plane, the graphs of the equations in the given system intersect at the point $(-5,y)$, where $y < 0$. Which expression represents the value of $b$?', '["$\\frac{5m}{4} +\\frac{\\sqrt{11}}{4}$", "$\\frac{5m}{4} -\\frac{\\sqrt{11}}{4}$", "$-20m + 4\\sqrt{11}$", "$20m - 4\\sqrt{11}$"]'::jsonb, 15, null),
   ('0bd4cfb4-a731-5439-b59b-6290a98edd3a', '145fa397-7bf7-51c4-ae71-bd6af659984f', 'A biologist mixed a solution that is $0.3%$ sodium chloride by mass with a solution that is $0.15%$ sodium chloride by mass to obtain a new solution, which has a mass of $80$ grams and contains $0.21$ grams of sodium chloride. How many grams of $0.3%$ sodium chloride solution did the biologist use?', '["$0.14$", "$20$", "$60$", "$79.86$"]'::jsonb, 16, null),
   ('3ffff47a-f761-5183-8baf-bba423fe41cf', '145fa397-7bf7-51c4-ae71-bd6af659984f', 'The data value $13$ is removed from data set A to create data set B, which consists of the remaining $10$ data values. Which statement best compares the median of data set A and the median of data set B?', '["The median of data set B is less than the median of data set A.", "The median of data set B is greater than the median of data set A.", "The median of data set B is equal to the median of data set A.", "There is not enough information to compare the medians of the two data sets."]'::jsonb, 17, 'For data set A, the table summarizes the distribution of the number of pieces of mail received by a business each day during a period of 11 days.
 
@@ -657,7 +657,7 @@ Now, let’s briefly explain why the other options are incorrect:
 **Choice C is incorrect.** $(6,24)$ lies on $y = 4x$, but it does not satisfy $y = 6x - 10$ because $6(6) - 10 = 26$, not $24$.
 **Choice D is incorrect.** $(6,26)$ lies on line $j$ but not on line $k$; for $x = 6$, $y = 4x = 24$, so $26$ is not on line $k$.
 **Faster approach:** Use two table points to get slope and intercept quickly (here from $(0,-10)$ the intercept is apparent), write $y = mx + b$, then set equal to $y$ from the other line and solve one linear equation for $x$.'),
-  ('61734a74-66c1-5846-b94c-2dfb4ecb050e', null, array['11/10']::text[], '**The correct answer is 1.1.** The object hits the ground when $h(t) = 0$. Given $h(t) = -16t^{2} + b$ and $b = 19.36$ (the height at $t = 0$), set $-16t^{2} + 19.36 = 0$. Solve: $16t^{2} = 19.36$, so $t^{2} = 19.36/16 = 1.21$, and $t =$$\sqrt{1.21} =$ $1.1$. We take the positive root since time is nonnegative.
+  ('61734a74-66c1-5846-b94c-2dfb4ecb050e', null, array['11/10']::text[], '**The correct answer is 1.1.** The object hits the ground when $h(t) = 0$. Given $h(t) = -16t^{2} + b$ and $b = 19.36$ (the height at $t = 0$), set $-16t^{2} + 19.36 = 0$. Solve: $16t^{2} = 19.36$, so $t^{2} = 19.36/16 = 1.21$, and $t =\sqrt{1.21} =$ $1.1$. We take the positive root since time is nonnegative.
 **Faster approach:** Substitute the initial height for $b$ immediately, rearrange to $t^{2} = 19.36/16$, and take the positive square root — this requires only one division and one square-root operation.'),
   ('9e939909-7f45-52bd-bddf-f9921e28b1bc', 0, null, '**Choice A is correct.** The equation is given as
 $∣4x - 3∣ = -9$
@@ -678,14 +678,14 @@ Now, let’s analyze the other options:
 **Choice B is incorrect.** $44%$ does not match the difference $1 - 0.19 = 0.81$ and is not derived from the given base $0.19$.
 **Choice C is incorrect.** $56%$ is unrelated to the base $0.19$; the percent decrease comes directly from $1 -$ $0.19 = 0.81$ (81%), so 56% is wrong.
 **Faster approach:** For exponential functions $a \cdot r^{x}$, consecutive values differ by factor $r$, so percent decrease = $(1 - r) \times 100%$. Here $r = 0.19$, so $1 - 0.19 = 0.81 ⇒ 81%$.'),
-  ('1888503d-4855-52b7-893f-94cd611bc3f8', 0, null, '**Choice A is correct.** For a quadratic $ax^{2} + bx + c = 0$ to have exactly one real solution, the discriminant must be zero: $b^{2} - 4ac = 0$. Here $a = 1$, $b =$$\sqrt{k - 3}$, and $c = 42$. So $(\sqrt{k - 3})^{2} - 4(1)(42) = 0$, which gives $k - 3 -$ $168 = 0$, hence $k = 171$. Also $k \ge 3$ so the square root is defined, and $171$ satisfies that.
+  ('1888503d-4855-52b7-893f-94cd611bc3f8', 0, null, '**Choice A is correct.** For a quadratic $ax^{2} + bx + c = 0$ to have exactly one real solution, the discriminant must be zero: $b^{2} - 4ac = 0$. Here $a = 1$, $b =\sqrt{k - 3}$, and $c = 42$. So $(\sqrt{k - 3})^{2} - 4(1)(42) = 0$, which gives $k - 3 -$ $168 = 0$, hence $k = 171$. Also $k \ge 3$ so the square root is defined, and $171$ satisfies that.
 **Choice B is incorrect.** Plugging $k = 168$ gives discriminant $168 - 168 = 0$ would seem to work, but note $(\sqrt{k - 3})^{2} = k - 3$, so with $k = 168$ the left becomes $165 - 168 \ne 0$; thus $k = 168$ does not satisfy $k -$ $171 = 0$.
 **Choice C is incorrect.** $k = 165$ yields discriminant $165 - 171 = -6$, which is negative, so the equation would have no real solutions rather than exactly one.
 **Choice D is incorrect.** $k = 45$ gives discriminant $45 - 171 = -126$, also negative, so there are no real solutions for that value.
 **Faster approach:** Set discriminant $b^{2} - 4ac = 0$ immediately; here replace $b^{2}$ with $k - 3$ to get $k - 3 - 168 =$ $0$, then solve for $k$.'),
   ('6c554659-e6f4-53de-afd0-49d169e9aa78', 2, null, '**Choice C is correct.** The circle gives $y^{2} = 36 - (-5)^{2} = 36 - 25 = 11$, so the intersection has $y = \pm \sqrt{11}$. Since $y < 0$, $y = -\sqrt{11}$. Substituting $x = -5$ and $y = -\sqrt{11}$ into the line $y = mx - \frac{b}{4}$ gives $-\sqrt{11} = -5m -$ $\frac{b}{4}$. Multiply by 4 to get $-4\sqrt{11} = -20m - b$, so $b = -20m + 4\sqrt{11}$, which is choice C.
-**Choice A is incorrect.** Solving for $b$ from $-5m - \frac{b}{4} = -\sqrt{11}$ does not produce $\frac{5m}{4} +$$\frac{\sqrt{11}}{4}$; the algebra yields different coefficients.
-**Choice B is incorrect.** Like A, the signs and factors are wrong; dividing the correct equation would not produce $\frac{5m}{4} -$$\frac{\sqrt{11}}{4}$.
+**Choice A is incorrect.** Solving for $b$ from $-5m - \frac{b}{4} = -\sqrt{11}$ does not produce $\frac{5m}{4} +\frac{\sqrt{11}}{4}$; the algebra yields different coefficients.
+**Choice B is incorrect.** Like A, the signs and factors are wrong; dividing the correct equation would not produce $\frac{5m}{4} -\frac{\sqrt{11}}{4}$.
 **Choice D is incorrect.** Choice D has the wrong sign on the $20m$ term and the wrong sign on the radical; it does not match $b = -20m + 4\sqrt{11}$.
 **Faster approach:** Plug the given point into both equations immediately: use $x = -5$ in the circle to get $y =$ $\pm \sqrt{11}$ (choose negative), then substitute $x,y$ into the line and solve once for $b$.'),
   ('0bd4cfb4-a731-5439-b59b-6290a98edd3a', 2, null, '**Choice C is correct.** Let $x$ be grams of the $0.3%$ solution and $y$ be grams of the $0.15%$ solution. Then $x + y =$ $80$ and $0.003x + 0.0015y = 0.21$ (percentages written as decimals). Substituting $y = 80 - x$ into the second equation gives $0.003x + 0.0015(80 - x) = 0.21 ⇒ 0.003x + 0.12 - 0.0015x = 0.21 ⇒ 0.0015x = 0.09 ⇒$
@@ -699,9 +699,9 @@ $x = 60.$
 **Choice B is incorrect.** It claims the median of B is greater than A, but both medians are $4$, so B is false.
 **Choice D is incorrect.** There is enough information: the full frequency table lets you determine the ordered list and compute both medians exactly.
 **Faster approach:** Write the ordered list from the frequency table, then use positions: for 11 values take the 6th value; after removing one value (making 10), take the average of the 5th and 6th values. Counting positions directly gives the medians quickly for any similar problem.'),
-  ('43ca8394-5f9d-58e0-a580-ebf8f80eaab3', 3, null, '**Choice D is correct.** The equation is written as $\frac{x}{5} + \frac{y}{9} = \frac{47}{45}$, which can be read as $x \cdot \frac{1}{5} + y \cdot \frac{1}{9} = \frac{47}{45}$. Thus each type‑A resistor has resistance $a = \frac{1}{5}$ and each type‑B resistor has resistance $b = \frac{1}{9}$. The positive difference is $∣a - b∣ = \frac{1}{5} - \frac{1}{9} = \frac{9-5}{45} = \frac{4}{45}$.
+  ('43ca8394-5f9d-58e0-a580-ebf8f80eaab3', 3, null, '**Choice D is correct.** The equation is written as $\frac{x}{5} + \frac{y}{9} = \frac{47}{45}$, which can be read as $x \cdot \frac{1}{5} + y \cdot \frac{1}{9} = \frac{47}{45}$. Thus each type‑A resistor has resistance $a = \frac{1}{5}$ and each type‑B resistor has resistance $b = \frac{1}{9}$. The positive difference is $∣a - b∣ = ( \frac{1}{5} - \frac{1}{9} = ) \frac{9-5}{45} = \frac{4}{45}$.
 **Choice A is incorrect.** 47 is far too large; the resistances from the equation are fractions less than 1, so their difference cannot be 47.
-**Choice B is incorrect.** 4 is also too large given $a = \frac{1}{5}$ and $b = \frac{1}{9}$; their difference is a small fraction. **Choice C is incorrect.** $\frac{47}{15}$ is not equal to $\frac{1}{5} - \frac{1}{9}$ and is much larger than the actual difference $\frac{4}{45}$. **Faster approach:** Read each term $\frac{x}{5}$ and $\frac{y}{9}$ as $x \cdot (1/5)$ and $y \cdot (1/9)$ to identify $a = 1/5$ and $b = 1/9$, then subtract to get $4/45$.'),
+**Choice B is incorrect.** 4 is also too large given $a = \frac{1}{5}$ and $b = \frac{1}{9}$; their difference is a small fraction. **Choice C is incorrect.** $\frac{47}{15}$ is not equal to $( \frac{1}{5} - \frac{1}{9}$ and is much larger than the actual difference $\frac{4}{45}$. **Faster approach:** Read each term $\frac{x}{5}$ and $\frac{y}{9}$ as $x \cdot (1/5)$ and $y \cdot (1/9)$ to identify $a = 1/5$ and $b = 1/9$, then subtract to get $4/45$.'),
   ('5bf31ba7-43bd-5ffd-a616-92a369cd3731', null, array['36']::text[], '**The correct answer is 36.** Rewrite the equation in standard quadratic form: $9x^{2} - nx + 8 = 0$. For a quadratic $ax^{2} + bx + c = 0$ to have exactly one solution, its discriminant must be zero: $b^{2} - 4ac = 0$. Here $a = 9$, $b =$ $-n$, and $c = 8$, so $(-n)^{2} - 4(9)(8) = 0$, which gives $n^{2} - 288 = 0$ and therefore $n^{2} = 288$. Dividing by 8 yields $\frac{n^{2}}{8} = \frac{288}{8} = 36$.
 **Faster approach:** Immediately set the discriminant $b^{2} - 4ac = 0$ for $9x^{2} - nx + 8 = 0$, compute $n^{2} -$ $4(9)(8) = 0$, and solve for $n^{2}$, then divide by 8. This avoids solving for $n$ or $x$ explicitly.'),
   ('43dc4f72-97dd-5682-84d3-cc934cbf1613', 3, null, '**Choice D is correct.** For similar figures the linear scale factor equals the square root of the ratio of areas. The area ratio is $\frac{2520}{630} = 4$, so the linear scale factor is $\sqrt{4} = 2$. Perimeters scale by the same linear factor, so rectangle B’s perimeter is $2 \times 210 = 420$, giving $n = 420$.

@@ -4,7 +4,7 @@
 
 -- PeaklyTest Aug 2024 · Reading & Writing · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('f176b4c5-1bef-5a56-97b9-5404e3a48197', 'PeaklyTest Aug 2024 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the Aug 2024 PeaklyTest · 27 questions · 32 minutes', 32, 210, true, 'PeaklyTest Aug 2024 · Reading & Writing', 1)
+values ('f176b4c5-1bef-5a56-97b9-5404e3a48197', 'PeaklyTest Aug 2024 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the Aug 2024 PeaklyTest · 27 questions · 32 minutes', 32, 270, true, 'PeaklyTest Aug 2024 · Reading & Writing', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -198,7 +198,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Aug 2024 · Reading & Writing · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('58b8d714-733d-583e-a2a1-2e9741596bb0', 'PeaklyTest Aug 2024 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the Aug 2024 PeaklyTest · 27 questions · 32 minutes', 32, 211, true, 'PeaklyTest Aug 2024 · Reading & Writing', 2)
+values ('58b8d714-733d-583e-a2a1-2e9741596bb0', 'PeaklyTest Aug 2024 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the Aug 2024 PeaklyTest · 27 questions · 32 minutes', 32, 271, true, 'PeaklyTest Aug 2024 · Reading & Writing', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -413,7 +413,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Aug 2024 · Math · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('2ed5c240-8f8d-5208-88e7-b99f7569d417', 'PeaklyTest Aug 2024 · Math · Module 1', 'Math', 'Math, Module 1 of the Aug 2024 PeaklyTest · 22 questions · 35 minutes', 35, 212, true, 'PeaklyTest Aug 2024 · Math', 1)
+values ('2ed5c240-8f8d-5208-88e7-b99f7569d417', 'PeaklyTest Aug 2024 · Math · Module 1', 'Math', 'Math, Module 1 of the Aug 2024 PeaklyTest · 22 questions · 35 minutes', 35, 272, true, 'PeaklyTest Aug 2024 · Math', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -438,7 +438,7 @@ At how many points do the graphs of the given equations intersect in the $xy$-pl
   ('497e4d65-7398-5afe-9847-dd0ca929af0f', '2ed5c240-8f8d-5208-88e7-b99f7569d417', 'The number of bacteria in a liquid medium doubles every day. There are $72,000$ bacteria in the liquid medium at the start of an observation. Which of the following represents the number of bacteria, $y$, in the liquid medium $t$ days after the start of the observation?', '["$y = \\frac{1}{2}(72,000)^{t}$", "$y = 2(72,000)^{t}$", "$y = 72,000(\\frac{1}{2})^{t}$", "$y = 72,000(2)^{t}$"]'::jsonb, 11, null),
   ('8b531146-e459-5d19-9dc7-7d6b096a1f38', '2ed5c240-8f8d-5208-88e7-b99f7569d417', 'A rectangle has a width of $n$ yards and a length of $(n + 5)$ yards. If the rectangle has an area of $204$ square yards, what is the value of $n$?', '[]'::jsonb, 12, null),
   ('d6518da9-7ef1-5a8e-864b-b476da4b8675', '2ed5c240-8f8d-5208-88e7-b99f7569d417', 'The function $f$ is defined by
-$f(x) = 9\frac{x}{8} + 11$
+$f(x) = 9^{\frac{x}{8}} + 11$
 For what value of $x$ is $f(x)$ equal to $38$?', '[]'::jsonb, 13, null),
   ('2f2c1cf2-6778-5b4b-9f23-e653408908b7', '2ed5c240-8f8d-5208-88e7-b99f7569d417', '$f(x) = x^{2} - 42x + 80$
 The function $f$ is defined by the given equation. Which of the following equivalent forms of the equation displays the zeros of the function as constants or coefficients?', '["$f(x) = x^{2} - 5x - 37x + 80$", "$f(x) = (x - 2)(x - 40)$", "$f(x) = x(x - 42) + 80$", "$f(x) = (x - 21)^{2} - 361$"]'::jsonb, 14, null),
@@ -565,7 +565,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Aug 2024 · Math · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('6f9bfc96-6f0f-594e-8964-e9f7f8ea41d0', 'PeaklyTest Aug 2024 · Math · Module 2', 'Math', 'Math, Module 2 of the Aug 2024 PeaklyTest · 22 questions · 35 minutes', 35, 213, true, 'PeaklyTest Aug 2024 · Math', 2)
+values ('6f9bfc96-6f0f-594e-8964-e9f7f8ea41d0', 'PeaklyTest Aug 2024 · Math · Module 2', 'Math', 'Math, Module 2 of the Aug 2024 PeaklyTest · 22 questions · 35 minutes', 35, 273, true, 'PeaklyTest Aug 2024 · Math', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -594,7 +594,7 @@ For which of the following tables are all the values of $x$ and their correspond
   ('99d5d755-5449-5dc0-9dea-bf450f93bb09', '6f9bfc96-6f0f-594e-8964-e9f7f8ea41d0', '$x^{2} - 6x + y^{2} - 4y - 51 = 0$
 In the $xy$-plane, the graph of the given equation is a circle. If this circle is inscribed in a square, what is the perimeter of the square?', '["16", "32", "64", "204"]'::jsonb, 15, null),
   ('37164868-67d1-5780-9cff-b5f83cbae6f3', '6f9bfc96-6f0f-594e-8964-e9f7f8ea41d0', 'For groups of 5 or more people, a tour guide charges \$9 for the first person in the group and \$6 for each additional person. Which function $g$ gives the total charge, in dollars, for a tour with a group of $n$ people, where $n \ge 5$?', '["$g(n) = 15n$", "$g(n) = 15n - 9$", "$g(n) = 6n + 3$", "$g(n) = 6n + 9$"]'::jsonb, 16, null),
-  ('7a1a1aab-c9d5-5cb3-ad9e-af333db571f2', '6f9bfc96-6f0f-594e-8964-e9f7f8ea41d0', '$f(x) = k(1.83)^{x}$ The function $f$ is defined by the given equation, where $k$ is a constant. The value of $f(x)$ increases by $p%$ for every increase of $x$ by $1$. For which of the following functions, where $k$ is a constant, does the value of $g(x)$ increase by $p%$ for every increase of $x$ by $\frac{1}{4}$?', '["$g(x) = k(1.83)\\frac{1}{4}$", "$g(x) = k(1.83^{x})^{4}$", "$g(x) = k(1.83)^{x+}\\frac{1}{4}$", "$g(x) = k(1.83)^{x-}\\frac{1}{4}$"]'::jsonb, 17, null),
+  ('7a1a1aab-c9d5-5cb3-ad9e-af333db571f2', '6f9bfc96-6f0f-594e-8964-e9f7f8ea41d0', '$f(x) = k(1.83)^{x}$ The function $f$ is defined by the given equation, where $k$ is a constant. The value of $f(x)$ increases by $p%$ for every increase of $x$ by $1$. For which of the following functions, where $k$ is a constant, does the value of $g(x)$ increase by $p%$ for every increase of $x$ by $\frac{1}{4}$?', '["$g(x) = k(1.83)^{\\frac{1}{4}}$", "$g(x) = k(1.83^{x})^{4}$", "$g(x) = k(1.83)^{x+\\frac{1}{4}}$", "$g(x) = k(1.83)^{x-\\frac{1}{4}}$"]'::jsonb, 17, null),
   ('db852d84-7f6a-5fdd-987b-07b97b386066', '6f9bfc96-6f0f-594e-8964-e9f7f8ea41d0', 'A line intersects two parallel lines, forming four acute angles and four obtuse angles. The measure of one of the acute angles is $(9x - 490)°$. The sum of the measures of one of the acute angles and three of the obtuse angles is $(-18x + w)°$. What is the value of $w$?', '[]'::jsonb, 18, null),
   ('e4e14c4a-cd84-5b21-adfe-0590379a7cbc', '6f9bfc96-6f0f-594e-8964-e9f7f8ea41d0', 'The exponential function $f$ is defined by $f(x) = ab^{x}$, where $a$ and $b$ are positive constants. If $f(n -$ $1) = f(n) + \frac{82}{100}f(n - 1)$, where $n$ is a constant, what is the value of $b$?', '[]'::jsonb, 19, null),
   ('f4e4a58c-fb50-5b13-b525-eed049e64bf6', '6f9bfc96-6f0f-594e-8964-e9f7f8ea41d0', 'The area of a rectangular region is increasing at a rate of $180$ square centimeters per hour. What is this rate, in square meters per minute? (1 meter = $100$ centimeters)', '[]'::jsonb, 20, null),
@@ -696,9 +696,9 @@ $5x - 4 = 5(\frac{7}{5}) - 4$
 Calculating this gives:
 $7 - 4 = 3$
 $5x - 4 = 3$'),
-  ('c9a3f02a-5313-5b99-abfe-a5545b06cf23', 3, null, '**Choice D is correct.** For a rectangle inscribed in a circle, a diagonal is a diameter, so the diameter equals twice the shortest side. Let the shortest side be $s$; then the diagonal (diameter) is $2s$. Using the Pythagorean theorem with the other side $L$, $s^{2} + L^{2} = (2s)^{2} = 4s^{2}$, so $L^{2} = 3s^{2}$ and $L = s\sqrt{3}$. The area is $s \cdot L = s^{2}$$\sqrt{3}$. The circumference is $π\cdot$(diameter) $= π(2s) = 114π$, so $2s = 114$ and $s = 57$. Thus the area is $57^{2}\sqrt{3} =$ $3249\sqrt{3}$.
+  ('c9a3f02a-5313-5b99-abfe-a5545b06cf23', 3, null, '**Choice D is correct.** For a rectangle inscribed in a circle, a diagonal is a diameter, so the diameter equals twice the shortest side. Let the shortest side be $s$; then the diagonal (diameter) is $2s$. Using the Pythagorean theorem with the other side $L$, $s^{2} + L^{2} = (2s)^{2} = 4s^{2}$, so $L^{2} = 3s^{2}$ and $L = s\sqrt{3}$. The area is $s \cdot L = s^{2}\sqrt{3}$. The circumference is $π\cdot$(diameter) $= π(2s) = 114π$, so $2s = 114$ and $s = 57$. Thus the area is $57^{2}\sqrt{3} =$ $3249\sqrt{3}$.
 **Choice A is incorrect.** $57\sqrt{2}$ is much too small; it treats the area as linear in $s$ rather than proportional to $s^{2}\sqrt{3}$.
-**Choice B is incorrect.** $57\sqrt{3}$ equals $s\sqrt{3}$, not the area $s^{2}$$\sqrt{3}$; it misses a factor of $s = 57$.
+**Choice B is incorrect.** $57\sqrt{3}$ equals $s\sqrt{3}$, not the area $s^{2}\sqrt{3}$; it misses a factor of $s = 57$.
 **Choice C is incorrect.** $3249\sqrt{2}$ has the correct scale $3249$ but the wrong factor under the radical; the rectangle’s side ratio gives $\sqrt{3}$, not $\sqrt{2}$.
 **Faster approach:** Recognize diagonal=diameter, set shortest side $s$ so diameter $= 2s$, use circumference to get $s$, then Pythagorean relation gives other side $s\sqrt{3}$ and area $s^{2}\sqrt{3}$ — one-line computation.'),
   ('4765edee-b083-5909-bc4f-a2b54f5b3818', 1, null, '**Choice B is correct.** The system requires $y < -5x - 19$ and $y > -3x - 12$. For $x = -5$, the bounds are $y < 6$ and $y > 3$, so $3 < y < 6$; $y = 4$ satisfies this. For $x = -6$, the bounds are $y < 11$ and $y > 6$, so $6 < y < 11$; $y = 10$ satisfies this. For $x = -8$, the bounds are $y < 21$ and $y > 12$, so $12 < y < 21$; $y = 19$ satisfies this. All three pairs in choice B meet both inequalities.
@@ -710,32 +710,32 @@ $5x - 4 = 3$'),
 **Choice A is incorrect.** 16 is the side length of the square (the diameter), not the perimeter.
 **Choice B is incorrect.** 32 could be mistaken for twice the side or other measure, but it does not equal the perimeter $4 \times 16$.
 **Choice D is incorrect.** 204 is not related to the circle’s radius or the square’s side and is far too large to be the perimeter here.
-**Faster approach:** Complete the square to get $r^{2}$, take $r =$$\sqrt{r^{2}}$, then use side $= 2r$ and perimeter $= 4(2r) =$ $8r$ for any circle inscribed in a square.'),
+**Faster approach:** Complete the square to get $r^{2}$, take $r =\sqrt{r^{2}}$, then use side $= 2r$ and perimeter $= 4(2r) =$ $8r$ for any circle inscribed in a square.'),
   ('37164868-67d1-5780-9cff-b5f83cbae6f3', 2, null, '**Choice C is correct.** The total charge is $9$ for the first person plus $6$ for each of the remaining $n - 1$ people, so $g(n) = 9 + 6(n - 1) = 6n + 3$, which matches Choice C.
 **Choice A is incorrect.** $15n$ would charge $15$ for every person; it does not account for the $9$ first-person rate and $6$ additional-person rate.
 **Choice B is incorrect.** $15n - 9$ is equivalent to charging $15$ per person then subtracting $9$, which does not produce the correct first-plus-additional pricing.
 **Choice D is incorrect.** $6n + 9$ charges $9$ in addition to $6$ per person, which would make the first person effectively $15$ instead of $9$.
 **Faster approach:** Substitute an easy allowed value (e.g., $n = 5$): total $= 9 + 6(4) = 33$, then pick the choice that equals $33$ when $n = 5$ (Choice C). This avoids algebraic expansion under time pressure.'),
   ('7a1a1aab-c9d5-5cb3-ad9e-af333db571f2', 1, null, '**Choice B is correct.** To determine which function, $g(x)$, increases by the same percentage $p%$ for each increase of $x$ by $\frac{1}{4}$, we first need to analyze how the original function $f(x) = k(1.83)^{x}$ behaves. For a change of $x$ by $1$, the function increases by a factor of $(1.83)^{1} = 1.83$. The percentage increase can be expressed as:
-$p% = ($$\frac{f(x + 1) - f(x)}{f(x)}$$) \times 100 = ($$\frac{k(1.83)^{x+1} - k(1.83)^{x}}{k(1.83)^{x}}$$) \times 100 = ($$\frac{(1.83 - 1)}{1}$$) \times 100 = (0.83) \times 100 = 83%$
+$p% = (\frac{f(x + 1) - f(x)}{f(x)}) \times 100 = (\frac{k(1.83)^{x+1} - k(1.83)^{x}}{k(1.83)^{x}}) \times 100 = (\frac{(1.83 - 1)}{1}) \times 100 = (0.83) \times 100 = 83%$
 Now, for $g(x)$ to also increase by $p%$ for an increase of $x$ by $\frac{1}{4}$, we have to ensure that:
 $g(x + \frac{1}{4}) = g(x) \cdot C$
 for some constant $C$ that represents an increase of $p%$. Now let’s analyze the options:
-**Option A:** $g(x) = k(1.83) \frac{1}{4}$ does not depend on $x$, hence cannot exhibit a percentage increase with changes in $x$. This option is incorrect.
+**Option A:** $g(x) = k(1.83)^{\frac{1}{4}}$ does not depend on $x$, hence cannot exhibit a percentage increase with changes in $x$. This option is incorrect.
 **Option B:** $g(x) = k(1.83^{x})^{4} = k(1.83)^{4x}$. We calculate:
-$g (x + \frac{1}{4}) = k(1.83)^{4}(^{x+}\frac{1}{4}) = k(1.83)^{4x+1} = k(1.83)^{4x}(1.83)$
+$g (x + \frac{1}{4}) = k(1.83)^{4}(^{x+\frac{1}{4}}) = k(1.83)^{4x+1} = k(1.83)^{4x}(1.83)$
 Thus:
 $\frac{g (x + \frac{1}{4})}{g(x)} = \frac{k(1.83)^{4x}(1.83)}{k(1.83)^{4x}} = 1.83$
 This shows that $g(x)$ increases by $1.83 = (1 + 0.83)$, resulting in an increase of $83%$ for an increase of $x$ by $\frac{1}{4}$, confirming that this option is correct.
-**Option C:** $g(x) = k(1.83)^{x+}\frac{1}{4}$ simplifies to $g(x) = k(1.83)^{x}(1.83) \frac{1}{4}$, which means:
-$g (x + \frac{1}{4}) = k(1.83)^{x+}\frac{1}{4}^{+}\frac{1}{4} = k(1.83)^{x+}\frac{1}{2}$
+**Option C:** $g(x) = k(1.83)^{x+\frac{1}{4}}$ simplifies to $g(x) = k(1.83)^{x}(1.83)^{\frac{1}{4}}$, which means:
+$g (x + \frac{1}{4}) = k(1.83)^{x+\frac{1}{4}}^{+\frac{1}{4}} = k(1.83)^{x+\frac{1}{2}}$
 The ratio:
-$\frac{g (x + \frac{1}{4})}{g(x)} = \frac{k(1.83)^{x+}\frac{1}{2}}{k(1.83)^{x+}\frac{1}{4}} = (1.83) \frac{1}{4}$
+$\frac{g (x + \frac{1}{4})}{g(x)} = \frac{k(1.83)^{x+\frac{1}{2}}}{k(1.83)^{x+\frac{1}{4}}} = (1.83)^{\frac{1}{4}}$
 is not equal to $1.83$, therefore it does not yield the required percentage increase. This option is incorrect.
-**Option D:** $g(x) = k(1.83)^{x-}\frac{1}{4}$. Analyzing this function gives:
-$g (x + \frac{1}{4}) = k(1.83)^{x+}\frac{1}{4}^{-} \frac{1}{4} = k(1.83)^{x}$
+**Option D:** $g(x) = k(1.83)^{x-\frac{1}{4}}$. Analyzing this function gives:
+$g (x + \frac{1}{4}) = k(1.83)^{x+\frac{1}{4}}^{-\frac{1}{4}} = k(1.83)^{x}$
 The ratio:
-$\frac{g (x + \frac{1}{4})}{g(x)} =$$\frac{k(1.83)^{x}}{k(1.83)^{x-}\frac{1}{4}} = (1.83) \frac{1}{4}$
+$\frac{g (x + \frac{1}{4})}{g(x)} =\frac{k(1.83)^{x}}{k(1.83)^{x-\frac{1}{4}}} = (1.83)^{\frac{1}{4}}$
 again does not equal $1.83$, so this option is also'),
   ('db852d84-7f6a-5fdd-987b-07b97b386066', null, array['1520']::text[], '**The correct answer is 1520.** Let the acute angle measure be $a = 9x - 490$. Each obtuse angle is supplementary to an acute angle, so an obtuse angle has measure $b = 180 - a$. The sum of one acute and three obtuse angles is $a + 3b$. Compute $a + 3b = a + 3(180 - a) = a + 540 - 3a = 540 - 2a$. Substituting $a = 9x - 490$ gives $540 - 2(9x - 490) = 540 - 18x + 980 = 1520 - 18x$. This matches the given expression $-18x + w$, so $w = 1520$.
 **Faster approach:** Use that each obtuse angle equals $180 - (9x - 490)$, then form $(9x - 490) + 3[180 -$ $(9x - 490)]$ and simplify immediately to get $-18x + 1520$, so $w = 1520$.'),

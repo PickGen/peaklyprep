@@ -4,7 +4,7 @@
 
 -- PeaklyTest Oct 2025 · Reading & Writing · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('4335dcd1-5558-5119-8672-476dd0c9f5a5', 'PeaklyTest Oct 2025 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the Oct 2025 PeaklyTest · 27 questions · 32 minutes', 32, 120, true, 'PeaklyTest Oct 2025 · Reading & Writing', 1)
+values ('4335dcd1-5558-5119-8672-476dd0c9f5a5', 'PeaklyTest Oct 2025 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the Oct 2025 PeaklyTest · 27 questions · 32 minutes', 32, 180, true, 'PeaklyTest Oct 2025 · Reading & Writing', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -214,7 +214,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Oct 2025 · Reading & Writing · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('73cf644a-a325-5e9b-9141-f160d1ae4244', 'PeaklyTest Oct 2025 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the Oct 2025 PeaklyTest · 27 questions · 32 minutes', 32, 121, true, 'PeaklyTest Oct 2025 · Reading & Writing', 2)
+values ('73cf644a-a325-5e9b-9141-f160d1ae4244', 'PeaklyTest Oct 2025 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the Oct 2025 PeaklyTest · 27 questions · 32 minutes', 32, 181, true, 'PeaklyTest Oct 2025 · Reading & Writing', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -428,7 +428,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Oct 2025 · Math · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('bf8ff2c4-cc07-508b-a181-5636f282720b', 'PeaklyTest Oct 2025 · Math · Module 1', 'Math', 'Math, Module 1 of the Oct 2025 PeaklyTest · 22 questions · 35 minutes', 35, 122, true, 'PeaklyTest Oct 2025 · Math', 1)
+values ('bf8ff2c4-cc07-508b-a181-5636f282720b', 'PeaklyTest Oct 2025 · Math · Module 1', 'Math', 'Math, Module 1 of the Oct 2025 PeaklyTest · 22 questions · 35 minutes', 35, 182, true, 'PeaklyTest Oct 2025 · Math', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -470,7 +470,7 @@ $\frac{j}{7} = k + 15m$', '["$j = k + \\frac{15m}{7}$", "$j = 7k + 15m$", "$j = 
 | $-9$ | $78$ |
 | $9$ | $-156$ |
 | $27$ | $-390$ |'),
-  ('a740d2ff-ee66-507a-8672-055b42accdbd', 'bf8ff2c4-cc07-508b-a181-5636f282720b', 'What are the solutions to the given equation? $x(x + 11) - 15 = 0$', '["$x = 11 \\pm$$\\frac{\\sqrt{61}}{2}$", "$x = 11 \\pm$$\\frac{\\sqrt{181}}{2}$", "$x = -11 \\pm$$\\frac{\\sqrt{61}}{2}$", "$\\frac{x=-11\\pm \\sqrt{181}}{2})$"]'::jsonb, 16, null),
+  ('a740d2ff-ee66-507a-8672-055b42accdbd', 'bf8ff2c4-cc07-508b-a181-5636f282720b', 'What are the solutions to the given equation? $x(x + 11) - 15 = 0$', '["$x = 11 \\pm\\frac{\\sqrt{61}}{2}$", "$x = 11 \\pm\\frac{\\sqrt{181}}{2}$", "$x = -11 \\pm\\frac{\\sqrt{61}}{2}$", "$\\frac{x=-11\\pm \\sqrt{181}}{2})$"]'::jsonb, 16, null),
   ('c15bcc38-f25e-523e-834c-f8c29c976d41', 'bf8ff2c4-cc07-508b-a181-5636f282720b', 'What is the sum of the solutions to the given equation?
 $2∣4x - 2∣ = 5$', '[]'::jsonb, 17, null),
   ('209a2155-afc7-5f42-baff-659aea6da76d', 'bf8ff2c4-cc07-508b-a181-5636f282720b', 'The positive number $a$ is $220%$ of the number $b$, and $a$ is $70%$ of the number $c$. If $c$ is $p%$ of $b$, which of the following is closest to the value of $p$?', '["$154$", "$171$", "$214$", "$314$"]'::jsonb, 18, null),
@@ -576,7 +576,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Oct 2025 · Math · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('836233eb-bab6-5cab-807d-e1970a86a776', 'PeaklyTest Oct 2025 · Math · Module 2', 'Math', 'Math, Module 2 of the Oct 2025 PeaklyTest · 22 questions · 35 minutes', 35, 123, true, 'PeaklyTest Oct 2025 · Math', 2)
+values ('836233eb-bab6-5cab-807d-e1970a86a776', 'PeaklyTest Oct 2025 · Math · Module 2', 'Math', 'Math, Module 2 of the Oct 2025 PeaklyTest · 22 questions · 35 minutes', 35, 183, true, 'PeaklyTest Oct 2025 · Math', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -606,7 +606,7 @@ II. The mean number of points per game for the new data set is less than the mea
 The histogram summarizes the distribution of an original data set that represents the number of points per game a basketball team has scored in the last $50$ games played. If the team scores $17$ points in the next game and this game is added to the original data set to create a new data set of $51$ values, which of the following must be true?'),
   ('7f14907b-d062-5951-8236-d9eaf2a53de1', '836233eb-bab6-5cab-807d-e1970a86a776', '$g(x) = x^{3} + ax^{2} + bx + c$
 The function $g$ is defined by the given equation, where $a$, $b$, and $c$ are integer constants. The zeros of the function are $-2$, $-7$, and $3$. What is the value of $a$?', '["$-42$", "$-6$", "$6$", "$42$"]'::jsonb, 13, null),
-  ('41b972a2-fd1b-51ca-9b8e-ffc355d592b9', '836233eb-bab6-5cab-807d-e1970a86a776', '$f(x) = 18(2.10)\frac{x}{2}$ The function $f$ is defined by the given equation. The value of $f(x)$ increases by $p%$ for every increase of $x$ by 4. For which of the following functions, where $n$ is a positive constant, does the value of $g(x)$ increase by $p%$ for every increase of $x$ by 1?', '["$g(x) = n(1.05)^{x}$", "$g(x) = n(2.10)^{x}$", "$g(x) = n(3.41)^{x}$", "$g(x) = n(4.41)^{x}$"]'::jsonb, 14, null),
+  ('41b972a2-fd1b-51ca-9b8e-ffc355d592b9', '836233eb-bab6-5cab-807d-e1970a86a776', '$f(x) = 18(2.10)^{\frac{x}{2}}$ The function $f$ is defined by the given equation. The value of $f(x)$ increases by $p%$ for every increase of $x$ by 4. For which of the following functions, where $n$ is a positive constant, does the value of $g(x)$ increase by $p%$ for every increase of $x$ by 1?', '["$g(x) = n(1.05)^{x}$", "$g(x) = n(2.10)^{x}$", "$g(x) = n(3.41)^{x}$", "$g(x) = n(4.41)^{x}$"]'::jsonb, 14, null),
   ('ded9d3c5-08f0-527c-a768-26238d0541b4', '836233eb-bab6-5cab-807d-e1970a86a776', 'Each $3.0$-ounce serving of cheddar cheese and each $1.2$-ounce serving of tuna provides about $1$ microgram of vitamin B12. If a total of $3.1$ micrograms of vitamin B12 are consumed from eating $x$ ounces of cheese and $y$ ounces of tuna, which equation best represents this situation?', '["$0.83x + 0.33y = 3.1$", "$3.0x + 1.2y = 3.1$", "$1.2x + 3.0y = 3.1$", "$0.33x + 0.83y = 3.1$"]'::jsonb, 15, null),
   ('03b8b4ed-8a00-5fae-9e19-11d445a7c646', '836233eb-bab6-5cab-807d-e1970a86a776', 'A circle in the xy-plane has its center at $(-4,4)$ and has a radius of $6$. An equation of this circle is $x^{2} +$ $y^{2} + ax + by + c = 0$, where $a$, $b$, and $c$ are constants. What is the value of $c$?', '[]'::jsonb, 16, null),
   ('b938d9ef-7ec4-5a22-8766-d4ff8041aeb6', '836233eb-bab6-5cab-807d-e1970a86a776', 'The right rectangular prism X is similar to the right rectangular prism Y. The surface area of right rectangular prism X is $62$ square centimeters ($\text{cm}^{2}$), and the surface area of right rectangular prism Y is $1,550\text{cm}^{2}$. The volume of the right rectangular prism X is $16.8$ cubic centimeters ($\text{cm}^{3}$). What is the volume, in $\text{cm}^{3}$, of the right rectangular prism Y?', '[]'::jsonb, 17, null),
@@ -714,7 +714,7 @@ Now, for why the other options are incorrect:
   ('6663deef-e55f-5bb3-bbb1-07f4aa004020', null, array['75']::text[], '**The correct answer is 75.** Let the starting number of each species be $N$. The prey increased by $2100%$ of $N$, so the final number of prey is $N + 21N = 22N$. The predators increased by $450%$ of $N$, so the final number of predators is $N + 4.5N = 5.5N = \frac{11}{2}N$. If the predators are $p%$ less than the prey, then $\frac{11}{2}N = 22N (1 - \frac{p}{100})$. Dividing by $N$ and by 22 gives $\frac{1}{4} = 1 - \frac{p}{100}$, so $\frac{p}{100} = \frac{3}{4}$ and $p = 75$.
 **Faster approach:** Immediately set the initial amount to 1. Final prey = $1 + 21 = 22$, final predators = $1 +$ $4.5 = 5.5$. Compute $5.5/22 = 1/4$, so predators are $75%$ less than prey, giving $p = 75$. This plug-in saves algebra every time for percent-change ratio problems.'),
   ('9b63fe8b-2999-5c9a-9617-9d3d4e34c4c3', 0, null, '**Choice A is correct.** Convert $220$ ft/hr to m/min. Since $1 \text{m} = 3.28 \text{ft}$, $1 \text{ft} = (1/3.28) \text{m}$, so $1 \text{ft}^{2} =$
-$2$$2$
+$22$
 $2$
 $(1/3.28)^{2} \text{m}^{2}$. Thus $220 \cdot (1/3.28)^{2} \approx 220 \cdot 0.09296 \approx 20.4512$ m/hr. Convert hours to minutes by dividing by
 $2$
@@ -723,9 +723,9 @@ $60$: $20.4512/60 \approx 0.34085 \approx 0.34$ m/min.
 **Choice C is incorrect.** $12.03$ is far too large; it would correspond to converting to m/hr correctly but then not dividing by $60$ (and also using a wrong area conversion).
 $2$
 **Choice D is incorrect.** $20.45$ equals the value in m/hr (before converting to minutes), not m/min, so it does not match the requested units.
-$2$$2$
+$22$
 **Faster approach:** Multiply by the area conversion $(1/3.28)^{2}$ to go ft→m, then divide by $60$ to go hours→minutes; do the arithmetic with a calculator or approximate $(1/3.28)^{2} \approx 0.093$ to get the answer quickly.
-$2$$2$'),
+$22$'),
   ('daed92e8-a9e2-540f-94e4-54a77eebe25e', 1, null, '**Choice B is correct.** Line n is perpendicular to line k, so its slope is the negative reciprocal of the slope of k. From the graph, line k rises 2 units for every 3 units run (slope $m_{k} = 2/3$), so the slope of n is $m_{n} = -3/2$. Using point-slope with point $(2,7)$ gives $7 = (-3/2)(2) + b$, so $7 = -3 + b$ and $b = 10$. Thus the equation is $y = -\frac{3}{2}x + 10$, choice B.
 **Choice A is incorrect.** It has the correct slope $-3/2$ but the y-intercept 4 does not satisfy $(2,7)$ (plugging in $x = 2$ gives $y = -3 + 4 = 1$, not 7).
 **Choice C is incorrect.** Its slope $2/3$ is the same as line k, not the negative reciprocal, so it would be parallel to k, not perpendicular; also its intercept 4 does not make it pass through $(2,7)$.

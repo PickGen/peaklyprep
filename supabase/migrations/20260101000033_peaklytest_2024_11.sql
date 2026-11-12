@@ -4,7 +4,7 @@
 
 -- PeaklyTest Nov 2024 · Reading & Writing · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('8221d63d-6710-5f87-908d-3f8c7c879615', 'PeaklyTest Nov 2024 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the Nov 2024 PeaklyTest · 27 questions · 32 minutes', 32, 190, true, 'PeaklyTest Nov 2024 · Reading & Writing', 1)
+values ('8221d63d-6710-5f87-908d-3f8c7c879615', 'PeaklyTest Nov 2024 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the Nov 2024 PeaklyTest · 27 questions · 32 minutes', 32, 250, true, 'PeaklyTest Nov 2024 · Reading & Writing', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -203,7 +203,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Nov 2024 · Reading & Writing · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('6374a07e-bfc5-5465-97ae-05b0bd41fd4c', 'PeaklyTest Nov 2024 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the Nov 2024 PeaklyTest · 27 questions · 32 minutes', 32, 191, true, 'PeaklyTest Nov 2024 · Reading & Writing', 2)
+values ('6374a07e-bfc5-5465-97ae-05b0bd41fd4c', 'PeaklyTest Nov 2024 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the Nov 2024 PeaklyTest · 27 questions · 32 minutes', 32, 251, true, 'PeaklyTest Nov 2024 · Reading & Writing', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -433,7 +433,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Nov 2024 · Math · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('660dcd01-0f04-5823-8a31-5f6e0bd894d7', 'PeaklyTest Nov 2024 · Math · Module 1', 'Math', 'Math, Module 1 of the Nov 2024 PeaklyTest · 22 questions · 35 minutes', 35, 192, true, 'PeaklyTest Nov 2024 · Math', 1)
+values ('660dcd01-0f04-5823-8a31-5f6e0bd894d7', 'PeaklyTest Nov 2024 · Math · Module 1', 'Math', 'Math, Module 1 of the Nov 2024 PeaklyTest · 22 questions · 35 minutes', 35, 252, true, 'PeaklyTest Nov 2024 · Math', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -458,8 +458,7 @@ In the xy-plane, the graph of the given equation is a circle. If this circle is 
   ('fb1e9e5c-4fe2-5869-95ca-f35e53041400', '660dcd01-0f04-5823-8a31-5f6e0bd894d7', 'If $5(3x + 6) = 3(3x + 6) + 78$, what is the value of $3x + 6$?', '["$78$", "$39$", "$33$", "$11$"]'::jsonb, 13, null),
   ('e2b3f1e3-f9e2-56cc-acce-fc3b24f95801', '660dcd01-0f04-5823-8a31-5f6e0bd894d7', 'If $f(x) = x + 5$ and $g(x) = 5x$, what is the value of $7f(4) - g(4)$?', '["$-11$", "$13$", "$35$", "$43$"]'::jsonb, 14, null),
   ('7e487a45-15bb-511c-9a41-a5b5eff135bc', '660dcd01-0f04-5823-8a31-5f6e0bd894d7', 'The function $C$ gives the estimated number of cephalopods, a class of marine animal, in a certain area, where $t$ is the number of months since a study began. How many months after the study began was the number of cephalopods in the area estimated to be $247$? The function is given by:
-$t-15$
-$C(t) = 240(\frac{53}{52})$$+ 7$', '[]'::jsonb, 15, null),
+$C(t) = 240(\frac{53}{52})^{t-15}+ 7$', '[]'::jsonb, 15, null),
   ('0a6914ce-602c-5580-9ae7-3095f7ab738a', '660dcd01-0f04-5823-8a31-5f6e0bd894d7', 'An object moves at a speed of $\frac{3}{17}$ feet per second. What is this speed in yards per second? (3 feet = 1 yard)', '["$\\frac{1}{17}$", "$0.058$", "$0.059$", "$0.0588$"]'::jsonb, 16, null),
   ('56a43802-ecec-5713-8f86-b51531d1de25', '660dcd01-0f04-5823-8a31-5f6e0bd894d7', 'For the linear function $g$, the table shows four values of $x$ and their corresponding values of $g(x)$. The function can be written as $g(x) = xm + b$, where $m$ and $b$ are constants. What is the value of $b$?', '[]'::jsonb, 17, '| $x$ | $g(x)$ |
 | $1$ | $34$ |
@@ -635,7 +634,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Nov 2024 · Math · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('9a35910e-edf1-5c3f-aba1-685f8c9a9368', 'PeaklyTest Nov 2024 · Math · Module 2', 'Math', 'Math, Module 2 of the Nov 2024 PeaklyTest · 22 questions · 35 minutes', 35, 193, true, 'PeaklyTest Nov 2024 · Math', 2)
+values ('9a35910e-edf1-5c3f-aba1-685f8c9a9368', 'PeaklyTest Nov 2024 · Math · Module 2', 'Math', 'Math, Module 2 of the Nov 2024 PeaklyTest · 22 questions · 35 minutes', 35, 253, true, 'PeaklyTest Nov 2024 · Math', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -658,7 +657,7 @@ What is the positive solution to the given equation?', '[]'::jsonb, 7, null),
 | 2 | b |'),
   ('d8bec1f1-40e1-56c7-a04b-a65d6d1cb318', '9a35910e-edf1-5c3f-aba1-685f8c9a9368', '$(x + k)^{2} + 37 = 37$
 In the given equation, $k$ is a constant. How many distinct real solutions does this equation have?', '["Zero", "Exactly one", "Exactly two", "Infinitely many"]'::jsonb, 13, null),
-  ('937ef5d9-48a7-5dbe-9b33-9f320f68c5fc', '9a35910e-edf1-5c3f-aba1-685f8c9a9368', 'For a certain circuit, its power $P$, in watts, current $C$, in amperes; voltage $V$, in volts; and resistance $R$, in ohms, are related as $\frac{CV^{2}}{P} =$$\sqrt{PR}$, where $P$, $C$, $V$, and $R$ are positive. When $R = 18$, which equation correctly expresses $P$ in terms of $C$ and $V$?', '["$P = \\frac{CV^{2}}{\\sqrt{18P}}$", "$P = \\frac{CV^{2}}{\\sqrt{18}}$", "$P = \\sqrt{3 \\frac{C^{2}V^{4}}{18}}$", "$P = \\sqrt{3 \\frac{18}{C^{2}V^{4}}}$"]'::jsonb, 14, null),
+  ('937ef5d9-48a7-5dbe-9b33-9f320f68c5fc', '9a35910e-edf1-5c3f-aba1-685f8c9a9368', 'For a certain circuit, its power $P$, in watts, current $C$, in amperes; voltage $V$, in volts; and resistance $R$, in ohms, are related as $\frac{CV^{2}}{P} =\sqrt{PR}$, where $P$, $C$, $V$, and $R$ are positive. When $R = 18$, which equation correctly expresses $P$ in terms of $C$ and $V$?', '["$P = \\frac{CV^{2}}{\\sqrt{18P}}$", "$P = \\frac{CV^{2}}{\\sqrt{18}}$", "$P = \\sqrt{3 \\frac{C^{2}V^{4}}{18}}$", "$P = \\sqrt{3 \\frac{18}{C^{2}V^{4}}}$"]'::jsonb, 14, null),
   ('b6d356f9-5593-56e8-b73a-ea56992a89a8', '9a35910e-edf1-5c3f-aba1-685f8c9a9368', '$y < -5x - 21$
 $y > 32x - 8$
 For which of the following tables are all the values of x and their corresponding values of y solutions to the given system of inequalities?', '["| x | y |\n| -8 | 14 |\n| -9 | 35 |\n| -11 | -3 |", "| x | y |\n| -8 | 19 |\n| -9 | 22 |\n| -11 | -3 |", "| x | y |\n| -8 | 19 |\n| -9 | 24 |\n| -11 | 34 |", "| x | y |\n| -8 | 18 |\n| -9 | 22 |\n| -11 | 32 |"]'::jsonb, 15, null),
@@ -666,7 +665,7 @@ For which of the following tables are all the values of x and their correspondin
   ('9551b323-2bd9-5cb7-a5c6-ca911b7e896a', '9a35910e-edf1-5c3f-aba1-685f8c9a9368', 'The expression $kx$ represents the result of decreasing a positive force, $x$, acting on an object by $0.34%$. What is the value of $k$?', '[]'::jsonb, 17, null),
   ('3102998c-0439-5990-83e0-98f0876892a7', '9a35910e-edf1-5c3f-aba1-685f8c9a9368', 'A polygon has exactly $87$ sides. If the measure of each of the $87$ interior angles of this polygon is $(180p)°$, what is the value of $p$?', '["$85/87$", "$0.977$", ",,", "$9770$"]'::jsonb, 18, null),
   ('34c3e5da-b25b-598f-a903-b1f712015490', '9a35910e-edf1-5c3f-aba1-685f8c9a9368', 'The number of bacteria in a liquid medium doubles every hour. There are $66,000$ bacteria in the liquid medium at the start of an observation. Which of the following represents the number of bacteria, $y$, in the liquid medium $t$ hours after the start of the observation?', '["$y = \\frac{1}{2}(66,000)^{t}$", "$y = 2(66,000)^{t}$", "$y = 66,000(\\frac{1}{2})^{t}$", "$y = 66,000(2)^{t}$"]'::jsonb, 19, null),
-  ('ae6b2061-e364-5d37-9820-ea55c6129498', '9a35910e-edf1-5c3f-aba1-685f8c9a9368', 'The function $f(n) = 7(20.44)\frac{n}{4}$ gives each term of a sequence as a function of the term’s position, $n$, in the sequence, where $n$ is a whole number. The value of the term in position 14 is $p%$ more than the value of the term in position 10. What is the value of $p$?', '["$20.44$", "$44$", "$1,944$", "$2,044$"]'::jsonb, 20, null),
+  ('ae6b2061-e364-5d37-9820-ea55c6129498', '9a35910e-edf1-5c3f-aba1-685f8c9a9368', 'The function $f(n) = 7(20.44)^{\frac{n}{4}}$ gives each term of a sequence as a function of the term’s position, $n$, in the sequence, where $n$ is a whole number. The value of the term in position 14 is $p%$ more than the value of the term in position 10. What is the value of $p$?', '["$20.44$", "$44$", "$1,944$", "$2,044$"]'::jsonb, 20, null),
   ('7ec389a7-f731-53dd-acf8-7e7715cc5608', '9a35910e-edf1-5c3f-aba1-685f8c9a9368', 'A right square pyramid has a total surface area of $28,160$ square inches, and the combined surface area of the four lateral faces of this pyramid is $16,060$ square inches. What is the height, in inches, of this pyramid?', '["$48$", "$55$", "$73$", "$110$"]'::jsonb, 21, null),
   ('025a80f6-2a28-5997-9b1d-90276a095d0f', '9a35910e-edf1-5c3f-aba1-685f8c9a9368', 'The expression $6x^{4} + 17x^{2} + 7$ can be rewritten as $(3x^{2} + a)(2x^{2} + b)$, where $a$ and $b$ are positive integers, or as $(3x^{2} + c)(2x^{2} + d)$, where $c$ and $d$ are positive nonintegers. What is the value of $a + c$?', '[]'::jsonb, 22, null)
 on conflict (id) do update set test_id = excluded.test_id, prompt = excluded.prompt, options = excluded.options,
@@ -728,9 +727,11 @@ insert into public.question_keys (question_id, correct_index, correct_answers, e
 **Choice C is incorrect.** A nonzero square would produce two solutions, but here the square equals 0, which yields only one solution, not two.
 **Choice D is incorrect.** Infinitely many solutions would require the equation to be an identity true for all $x$, which it is not; it is satisfied by exactly one value of $x$.
 **Faster approach:** Recognize that $(extsomething)^{2} + 37 = 37$ reduces to $(extsomething)^{2} = 0$, so the "something" must be 0, giving exactly one solution every time.'),
-  ('937ef5d9-48a7-5dbe-9b33-9f320f68c5fc', 2, null, '**Choice C is correct.** Start with $\frac{CV^{2}}{P}$$=$$\sqrt{18P}$. Multiply both sides by $P$ to get $CV^{2} = P$$\sqrt{18P} =$$\sqrt{18}P^{3/2}$. Thus $P^{3/2} = \frac{CV^{2}}{\sqrt{18}}$. Squaring both sides gives $P^{3} = \frac{C^{2}V^{4}}{18}$, so $P = \sqrt{3 \frac{C^{2}V^{4}}{18}}$, which matches choice C. **Choice A is incorrect.** It leaves $P$ on both sides ($P = \frac{CV^{2}}{\sqrt{18P}}$), so it does not isolate $P$ and is not an expression for $P$ in terms of only $C$ and $V$.
+  ('937ef5d9-48a7-5dbe-9b33-9f320f68c5fc', 2, null, '**Choice C is correct.** Start with $\frac{CV^{2}}{P}=\sqrt{18P}$. Multiply both sides by $P$ to get $CV^{2} = P\sqrt{18P} =\sqrt{18}P^{3/2}$. Thus $P^{3/2} = \frac{CV^{2}}{\sqrt{18}}$. Squaring both sides gives $P^{3} = \frac{C^{2}V^{4}}{18}$, so $P = \sqrt{3 \frac{C^{2}V^{4}}{18}}$, which matches choice C. **Choice A is incorrect.** It leaves $P$ on both sides ($P = \frac{CV^{2}}{\sqrt{18P}}$), so it does not isolate $P$ and is not an expression for $P$ in terms of only $C$ and $V$.
 **Choice B is incorrect.** It claims $P = \frac{CV^{2}}{\sqrt{18}}$, but substituting that into the original equation does not satisfy the $P^{3/2}$ relationship derived above.
-**Choice D is incorrect.** It gives the reciprocal cube root $\sqrt{3 \frac{18}{C^{2}V^{4}}}$, which is the reciprocal of the correct expression and therefore wrong.
+$\sqrt{3 \frac{18}{C^{2}V^{4}}}$
+**Choice D is incorrect.** It gives the reciprocal cube root , which is the reciprocal of the correct
+expression and therefore wrong.
 **Faster approach:** Isolate the radical term to get $P^{3/2}$, then raise both sides to the power needed (here square then cube root) to remove fractional exponents and solve for $P$.'),
   ('b6d356f9-5593-56e8-b73a-ea56992a89a8', 3, null, '**Choice D is correct.** For each x we check the upper bound $y < -5x - 21$ (the lower bound $y > 32x - 8$ is far below the listed y-values for these negative x). For $x = -8$, $-5(-8) - 21 = 19$, so $y$ must be $< 19$; the table gives $y = 18$, which satisfies this. For $x = -9$, $-5(-9) - 21 = 24$, so $y < 24$; the table gives $y = 22$, which satisfies this. For $x = -11$, $-5(-11) - 21 = 34$, so $y < 34$; the table gives $y = 32$, which satisfies this. All three pairs meet both inequalities.
 **Choice A is incorrect.** For $x = -9$ the bound is $y < 24$, but the table gives $y = 35$, which does not satisfy $y < 24$.
@@ -759,7 +760,7 @@ insert into public.question_keys (question_id, correct_index, correct_answers, e
 **Choice B is incorrect.** $44%$ is unrelated to the computed factor; it does not equal $19.44 \times 100%$ nor any step in the correct calculation.
 **Choice D is incorrect.** $2,044$ would correspond to a factor of $21.44$, not the actual factor $20.44$; it is not the percent increase computed from the ratio.
 **Faster approach:** Compute $f(14)/f(10) = (20.44)^{(14-10)/4} = (20.44)^{1} = 20.44$, then convert factor to percent increase by subtracting 1 and multiplying by 100 to get $1944%$. This direct ratio method works for any similar exponential-sequence comparison.'),
-  ('7ec389a7-f731-53dd-acf8-7e7715cc5608', 0, null, '**Choice A is correct.** The base area equals total area minus lateral area: $28160 - 16060 = 12100$, so the square base has side length $s =$$\sqrt{12100} = 110$. The lateral area $= 2sℓ$ (four triangles each with area $\frac{1}{2}s ℓ$), so $16060 = 2(110)ℓ$ gives slant height $ℓ = 73$. In the right triangle formed by the pyramid’s height $h$, half the base $s/2 = 55$, and slant height $ℓ$, we have $h^{2} = ℓ^{2} - (s/2)^{2} = 73^{2} - 55^{2} = (73 - 55)(73 + 55) = 18 \cdot 128 = 2304$, so $h = 48$.
+  ('7ec389a7-f731-53dd-acf8-7e7715cc5608', 0, null, '**Choice A is correct.** The base area equals total area minus lateral area: $28160 - 16060 = 12100$, so the square base has side length $s =\sqrt{12100} = 110$. The lateral area $= 2sℓ$ (four triangles each with area $\frac{1}{2}s ℓ$), so $16060 = 2(110)ℓ$ gives slant height $ℓ = 73$. In the right triangle formed by the pyramid’s height $h$, half the base $s/2 = 55$, and slant height $ℓ$, we have $h^{2} = ℓ^{2} - (s/2)^{2} = 73^{2} - 55^{2} = (73 - 55)(73 + 55) = 18 \cdot 128 = 2304$, so $h = 48$.
 **Choice B is incorrect.** $55$ is $s/2$, not the vertical height; using it would ignore the slant-height relation $ℓ^{2} =$ $h^{2} + (s/2)^{2}$.
 **Choice C is incorrect.** $73$ is the slant height $ℓ$, not the vertical height; the height is shorter because $h^{2} =$ $ℓ^{2} - (s/2)^{2}$.
 **Choice D is incorrect.** $110$ is the side length of the base, not the pyramid’s vertical height.

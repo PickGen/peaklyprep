@@ -4,7 +4,7 @@
 
 -- PeaklyTest May 2025 · Reading & Writing · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('4636babb-5131-55d6-b888-9238a1200db8', 'PeaklyTest May 2025 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the May 2025 PeaklyTest · 27 questions · 32 minutes', 32, 160, true, 'PeaklyTest May 2025 · Reading & Writing', 1)
+values ('4636babb-5131-55d6-b888-9238a1200db8', 'PeaklyTest May 2025 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the May 2025 PeaklyTest · 27 questions · 32 minutes', 32, 220, true, 'PeaklyTest May 2025 · Reading & Writing', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -210,7 +210,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest May 2025 · Reading & Writing · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('20d6a66e-8bbc-5c22-8f14-0acdab378e79', 'PeaklyTest May 2025 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the May 2025 PeaklyTest · 27 questions · 32 minutes', 32, 161, true, 'PeaklyTest May 2025 · Reading & Writing', 2)
+values ('20d6a66e-8bbc-5c22-8f14-0acdab378e79', 'PeaklyTest May 2025 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the May 2025 PeaklyTest · 27 questions · 32 minutes', 32, 221, true, 'PeaklyTest May 2025 · Reading & Writing', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -418,7 +418,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest May 2025 · Math · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('41e08c4c-84a4-5f13-839e-992a3011053e', 'PeaklyTest May 2025 · Math · Module 1', 'Math', 'Math, Module 1 of the May 2025 PeaklyTest · 22 questions · 35 minutes', 35, 162, true, 'PeaklyTest May 2025 · Math', 1)
+values ('41e08c4c-84a4-5f13-839e-992a3011053e', 'PeaklyTest May 2025 · Math · Module 1', 'Math', 'Math, Module 1 of the May 2025 PeaklyTest · 22 questions · 35 minutes', 35, 222, true, 'PeaklyTest May 2025 · Math', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -521,10 +521,10 @@ insert into public.question_keys (question_id, correct_index, correct_answers, e
 **Choice C is incorrect.** The two histograms have clearly different spreads: A’s scores are concentrated in a narrow interval (25–40) while B’s scores span roughly 15–50, so their standard deviations cannot be equal.
 **Choice D is incorrect.** The histograms provide enough information about the relative spread of each distribution: Team B’s much wider range and bimodal spread indicate a larger standard deviation than Team A’s concentrated distribution.
 **Faster approach:** Visually compare the horizontal spread (range and how far bars are from the center) of the two histograms — the distribution with the larger horizontal spread has the larger standard deviation. This works for any question comparing standard deviations from histograms.'),
-  ('d9c7d587-2bbd-589e-bee5-d3c6e7baf21b', null, array['28']::text[], '**The correct answer is 28.** The given circle A has equation $x^{2} + (y - 5)^{2} = 7$, so its center is $(0,5)$ and its radius is $r =$$\sqrt{7}$. Translating the circle 91 units to the right moves the center to $(91,5)$ but does not change the radius, so circle B has equation $(x - 91)^{2} + (y - 5)^{2} = 7$. Thus $a = 7$ and $4a = 4 \cdot 7 = 28$.
+  ('d9c7d587-2bbd-589e-bee5-d3c6e7baf21b', null, array['28']::text[], '**The correct answer is 28.** The given circle A has equation $x^{2} + (y - 5)^{2} = 7$, so its center is $(0,5)$ and its radius is $r =\sqrt{7}$. Translating the circle 91 units to the right moves the center to $(91,5)$ but does not change the radius, so circle B has equation $(x - 91)^{2} + (y - 5)^{2} = 7$. Thus $a = 7$ and $4a = 4 \cdot 7 = 28$.
 **Faster approach:** Recognize that the constant on the right side of a circle’s equation is the squared radius and is unchanged by horizontal translation, so compute $4\times$ (right-hand constant) immediately: $4 \cdot 7 = 28$.'),
-  ('c66ecaff-5a8e-50e5-80e7-eb85ca345251', null, array['8/5']::text[], '**The correct answer is 1.6.** At t = 0, h(0) = b = 40.96, so the height function is $h(t) = -16t^{2} + 40.96$. The object hits the ground when $h(t) = 0$, so solve $-16t^{2} + 40.96 = 0$. Rearranging gives $16t^{2} = 40.96$, so $t^{2} =$ $40.96/16 = 2.56$. Taking the positive square root (time is nonnegative) gives $t =$$\sqrt{2.56} = 1.6$ seconds.
-**Faster approach:** Substitute $b$ immediately from $h(0) = b = 40.96$ and use the formula $t =$$\sqrt{b/16}$, then compute $\sqrt{40.96/16} =$$\sqrt{2.56} = 1.6$. This avoids extra algebraic steps.'),
+  ('c66ecaff-5a8e-50e5-80e7-eb85ca345251', null, array['8/5']::text[], '**The correct answer is 1.6.** At t = 0, h(0) = b = 40.96, so the height function is $h(t) = -16t^{2} + 40.96$. The object hits the ground when $h(t) = 0$, so solve $-16t^{2} + 40.96 = 0$. Rearranging gives $16t^{2} = 40.96$, so $t^{2} =$ $40.96/16 = 2.56$. Taking the positive square root (time is nonnegative) gives $t =\sqrt{2.56} = 1.6$ seconds.
+**Faster approach:** Substitute $b$ immediately from $h(0) = b = 40.96$ and use the formula $t =\sqrt{b/16}$, then compute $\sqrt{40.96/16} =\sqrt{2.56} = 1.6$. This avoids extra algebraic steps.'),
   ('a18bed1e-32cc-5fd8-a1ee-afe6b0d28359', 3, null, '**Choice D is correct.** The graph shows the total rainfall is 2 centimeters at both $x = 2$ and $x = 4$, so the change in total rainfall over that interval is $0$ centimeters in $2$ hours. The rate (change in total per hour) is $0/2 = 0$ centimeters per hour.
 **Choice A is incorrect.** Between $x = 2$ and $x = 4$ the total stays at 2 cm, so the rate is 0, not 2 cm/hr.
 **Choice B is incorrect.** The steepest increase in the total occurs between $x = 0$ and $x = 2$ (from 0 to 2 cm in 2 hours), so the rate is larger there than between $x = 4$ and $x = 10$.
@@ -541,7 +541,7 @@ insert into public.question_keys (question_id, correct_index, correct_answers, e
 **Choice A is incorrect.** 42 is the center value $42$, not the sum of the two symmetric solutions; the actual sum is double that center ($84$).
 **Choice B is incorrect.** 43 is one of the individual solutions, not the sum of both solutions.
 **Choice D is incorrect.** 85 is neither an individual solution nor the correct sum; it is 1 greater than the correct sum.
-**Faster approach:** For $(x - h)^{2} = k$, the solutions are $h \pm$$\sqrt{k}$, so their sum is $2h$. Here $h = 42$, so the sum is $2(42) = 84$.'),
+**Faster approach:** For $(x - h)^{2} = k$, the solutions are $h \pm\sqrt{k}$, so their sum is $2h$. Here $h = 42$, so the sum is $2(42) = 84$.'),
   ('550f6335-cb1a-5c0a-86f0-e45a224b4134', 0, null, '**Choice A is correct.** For the equation $5(kx - n) = -\frac{65}{14}x - \frac{85}{18}$ to have no solution, the $x$-coefficients must be equal while the constants differ. Expanding gives $5kx - 5n = -\frac{65}{14}x - \frac{85}{18}$. Equating $x$-coefficients: $5k = -\frac{65}{14}$, so $k = -\frac{65}{70} = -\frac{13}{14}$, which matches choice A. Because $n > 1$, the constants $-5n$ and $-\frac{85}{18}$ are indeed different, so the equation has no solution.
 **Choice B is incorrect.** $-0.128 \approx -\frac{16}{125}$, which does not equal $-\frac{13}{14}$ obtained from $5k = -\frac{65}{14}$.
 **Choice C is incorrect.** $\frac{3}{2}$ would give $5k = \frac{15}{2}$, not $-\frac{65}{14}$, so the $x$-coefficients would not match.
@@ -552,7 +552,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest May 2025 · Math · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('e61ad86b-5b40-5b62-9798-dc2aa0cd99f1', 'PeaklyTest May 2025 · Math · Module 2', 'Math', 'Math, Module 2 of the May 2025 PeaklyTest · 22 questions · 35 minutes', 35, 163, true, 'PeaklyTest May 2025 · Math', 2)
+values ('e61ad86b-5b40-5b62-9798-dc2aa0cd99f1', 'PeaklyTest May 2025 · Math · Module 2', 'Math', 'Math, Module 2 of the May 2025 PeaklyTest · 22 questions · 35 minutes', 35, 223, true, 'PeaklyTest May 2025 · Math', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -578,7 +578,7 @@ $ty = 8x + \frac{1}{5}$', '[]'::jsonb, 14, null),
 $f(x) = 7(4)^{x}$', '["$g(x) = 21(4)^{x}$", "$g(x) = 448(4)^{x}$", "$g(x) = 21(12)^{x}$", "$g(x) = 343(64)^{x}$"]'::jsonb, 15, null),
   ('e8076572-847c-5e1b-b868-012360947377', 'e61ad86b-5b40-5b62-9798-dc2aa0cd99f1', 'The bone mineral density of a certain person’s thoracic spine was estimated to be $0.812$ grams per square centimeter. What is this estimated bone mineral density in grams per **square millimeter**? ($1$ centimeter = $10$ millimeters)', '["81.2", "8.12", "0.0812", "0.00812"]'::jsonb, 16, null),
   ('d2cd26f8-75c8-5d7b-ae2c-61db2f59f839', 'e61ad86b-5b40-5b62-9798-dc2aa0cd99f1', 'Which expression is a factor of $49p^{19} - 121p^{17}$?', '["$7p + 11$", "$49p^{2} + 121$", "$11p - 7$", "$-72p^{40}$"]'::jsonb, 17, null),
-  ('85eeb84b-c425-5192-ba41-6642ffa1c2ee', 'e61ad86b-5b40-5b62-9798-dc2aa0cd99f1', '$\frac{5}{9} (5x + 9)(x +$$\sqrt{5k + 9})(x -$$\sqrt{5k + 9}) = 0$
+  ('85eeb84b-c425-5192-ba41-6642ffa1c2ee', 'e61ad86b-5b40-5b62-9798-dc2aa0cd99f1', '$\frac{5}{9} (5x + 9)(x +\sqrt{5k + 9})(x -\sqrt{5k + 9}) = 0$
 In the given equation, $k$ is a positive constant. The product of the solutions to the equation is 72. What is the value of $k$?', '[]'::jsonb, 18, null),
   ('30093d4e-f43e-57b9-b61e-20fa4354c99d', 'e61ad86b-5b40-5b62-9798-dc2aa0cd99f1', 'A right rectangular prism has a base area of $56t$ square centimeters ($cm^{2}$). The length of the base of the rectangular prism is $\frac{14}{3}$ cm, and the height of the rectangular prism is 3 cm. Which expression represents the surface area, in $cm^{2}$, of the right rectangular prism?', '["$112t + 56$", "$184t + 28$", "$1,680t + 28$", "$168t$"]'::jsonb, 19, null),
   ('5fe09507-af14-5cd6-bad6-944accbb8258', 'e61ad86b-5b40-5b62-9798-dc2aa0cd99f1', 'In the $xy$-plane, a unit circle with center at the origin $O$ contains point $A$ with coordinates $(1,0)$ and point $B$ with coordinates $(\frac{5}{\sqrt{34}},-\frac{3}{\sqrt{34}})$. If the measure of angle $AOB$ is $p$ radians, what is the value of $\frac{\cos p}{\sin p}$?', '[]'::jsonb, 20, null),
@@ -672,14 +672,14 @@ $A_{\text{base}} = l \times w = 18 \times 9 = 162 \text{square} \text{units}.$
 **Step 2: Calculate the slant heights.**
 For the triangles with base $l = 18$ units, the slant height $s_{l}$ can be calculated using the Pythagorean theorem. The right triangle formed by the height $h$, half the width $\frac{w}{2}$, and the slant height $s_{l}$ is used. For the triangles with base $w = 9$ units, the slant height $s_{w}$ can be calculated using the Pythagorean theorem. The right triangle formed by the height $h$, half the length $\frac{l}{2}$, and the slant height $s_{w}$ is used.
 Calculate $s_{l}$:
-$s_{l} =$$\sqrt{h^{2} + (\frac{w}{2})^{2}} =$$\sqrt{12^{2} + (\frac{9}{2})^{2}} =$$\sqrt{144 + \frac{81}{4}} =$$\sqrt{\frac{657}{4}} =$$\frac{\sqrt{657}}{2}.$
+$s_{l} =\sqrt{h^{2} + (\frac{w}{2})^{2}} =\sqrt{12^{2} + (\frac{9}{2})^{2}} =\sqrt{144 + \frac{81}{4}} =\sqrt{\frac{657}{4}} =\frac{\sqrt{657}}{2}.$
 Calculate $s_{w}$:
-$s_{w} =$$\sqrt{h^{2} + (\frac{l}{2})^{2}} =$$\sqrt{12^{2} + (\frac{18}{2})^{2}} =$$\sqrt{144 + 81} =$$\sqrt{225} = 15.$
+$s_{w} =\sqrt{h^{2} + (\frac{l}{2})^{2}} =\sqrt{12^{2} + (\frac{18}{2})^{2}} =\sqrt{144 + 81} =\sqrt{225} = 15.$
 **Step 3: Calculate the area of the triangular faces.**
 There are two sets of triangles: two with base $l$ and two with base $w$.
-For the triangles with base $l = 18$ units and height $s_{l} =$$\frac{\sqrt{657}}{2}$:
+For the triangles with base $l = 18$ units and height $s_{l} =\frac{\sqrt{657}}{2}$:
 The area is:
-$A_{\text{tri}_{l}} = \frac{1}{2} \times l \times s_{l} = \frac{1}{2} \times 18 \times$$\frac{\sqrt{657}}{2} = 9 \times$$\frac{\sqrt{657}}{2} = \frac{9\sqrt{657}}{2}.$
+$A_{\text{tri}_{l}} = \frac{1}{2} \times l \times s_{l} = \frac{1}{2} \times 18 \times\frac{\sqrt{657}}{2} = 9 \times\frac{\sqrt{657}}{2} = \frac{9\sqrt{657}}{2}.$
 The total area for two such triangles is:
 $2 \times A_{\text{tri}_{l}} = 2 \times \frac{9\sqrt{657}}{2} = 9\sqrt{657}.$
 For the triangles with base $w = 9$ units and height $s_{w} = 15$:
@@ -721,7 +721,7 @@ Now find $P$ from $U = 71.5P$: $P = U/71.5 = 14300/71.5 = 200$. The sum is $U + 
 **Choice C is incorrect.** $11p - 7$ is not equivalent to either $7p - 11$ or $7p + 11$; its coefficients are different and it does not match the factors from the difference of squares.
 **Choice D is incorrect.** $-72p^{40}$ is neither a factor produced by factoring out $p^{17}$ nor related to the difference of squares; its degree and constant factor are incompatible with the given polynomial.
 **Faster approach:** Always factor out the greatest common monomial first, then check if the remaining quadratic is a difference of squares so you can read off linear factors quickly.'),
-  ('85eeb84b-c425-5192-ba41-6642ffa1c2ee', null, array['31/5']::text[], '**The correct answer is 31/5.** The equation factors give three solutions: from $5x + 9 = 0$ we get $x = -9/5$, and from $(x +$$\sqrt{5k + 9})(x -$$\sqrt{5k + 9}) = 0$ we get $x = \pm \sqrt{5k + 9}$. The product of the solutions is therefore $(-9/5) \cdot (\sqrt{5k + 9}) \cdot (-\sqrt{5k + 9}) = (-9/5)(-(5k + 9)) = (9/5)(5k + 9)$. Set this equal to 72: $(9/5)(5k +$ $9) = 72$. Multiply both sides by 5: $9(5k + 9) = 360$, so $45k + 81 = 360$, giving $45k = 279$ and $k = 279/45 =$ $31/5$.
+  ('85eeb84b-c425-5192-ba41-6642ffa1c2ee', null, array['31/5']::text[], '**The correct answer is 31/5.** The equation factors give three solutions: from $5x + 9 = 0$ we get $x = -9/5$, and from $(x +\sqrt{5k + 9})(x -\sqrt{5k + 9}) = 0$ we get $x = \pm \sqrt{5k + 9}$. The product of the solutions is therefore $(-9/5) \cdot (\sqrt{5k + 9}) \cdot (-\sqrt{5k + 9}) = (-9/5)(-(5k + 9)) = (9/5)(5k + 9)$. Set this equal to 72: $(9/5)(5k +$ $9) = 72$. Multiply both sides by 5: $9(5k + 9) = 360$, so $45k + 81 = 360$, giving $45k = 279$ and $k = 279/45 =$ $31/5$.
 **Faster approach:** Recognize immediately that the nonzero roots are $-9/5$ and $\pm \sqrt{5k + 9}$ so the product is $(9/5)(5k + 9)$; solve $(9/5)(5k + 9) = 72$ algebraically to find $k$.'),
   ('30093d4e-f43e-57b9-b61e-20fa4354c99d', 1, null, '**Choice B is correct.** The surface area of a right rectangular prism is $2(lw + lh + wh)$. We''re given the base area $lw = 56t$, $l = \frac{14}{3}$, and $h = 3$. First find $w = \frac{56t}{l} = 56t \cdot \frac{3}{14} = 12t$. Then compute $lw + lh + wh = 56t +$ $(\frac{14}{3} \cdot 3) + (12t \cdot 3) = 56t + 14 + 36t = 92t + 14$. Multiply by 2 to get the surface area $2(92t + 14) = 184t +$ $28$, which matches choice B.
 **Choice A is incorrect.** It gives $112t + 56$, which would result from an incorrect computation (for example, miscomputing one of the face areas or doubling only some terms). It does not equal the correct $184t + 28$.
@@ -733,9 +733,9 @@ We can find the angles corresponding to each point with respect to the positive 
 The position of point $A$ gives us the angle $θ_{A} = 0$ radians.
 The position of point $B$ gives us the coordinates of $B$ as $B (\frac{5}{\sqrt{34}},-\frac{3}{\sqrt{34}})$, where:
 Cosine of the angle $p$ is equal to the $x$-coordinate of $B$: $\cos p =$.
-Sine of the angle $p$ is equal to the $y$-coordinate of $B$: $\sin p = - \frac{5}{\frac{3\sqrt{3}}{\sqrt{34}} 4}$.
+Sine of the angle $p$ is equal to the $y$-coordinate of $B$: $\sin p = -^{\frac{5}{\frac{3\sqrt{3}}{\sqrt{34}} 4}}$.
 Now, we substitute $\cos p$ and $\sin p$ into the ratio:
-$\frac{\cos p}{\sin p} = \frac{\frac{5}{\sqrt{34}}}{-\frac{3}{\sqrt{34}}}$$= \frac{5}{-3} = -\frac{5}{3}.$
+$\frac{\cos p}{\sin p} = \frac{\frac{5}{\sqrt{34}}}{-\frac{3}{\sqrt{34}}}= \frac{5}{-3} = -\frac{5}{3}.$
 However, we can also interpret the angles based on their terminal positions. Since the angle $p$ must refer to a positive acute angle in the context of the unit circle, we take the absolute value:
 $\frac{\cos p}{\sin p} = \frac{5}{3}.$
 Thus, the correct answer is $\frac{5}{3}$.'),

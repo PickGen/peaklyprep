@@ -4,7 +4,7 @@
 
 -- PeaklyTest Mar 2025 · Reading & Writing · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('0a452806-99a3-5629-9c86-b5e50392d3c7', 'PeaklyTest Mar 2025 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the Mar 2025 PeaklyTest · 27 questions · 32 minutes', 32, 170, true, 'PeaklyTest Mar 2025 · Reading & Writing', 1)
+values ('0a452806-99a3-5629-9c86-b5e50392d3c7', 'PeaklyTest Mar 2025 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the Mar 2025 PeaklyTest · 27 questions · 32 minutes', 32, 230, true, 'PeaklyTest Mar 2025 · Reading & Writing', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -230,7 +230,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Mar 2025 · Reading & Writing · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('a8b1c998-902d-5153-953d-fe7938bdb515', 'PeaklyTest Mar 2025 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the Mar 2025 PeaklyTest · 27 questions · 32 minutes', 32, 171, true, 'PeaklyTest Mar 2025 · Reading & Writing', 2)
+values ('a8b1c998-902d-5153-953d-fe7938bdb515', 'PeaklyTest Mar 2025 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the Mar 2025 PeaklyTest · 27 questions · 32 minutes', 32, 231, true, 'PeaklyTest Mar 2025 · Reading & Writing', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -442,7 +442,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Mar 2025 · Math · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('dcc48e8a-b41c-532e-aab0-1312118a5d9b', 'PeaklyTest Mar 2025 · Math · Module 1', 'Math', 'Math, Module 1 of the Mar 2025 PeaklyTest · 22 questions · 35 minutes', 35, 172, true, 'PeaklyTest Mar 2025 · Math', 1)
+values ('dcc48e8a-b41c-532e-aab0-1312118a5d9b', 'PeaklyTest Mar 2025 · Math · Module 1', 'Math', 'Math, Module 1 of the Mar 2025 PeaklyTest · 22 questions · 35 minutes', 35, 232, true, 'PeaklyTest Mar 2025 · Math', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -465,13 +465,13 @@ What is the positive solution to the given equation?', '[]'::jsonb, 12, null),
   ('9867cdf8-bb5f-5959-9035-a41294bbed11', 'dcc48e8a-b41c-532e-aab0-1312118a5d9b', 'Harper has \$110 in an account. Each year she expects to have 2.7% more money in the account than she had the previous year. Which of the following models best describes how Harper expects the money in her account to change over time?', '["Decreasing exponential", "Decreasing linear", "Increasing exponential", "Increasing linear"]'::jsonb, 13, null),
   ('c4572bd3-149d-5811-ae47-a9c3f08ffc9f', 'dcc48e8a-b41c-532e-aab0-1312118a5d9b', 'In right triangle $RST$, the sum of the measures of angle $R$ and angle $S$ is 90 degrees. The value of $\sin (R)$ is $\frac{2\sqrt{10}}{7}$. What is the value of $\cos (S)$?', '["$\\frac{3\\sqrt{10}}{20}$", "$\\frac{2\\sqrt{10}}{7}$", "$\\frac{7\\sqrt{10}}{20}$", "$\\frac{2\\sqrt{10}}{3}$"]'::jsonb, 14, null),
   ('b6c27f92-0499-5234-8ad6-92497ab42d75', 'dcc48e8a-b41c-532e-aab0-1312118a5d9b', 'Line $t$ is defined by $y = -\frac{1}{2}x + 14$. Line $s$ is perpendicular to line $t$ in the $xy$-plane. What is the slope of line $s$?', '["14", "2", "$\\frac{1}{2}$", "$\\frac{1}{14}$"]'::jsonb, 15, null),
-  ('f14fb680-ecbb-5ddf-bba8-199e958c015d', 'dcc48e8a-b41c-532e-aab0-1312118a5d9b', '$f(x) = 8(2)\frac{x}{4}$
+  ('f14fb680-ecbb-5ddf-bba8-199e958c015d', 'dcc48e8a-b41c-532e-aab0-1312118a5d9b', '$f(x) = 8(2)^{\frac{x}{4}}$
 Which table gives four values of $x$ and their corresponding values of $f(x)$ for the given exponential function?', '["| x | -4 | 0 | 4 | 8 |\n| f(x) | 4 | 0 | 10 | 40 |", "| x | -4 | 0 | 4 | 8 |\n| f(x) | 4 | 8 | 16 | 32 |", "| x | -4 | 0 | 4 | 8 |\n| f(x) | -4 | 8 | 18 | 36 |", "| x | -4 | 0 | 4 | 8 |\n| f(x) | 4 | 8 | 12 | 24 |"]'::jsonb, 16, null),
   ('7bd97f07-55a1-560d-891f-63c0a222c09e', 'dcc48e8a-b41c-532e-aab0-1312118a5d9b', 'The measure of angle $C$ is $\frac{3π}{4}$ radians. What is the value of $\cos (C)$?', '["$-\\frac{\\sqrt{2}}{2}$", "$-\\frac{1}{2}$", "$\\frac{\\sqrt{2}}{2}$", "$\\frac{\\sqrt{3}}{2}$"]'::jsonb, 17, null),
   ('e3667782-3b66-57a3-8de9-74a2395515e3', 'dcc48e8a-b41c-532e-aab0-1312118a5d9b', '$7y = -6x + 2,170$
 $24x - 28y = 1,400$
 The solution to the given system of equations is $(x,y)$. What is the value of $x + y$?', '[]'::jsonb, 18, null),
-  ('ae179631-0d87-53ac-8347-3c14d0578815', 'dcc48e8a-b41c-532e-aab0-1312118a5d9b', 'A researcher observes a sample of a nuclide. An exponential model estimates that the mass, in grams, of the sample decreases by 23% every $11.69$ minutes. Which of the following equations could represent this model, where $M$ is the estimated mass, in grams, of the sample $t$ minutes after the researcher began observing the sample?', '["$M = 100(0.77)\\frac{t}{11.69}$", "$M = 100(0.77)^{t+11.69}$", "$M = 100(0.23)\\frac{t}{11.69}$", "$M = 100(0.23)^{t+11.69}$"]'::jsonb, 19, null),
+  ('ae179631-0d87-53ac-8347-3c14d0578815', 'dcc48e8a-b41c-532e-aab0-1312118a5d9b', 'A researcher observes a sample of a nuclide. An exponential model estimates that the mass, in grams, of the sample decreases by 23% every $11.69$ minutes. Which of the following equations could represent this model, where $M$ is the estimated mass, in grams, of the sample $t$ minutes after the researcher began observing the sample?', '["$M = 100(0.77)^{\\frac{t}{11.69}}$", "$M = 100(0.77)^{t+11.69}$", "$M = 100(0.23)^{\\frac{t}{11.69}}$", "$M = 100(0.23)^{t+11.69}$"]'::jsonb, 19, null),
   ('427c42af-c7c9-583b-a420-11e266d3a6ed', 'dcc48e8a-b41c-532e-aab0-1312118a5d9b', '$-4∣5x + 4∣ + 2 = -14$
 What are all solutions to the given equation?', '["0", "0 and $-\\frac{1}{5}$", "0 and $-\\frac{8}{5}$", "There is no solution."]'::jsonb, 20, null),
   ('9a3bfd9e-aedd-5285-8b3c-f76825c3bd42', 'dcc48e8a-b41c-532e-aab0-1312118a5d9b', 'For the right circular cone shown, $B$ is a point on the circumference of the base, and the length of segment $AB$ (not shown) is $84$ centimeters. If the height of the cone is $42$ centimeters and the volume of the cone is $kπ$ cubic centimeters, what is the value of $k$?', '[]'::jsonb, 21, '![figure](/q/mar25/008.webp)'),
@@ -567,15 +567,13 @@ $\frac{-13 \pm \sqrt{13^{2} - 4(8)(-6)}}{2(8)} = \frac{-13 \pm \sqrt{169 + 192}}
 **Faster approach:** Isolate the absolute value, then split into the two linear cases $5x + 4 = 4$ and $5x + 4 = -4$ and solve—this method always works for equations of the form $∣A∣ = B$ with $B \ge 0$.'),
   ('9a3bfd9e-aedd-5285-8b3c-f76825c3bd42', null, array['74088']::text[], '**The correct answer is 74088.** The segment AB is the slant height $l$ of the right circular cone, so $l = 84$. For a right cone, $l^{2} = r^{2} + h^{2}$, so $r^{2} = l^{2} - h^{2} = 84^{2} - 42^{2} = (84 - 42)(84 + 42) = 42 \cdot 126 = 5292$. The volume is $V = \frac{1}{3}π r^{2}h$, so $k = \frac{1}{3}r^{2}h = \frac{1}{3} \cdot 5292 \cdot 42 = 5292 \cdot 14 = 74088.$
 **Faster approach:** Use $r^{2} = l^{2} - h^{2}$ (Pythagorean relation for slant height) and substitute directly into $k =$ $\frac{1}{3}r^{2}h$, so compute $k = \frac{1}{3}(l^{2} - h^{2})h$ to avoid separately finding $r$.'),
-  ('911313f3-7141-539e-933a-2a94284c2809', null, array['943/5']::text[], '**The correct answer is 943/5 (≈188.6).** Convert yards to meters by cubing the linear factor: $1 \text{yd} =$
-$3$$3$
-$0.914 \text{m} = \frac{457}{500} \text{m}$, so $1 \text{yd}^{3} = (\frac{457}{500})$$\text{m}^{3}$. The sphere’s volume in cubic meters is $247 \cdot (\frac{457}{500})$. Writing this exactly gives $247 \cdot \frac{457^{3}}{500^{3}} = \frac{23574666271}{125000000} \approx 188.597330168 \text{m}^{3}$, which rounds to $188.6 = \frac{943}{5} \text{m}^{3}$. **Faster approach:** Convert the linear unit as an exact fraction ($0.914 = 457/500$), cube that fraction once, and multiply by the given volume. Working with the fractional form avoids repeated decimal multiplication and yields an exact value you can round if required.')
+  ('911313f3-7141-539e-933a-2a94284c2809', null, array['943/5']::text[], '**The correct answer is 943/5 (≈188.6).** Convert yards to meters by cubing the linear factor: $1 \text{yd} =$ $0.914 \text{m} = \frac{457}{500} \text{m}$, so $1 \text{yd}^{3} = (\frac{457}{500})^{3}\text{m}^{3}$. The sphere’s volume in cubic meters is $247 \cdot (\frac{457}{500})^{3}$. Writing this exactly gives $247 \cdot \frac{457^{3}}{500^{3}} = \frac{23574666271}{125000000} \approx 188.597330168 \text{m}^{3}$, which rounds to $188.6 = \frac{943}{5} \text{m}^{3}$. **Faster approach:** Convert the linear unit as an exact fraction ($0.914 = 457/500$), cube that fraction once, and multiply by the given volume. Working with the fractional form avoids repeated decimal multiplication and yields an exact value you can round if required.')
 on conflict (question_id) do update set correct_index = excluded.correct_index, correct_answers = excluded.correct_answers,
   explanation = excluded.explanation;
 
 -- PeaklyTest Mar 2025 · Math · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('413f6697-3442-5053-b12e-926fa81b6a8c', 'PeaklyTest Mar 2025 · Math · Module 2', 'Math', 'Math, Module 2 of the Mar 2025 PeaklyTest · 22 questions · 35 minutes', 35, 173, true, 'PeaklyTest Mar 2025 · Math', 2)
+values ('413f6697-3442-5053-b12e-926fa81b6a8c', 'PeaklyTest Mar 2025 · Math · Module 2', 'Math', 'Math, Module 2 of the Mar 2025 PeaklyTest · 22 questions · 35 minutes', 35, 233, true, 'PeaklyTest Mar 2025 · Math', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -613,7 +611,7 @@ $2$
 rectangular prism $X$ is $59$ square centimeters (cm), and the surface area of right rectangular prism Y is $1,475 \text{cm}^{2}$. The volume of right rectangular prism Y is $1,500 \text{cm}^{3}$. What is the sum of the volumes,
 $3$
 cm, of right rectangular prism $X$ and right rectangular prism $Y$?', '[]'::jsonb, 20, null),
-  ('5380a766-e0e9-53e5-860d-4c4cb6e4aa9e', '413f6697-3442-5053-b12e-926fa81b6a8c', 'The function $f$ is defined by $f(x) = ab\frac{x}{n}$, where $a$, $b$, and $n$ are constants, and $b$ and $n$ are integers, if $f(3) = 6$ and $f(5) = 150$, what is the value of $f(6)$?', '[]'::jsonb, 21, null),
+  ('5380a766-e0e9-53e5-860d-4c4cb6e4aa9e', '413f6697-3442-5053-b12e-926fa81b6a8c', 'The function $f$ is defined by $f(x) = ab^{\frac{x}{n}}$, where $a$, $b$, and $n$ are constants, and $b$ and $n$ are integers, if $f(3) = 6$ and $f(5) = 150$, what is the value of $f(6)$?', '[]'::jsonb, 21, null),
   ('f1910ddd-48b9-5e4b-80fd-11128467262f', '413f6697-3442-5053-b12e-926fa81b6a8c', '$24x^{2} - (12a + 2b)x + ab = 0$
 In the given equation, $a$ and $b$ are positive constants. The sum of the solutions to the given equation is $k(6a + b)$, where $k$ is a constant. What is the value of $k$?', '[]'::jsonb, 22, null)
 on conflict (id) do update set test_id = excluded.test_id, prompt = excluded.prompt, options = excluded.options,
@@ -723,9 +721,7 @@ Now, for the other options:
 **Choice C is incorrect.** It has C = 8, which would give f(0) = 7, contradicting the point (0,8) on y = f(x) + 4.
 **Choice D is incorrect.** It has C = 9, yielding f(0) = 8, which would make y = f(0)+4 = 12 at x = 0, not the graphed value 8.
 **Faster approach:** Plug x = 0 into y = f(x) + 4 to read the graph value (here 8), solve f(0) = graph_value - 4, then set -6^0 + C = f(0) to find C.'),
-  ('0c645a3f-1d0c-5be3-878f-663c43e60000', 3, null, '**Choice D is correct.** Because $LM ∥ PQ$, triangles $LMR$ and $PQR$ are similar with corresponding vertices M↔P and L↔Q. The linear scale factor from triangle $LMR$ to $PQR$ is $\frac{RP}{RM} = \frac{14}{8} = \frac{7}{4}$. Areas scale by the
-$2$
-square of the linear factor, so the area of $\triangle PQR$ is $36 \times (\frac{7}{4}) = 36 \times \frac{49}{16} = \frac{441}{4}$.
+  ('0c645a3f-1d0c-5be3-878f-663c43e60000', 3, null, '**Choice D is correct.** Because $LM ∥ PQ$, triangles $LMR$ and $PQR$ are similar with corresponding vertices M↔P and L↔Q. The linear scale factor from triangle $LMR$ to $PQR$ is $\frac{RP}{RM} = \frac{14}{8} = \frac{7}{4}$. Areas scale by the square of the linear factor, so the area of $\triangle PQR$ is $36 \times (\frac{7}{4})^{2} = 36 \times \frac{49}{16} = \frac{441}{4}$.
 **Choice A is incorrect.** It equals $\frac{576}{49}$, which does not match the correct area computed by the similarity scale. **Choice B is incorrect.** $\frac{144}{7}$ is not $36 \times (7/4)^{2}$.
 **Choice C is incorrect.** 63 is also not equal to $36 \times (7/4)^{2}$.
 **Faster approach:** Recognize the two triangles are similar; compute the linear ratio $14 : 8 = 7 : 4$, square it to get $49 : 16$, then multiply the given area by $49/16$.'),

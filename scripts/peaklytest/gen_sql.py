@@ -41,8 +41,10 @@ for k, t in enumerate(tests):
         f"-- PeaklyPrep: {name} — full practice test from the PeaklyTest library ({FULL.get(t['month'], t['month'])} {t['year']} form) --------",
         "-- Generated from the PeaklyTest PDF: questions, answer choices, answer keys and explanations.",
         "-- Figures live in public/q/" + slug + "/. Ids are fixed, so running this file again updates the test instead of copying it.",
-        '',
     ]
+    if any(q.get('note') == 'answer key written by PeaklyPrep' for m in t['modules'] for q in m['questions']):
+        lines.append("-- The source PDF has no answers: the answer keys and short explanations were written by PeaklyPrep.")
+    lines.append('')
     counts = []
     for mi, m in enumerate(t['modules']):
         sec = m['section']

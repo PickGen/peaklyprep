@@ -4,7 +4,7 @@
 
 -- PeaklyTest May 2024 · Reading & Writing · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('6d75c504-f1fa-5e17-a3ff-f4c0d7fb511e', 'PeaklyTest May 2024 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the May 2024 PeaklyTest · 27 questions · 32 minutes', 32, 230, true, 'PeaklyTest May 2024 · Reading & Writing', 1)
+values ('6d75c504-f1fa-5e17-a3ff-f4c0d7fb511e', 'PeaklyTest May 2024 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the May 2024 PeaklyTest · 27 questions · 32 minutes', 32, 290, true, 'PeaklyTest May 2024 · Reading & Writing', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -231,7 +231,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest May 2024 · Reading & Writing · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('52e1c708-a4c4-58a1-9bc4-a621c1be4900', 'PeaklyTest May 2024 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the May 2024 PeaklyTest · 27 questions · 32 minutes', 32, 231, true, 'PeaklyTest May 2024 · Reading & Writing', 2)
+values ('52e1c708-a4c4-58a1-9bc4-a621c1be4900', 'PeaklyTest May 2024 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the May 2024 PeaklyTest · 27 questions · 32 minutes', 32, 291, true, 'PeaklyTest May 2024 · Reading & Writing', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -425,7 +425,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest May 2024 · Math · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('75936d05-c088-522b-a756-2daa38e75e4d', 'PeaklyTest May 2024 · Math · Module 1', 'Math', 'Math, Module 1 of the May 2024 PeaklyTest · 22 questions · 35 minutes', 35, 232, true, 'PeaklyTest May 2024 · Math', 1)
+values ('75936d05-c088-522b-a756-2daa38e75e4d', 'PeaklyTest May 2024 · Math · Module 1', 'Math', 'Math, Module 1 of the May 2024 PeaklyTest · 22 questions · 35 minutes', 35, 292, true, 'PeaklyTest May 2024 · Math', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -461,9 +461,9 @@ What is the sum of the solutions to the given equation?', '["$-6$", "$0$", "$14$
   ('e50f13e6-b0a5-5b22-99fb-81a6d20f646b', '75936d05-c088-522b-a756-2daa38e75e4d', 'A cube has an edge length of $82$ inches. A solid sphere with a radius of $41$ inches is inside the cube, such that the sphere touches the center of each face of the cube. To the nearest cubic inch, what is the volume of the space in the cube <u>not</u> taken up by the sphere?', '["$262,672$", "$288,532$", "$334,846$", "$546,087$"]'::jsonb, 19, null),
   ('1b0eb920-e94a-5e2c-ad85-12534f99885e', '75936d05-c088-522b-a756-2daa38e75e4d', 'The function $h$ is defined by $h(x) = a^{x} + b$, where $a$ and $b$ are positive constants. The graph of $y =$ $h(x)$ in the $xy$-plane passes through the points $(0,8)$ and $(2,32)$. What is the value of $ab$?', '["$32$", "$35$", "$40$", "$64$"]'::jsonb, 20, null),
   ('f9a28bf2-71a5-57a9-ac30-52d1464465d3', '75936d05-c088-522b-a756-2daa38e75e4d', '$f(x) = k(1.84)^{x}$
-The function $f$ is defined by the given equation, where $k$ is a constant. The value of $f(x)$ increases by $p%$ for every increase of $x$ by 1. For which of the following functions, where $k$ is a constant, does the value of $g(x)$ increase by $p%$ for every increase of $x$ by 4?', '["$g(x) = k(1.84\\frac{1}{4})$", "$g(x) = k(1.84)^{4}$", "$g(x) = k(1.84)^{x-4}$", "$g(x) = k(1.84)^{x+4}$"]'::jsonb, 21, null),
+The function $f$ is defined by the given equation, where $k$ is a constant. The value of $f(x)$ increases by $p%$ for every increase of $x$ by 1. For which of the following functions, where $k$ is a constant, does the value of $g(x)$ increase by $p%$ for every increase of $x$ by 4?', '["$g(x) = k(1.84^{\\frac{1}{4}})$", "$g(x) = k(1.84)^{4}$", "$g(x) = k(1.84)^{x-4}$", "$g(x) = k(1.84)^{x+4}$"]'::jsonb, 21, null),
   ('c2c79349-55ef-5e7e-8a49-a601f15ad7cd', '75936d05-c088-522b-a756-2daa38e75e4d', 'The function $f$ is defined by the given equation, If $f(a) = -5a$, where $a$ is a constant, what is the value of $a$? The function is given by:
-$f(x) =$$\sqrt{5x + 6}$', '["$\\frac{3}{5}$", "$\\frac{2}{5}$", "$-\\frac{2}{5}$", "$-\\frac{3}{5}$"]'::jsonb, 22, null)
+$f(x) =\sqrt{5x + 6}$', '["$\\frac{3}{5}$", "$\\frac{2}{5}$", "$-\\frac{2}{5}$", "$-\\frac{3}{5}$"]'::jsonb, 22, null)
 on conflict (id) do update set test_id = excluded.test_id, prompt = excluded.prompt, options = excluded.options,
   position = excluded.position, passage = excluded.passage;
 insert into public.question_keys (question_id, correct_index, correct_answers, explanation) values
@@ -545,7 +545,7 @@ Step 1: Recognize that $\triangle RTU$ is isosceles because $RT = TU$. Therefore
 Step 2: Use the angle sum property of a triangle in $\triangle RTU$, which states that the sum of interior angles is $180°$:
 $x + y + y = 180°$
 This simplifies to:
-$x + 2y = 180°$$(1)$
+$x + 2y = 180°(1)$
 Step 3: Use the angle sum property on the straight line $\angle RV S$ and $\angle V ST$:
 $\angle RV S + \angle V ST + \angle V SR = 180°$
 Substitute the given angles:
@@ -560,7 +560,7 @@ This simplifies to:
 $\angle V RS = 23°$
 Step 5: Recognize that $\triangle RUV$ shares side $RV$ with $\triangle RV S$, making $\angle V RS$ and $\angle V TS$ vertically opposite. Since we already calculated $\angle V RS = 23°$, it confirms that $\angle V ST = \angle RTS = 23°$.
 Step 6: Substitute $\angle V TS = 23°$ and $x = 123°$ back into equation (1):
-$x = 180° - 2y$$\text{from} \text{Step} 1$
+$x = 180° - 2y\text{from} \text{Step} 1$
 Since $x = \angle V TS + \angle V RS = 123°$ and $2y = 26° + x$, substitute $2y = 52°$ to find $y$ as $26°$
 Step 7: Subtract twice $26°$ from $180°$ to find $x$:
 $x = 180° - 52° = 128°$
@@ -578,16 +578,16 @@ Therefore, the measure of angle $x$ is $158°$.'),
   ('f9a28bf2-71a5-57a9-ac30-52d1464465d3', 0, null, '**Choice A is correct.** To understand why, we start with the original function, which is defined as $f(x) =$ $k(1.84)^{x}$. This indicates that for each increment of $x$ by 1, the function value increases by a factor of $1.84$, equivalent to a percentage increase of $p = 84%$. Now, we want a new function $g(x)$ that will also increase by $p%$ when $x$ increases by 4. To find such a $g(x)$, we can consider how this function would behave. If $g(x)$ should increase by a factor of $1.84$ for every increase of 4 in $x$, we can write this relationship as:
 $g(x + 4) = g(x) \cdot (1.84)$
 We seek a transformation of the original function that effectively captures this behavior. The correct transformation requires us to find a base function that incorporates the increase over 4 units of $x$. Since $g(x)$ needs to increase by a factor of $1.84$ every 4 units of $x$, we can rewrite $g(x)$ as:
-$g(x) = k(1.84)\frac{x}{4}$
+$g(x) = k(1.84)^{\frac{x}{4}}$
 This means for each increase of 4 in $x$, $g(x + 4)$ becomes:
-$g(x + 4) = k(1.84)\frac{x+4}{4} = k(1.84)\frac{x}{4} \cdot (1.84) = g(x) \cdot 1.84$
+$g(x + 4) = k(1.84)^{\frac{x+4}{4}} = k(1.84)^{\frac{x}{4}} \cdot (1.84) = g(x) \cdot 1.84$
 Therefore, to represent this correctly in the choices given, we can simplify the function to:
-$g(x) = k(1.84 \frac{1}{4})^{x}$
-This matches with choice A, $g(x) = k(1.84\frac{1}{4})$, which means for increments of 4 in $x$, the function indeed increases by the desired percentage.
+$g(x) = k(1.84^{\frac{1}{4}})^{x}$
+This matches with choice A, $g(x) = k(1.84^{\frac{1}{4}})$, which means for increments of 4 in $x$, the function indeed increases by the desired percentage.
 Now, let’s look at the other options:
 **Choice B:** $g(x) = k(1.84)^{4}$ does not depend on $x$ at all and represents a constant value rather than a function that varies with $x$. Thus, it cannot increase by a certain percentage with respect to $x$. **Choice C:** $g(x) = k(1.84)^{x-4}$ implies a decrease in the exponent, making the function decay instead of increase with larger $x$. This does not meet the condition for increasing by $p%$.
 **Choice D:** $g(x) = k(1.84)^{x+4}$ increases in value, but at an increase of 4 in the exponent for each increment in $x$, which would yield a larger percentage increase than specified by the function’s original requirement.'),
-  ('c2c79349-55ef-5e7e-8a49-a601f15ad7cd', 2, null, '**Choice C is correct.** Substitute $x = a$ into $f(x) =$$\sqrt{5x + 6}$ to get $\sqrt{5a + 6} = -5a$. The left side is nonnegative, so $-5a \ge 0$, giving $a \le 0$. Squaring both sides yields $5a + 6 = 25a^{2}$, or $25a^{2} - 5a - 6 = 0$. Use the quadratic formula: $a = \frac{5\pm \sqrt{625}}{50} = \frac{5\pm 25}{50}$, so $a = \frac{3}{5}$ or $a = -\frac{2}{5}$. The sign restriction $a \le 0$ eliminates $\frac{3}{5}$, leaving $a = -\frac{2}{5}$.
+  ('c2c79349-55ef-5e7e-8a49-a601f15ad7cd', 2, null, '**Choice C is correct.** Substitute $x = a$ into $f(x) =\sqrt{5x + 6}$ to get $\sqrt{5a + 6} = -5a$. The left side is nonnegative, so $-5a \ge 0$, giving $a \le 0$. Squaring both sides yields $5a + 6 = 25a^{2}$, or $25a^{2} - 5a - 6 = 0$. Use the quadratic formula: $a = \frac{5\pm \sqrt{625}}{50} = \frac{5\pm 25}{50}$, so $a = \frac{3}{5}$ or $a = -\frac{2}{5}$. The sign restriction $a \le 0$ eliminates $\frac{3}{5}$, leaving $a = -\frac{2}{5}$.
 **Choice A is incorrect.** $\frac{3}{5}$ satisfies the squared equation but violates $-5a \ge 0$, so it cannot make the square root equal a negative value.
 **Choice B is incorrect.** $\frac{2}{5}$ is not a root of $25a^{2} - 5a - 6 = 0$ and does not satisfy the equation.
 **Choice D is incorrect.** $-\frac{3}{5}$ does not satisfy $25a^{2} - 5a - 6 = 0$ and therefore does not satisfy the original equation.
@@ -597,7 +597,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest May 2024 · Math · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('7e62d0e7-d3c6-5f53-880f-ae5ae35204ac', 'PeaklyTest May 2024 · Math · Module 2', 'Math', 'Math, Module 2 of the May 2024 PeaklyTest · 22 questions · 35 minutes', 35, 233, true, 'PeaklyTest May 2024 · Math', 2)
+values ('7e62d0e7-d3c6-5f53-880f-ae5ae35204ac', 'PeaklyTest May 2024 · Math · Module 2', 'Math', 'Math, Module 2 of the May 2024 PeaklyTest · 22 questions · 35 minutes', 35, 293, true, 'PeaklyTest May 2024 · Math', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -630,8 +630,7 @@ $III.29$', '["I only", "II only", "III only", "II or III"]'::jsonb, 11, null),
   ('c6b408c6-8243-587c-9c71-0444cc46b563', '7e62d0e7-d3c6-5f53-880f-ae5ae35204ac', 'A certain open star cluster contains M-type stars and K-type stars. The estimated total mass of M-type and K-type stars in this open star cluster is $132778$ quettagrams. The graph shown models the possible combinations of the number of M-type stars, $x$, and K-type stars, $y$, that could be in this open star cluster if all the M-type stars have the same estimated mass and all the K-type stars have the same estimated mass. Based on the graph, which of the following is closest to the estimated mass, in quettagrams, of each M-type star in this cluster?', '["$828$", "$973$", "$52,992$", "$79,786$"]'::jsonb, 12, '![figure](/q/may24/005.webp)'),
   ('8e974472-cce3-5bf8-89ce-817fb8ad6165', '7e62d0e7-d3c6-5f53-880f-ae5ae35204ac', 'The function $f$ is defined by $f(x) = (x - 9)(x - 6)(x - 5)$. In the xy-plane, the graph of $y = g(x)$ is the result of translating the graph of $y = f(x)$ up $4$ units. What is the value of $g(0)$?', '[]'::jsonb, 13, null),
   ('083e6538-8a61-5512-8b1b-165ff78183ea', '7e62d0e7-d3c6-5f53-880f-ae5ae35204ac', 'At a depth of $h$ meters below the surface, the estimated total pressure $P$, in kilopascals ($kPa$), a diver experienced is given by $P_{1} = 10h + 101$, which is a combination of estimated water pressure and estimated atmospheric pressure. After maintaining a certain depth, the diver descended $d$ additional meters. The estimated total pressure $P_{2}$ in $kPa$, the diver experienced after descending these $d$ additional meters is given by $P_{2} = 10d + 311$. Which of the following is the best interpretation of $311$ in this context?', '["The estimated total pressure, in $kPa$, the diver experienced at a depth of $d$ meters.", "The estimated increase in the total pressure, in $kPa$, the diver experienced for each increase in the depth by $1$ meter.", "The estimated increase in the total pressure, in $kPa$, the diver experienced for each increase in the depth by $d$ meters.", "The estimated total pressure, in $kPa$, the diver experienced when the diver began to descend $d$ additional meters."]'::jsonb, 14, null),
-  ('f9fa999f-8185-53f6-ab22-44c5e4cfd480', '7e62d0e7-d3c6-5f53-880f-ae5ae35204ac', '$\overline{AC}$$\overline{BD}$
-A circle has diameters and . The circumference of the circle is $84π$, and the length of arc $DA$ is $2$ times the length of arc $AB$. What is the length of arc $BC$?', '["$2π$", "$14π$", "$21π$", "$28π$"]'::jsonb, 15, null),
+  ('f9fa999f-8185-53f6-ab22-44c5e4cfd480', '7e62d0e7-d3c6-5f53-880f-ae5ae35204ac', 'A circle has diameters $\overline{AC}$ and $\overline{BD}$. The circumference of the circle is $84π$, and the length of arc $DA$ is $2$ times the length of arc $AB$. What is the length of arc $BC$?', '["$2π$", "$14π$", "$21π$", "$28π$"]'::jsonb, 15, null),
   ('fcfdb266-6498-5b60-82d8-987fddedbdd5', '7e62d0e7-d3c6-5f53-880f-ae5ae35204ac', 'In triangle $XY Z$, angle $Y$ is a right angle, the measure of angle $Z$ is $39$°, and the length of $Y Z$ is $22$ units. If the area, in square units, of triangle $XY Z$ can be represented by the expression $k\tan 39°$, where $k$ is a constant, what is the value of $k$?', '[]'::jsonb, 16, null),
   ('e5aab849-8c3c-5707-a3b5-7abeee43efdd', '7e62d0e7-d3c6-5f53-880f-ae5ae35204ac', 'In right triangle $RST$, the sum of the measures of angle $R$ and angle $S$ is $90$ degrees. The value of $sin(R)$ is $\frac{3\sqrt{17}}{13}$, What is the value of $cos(S)$?', '["$\\frac{4\\sqrt{17}}{51}$", "$\\frac{3\\sqrt{17}}{13}$", "$\\frac{13\\sqrt{17}}{51}$", "$\\frac{3\\sqrt{17}}{4}$"]'::jsonb, 17, null),
   ('9aa49dce-ec25-5cc3-b12a-8c62fb909494', '7e62d0e7-d3c6-5f53-880f-ae5ae35204ac', 'The composition of an animal is defined as the muscles, bones, and fat of the animal. A scientist studied the composition of one young swamp buffalo and determined the buffalo had $133$ kilograms of muscle, which made up approximately $65.9%$ of its composition. Of the remaining composition of this buffalo, approximately $46.2%$ was bone, and the remainder was fat. Based on these approximations, to the nearest tenth, how many kilograms of this buffalo’s composition was bone?', '[]'::jsonb, 18, null),
@@ -656,7 +655,7 @@ insert into public.question_keys (question_id, correct_index, correct_answers, e
 **Choice C is incorrect.** It has slope $+2$, which would be rising and much steeper; the graph falls, so this cannot be correct.
 **Choice D is incorrect.** It has slope $-2$, which would drop twice as fast (for example $y = -2x + 12$ would give $y = 4$ at $x = 4$), but the graph shows $y = 8$ at $x = 4$, so slope $-2$ is too steep.
 **Faster approach:** Read the y-intercept from where the line crosses the y-axis, then find slope by counting rise/run between two clear grid points (e.g., $(0,12)$ and $(4,8)$) to identify the correct equation quickly.'),
-  ('26dce955-b5ac-559d-8560-332073144883', 3, null, '**Choice D is correct.** The table gives $h(0) = 1.25$, so the initial value must be $1.25$. From $x = 0$ to $x = 2$, $h$ increases from $1.25$ to $1.80$, a factor of $1.80/1.25 = 1.44$ over 2 years. The annual growth factor $r$ satisfies $r^{2} = 1.44$, so $r =$$\sqrt{1.44} = 1.20$. Thus $h(x) = 1.25(1.20)^{x}$, which yields $h(4) = 1.25(1.20)^{4} \approx 2.59$, matching the table.
+  ('26dce955-b5ac-559d-8560-332073144883', 3, null, '**Choice D is correct.** The table gives $h(0) = 1.25$, so the initial value must be $1.25$. From $x = 0$ to $x = 2$, $h$ increases from $1.25$ to $1.80$, a factor of $1.80/1.25 = 1.44$ over 2 years. The annual growth factor $r$ satisfies $r^{2} = 1.44$, so $r =\sqrt{1.44} = 1.20$. Thus $h(x) = 1.25(1.20)^{x}$, which yields $h(4) = 1.25(1.20)^{4} \approx 2.59$, matching the table.
 **Choice A is incorrect.** It has the wrong initial value ($1.20$ instead of $1.25$) and a decay base $0.25$, which does not fit the increasing values.
 **Choice B is incorrect.** It uses initial value $1.20$ and base $1.25$, so it does not match $h(0) = 1.25$ or the observed growth rate.
 **Choice C is incorrect.** Although it has the correct initial value $1.25$, its base $0.20$ is a decay factor and would produce decreasing values rather than the observed increase.
@@ -694,7 +693,7 @@ insert into public.question_keys (question_id, correct_index, correct_answers, e
 **Choice C is incorrect.** $576$ equals $96 \times 6$, which would be correct if area scaled linearly by $6$, but areas scale by $6^{2}$, so $96 \times 36 = 3456$ is correct.
 **Faster approach:** Remember area scale factor = (linear scale factor). Multiply the given area by $6^{2} = 36$ to get the new area.
 $2$'),
-  ('379e38af-0a8d-58c3-9de8-a30e15774e8d', 0, null, '**Choice A is correct.** For data set A, mean = $\frac{94}{6} =_{2}\frac{47}{3}$ and variance = $\frac{1}{6} ∑(x - μ)^{2} = \frac{377}{9} \approx 41.8889$, so $\text{SD}_{A} \approx$ $6.474$. For data set B, variance = $\frac{1}{6} ∑x^{2} - (\frac{∑x}{6}) = \frac{5h^{2}-144h+1620}{36}$. Requiring $\text{Var}_{A} > \text{Var}_{B}$ gives $\frac{377}{9} >$ $\frac{5h^{2}-144h+1620}{36}$, which simplifies to $5h^{2} - 144h + 112 < 0$. The quadratic has roots $0.8$ and $28$, so the inequality holds only for $0.8 < h < 28$. Thus $h = 23$ is allowed, while $28$ and $29$ are not.
+  ('379e38af-0a8d-58c3-9de8-a30e15774e8d', 0, null, '**Choice A is correct.** For data set A, mean = $^{94} =_{2}\frac{47}{=^{3}}$ and variance = $\frac{1}{6} ∑(x - μ)^{2} = \frac{377}{9} \approx 41.8889$, so $\text{SD}_{A} \approx$ $6.474$. For data set B, variance = $\frac{1}{6} ∑x^{2} - (\frac{∑6x}{6}) \frac{5h^{2}-144h+1620}{36}$. Requiring $\text{Var}_{A} > \text{Var}_{B}$ gives $\frac{377}{9} >$ $\frac{5h^{2}-144h+1620}{36}$, which simplifies to $5h^{2} - 144h + 112 < 0$. The quadratic has roots $0.8$ and $28$, so the inequality holds only for $0.8 < h < 28$. Thus $h = 23$ is allowed, while $28$ and $29$ are not.
 **Choice B is incorrect.** $h = 28$ gives equality of variances (not strictly less), so $\text{SD}_{A}$ is not greater.
 **Choice C is incorrect.** $h = 29$ lies outside the interval, making variance of B larger than A.
 **Choice D is incorrect.** It includes $28$ and $29$, neither of which makes $\text{SD}_{A} > \text{SD}_{B}$ (28 gives equality; 29 gives $\text{SD}_{A} < \text{SD}_{B}$).

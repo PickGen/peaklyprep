@@ -217,7 +217,7 @@ def build_level(glyphs, bars, paths):
                 continue
             tex = '\\frac{' + build_level(num, sub_b_num, sub_p_num) + '}{' + build_level(den, sub_b_den, sub_p_den) + '}'
             sz = max([g.size for g in num + den] or [10])
-            nodes.append({'tex': tex, 'x0': r.x0, 'x1': r.x1, 'size': sz / 0.7 if sz < 9 else sz, 'comp': True, 'cy': r.y0})
+            nodes.append({'tex': tex, 'x0': r.x0, 'x1': r.x1, 'size': sz / 0.7 if sz < 9 else sz, 'comp': True, 'cy': r.y0, 'frac': True, 'gs': sz})
         else:
             sz_est = statistics.median([g.size for g in glyphs]) if glyphs else 10
             inner = [g for g in glyphs if id(g) not in used and r.x0 + 0.45 * g.size < g.cx <= r.x1 + 0.5 and r.y0 - 1 <= (g.oy - 0.3 * g.size) <= r.y1 + 1]
@@ -256,16 +256,24 @@ def build_level(glyphs, bars, paths):
                 role = 'sub'
         items.append(('g', g, role))
     for n in nodes:
-        items.append(('n', n, 'base'))
+        role = 'base'
+        # a small fraction raised well above the baseline is an exponent, e.g. 2.80^{x/2}
+        if n.get('frac') and base_y is not None and n['gs'] < 0.85 * base_size and n['cy'] < base_y - 0.45 * base_size:
+            role = 'supnode'
+        items.append(('n', n, role))
     items.sort(key=lambda it: it[1]['x0'] if it[0] == 'n' else it[1].x0)
     seq = []
     i = 0
     while i < len(items):
         kind, obj, role = items[i]
+        if role == 'supnode':
+            seq.append({'tex': '^{' + obj['tex'] + '}', 'x0': obj['x0'], 'x1': obj['x1'], 'size': base_size, 'script': True})
+            i += 1
+            continue
         if role in ('sup', 'sub'):
             j = i
             grp = []
-            while j < len(items) and items[j][2] == role:
+            while j < len(items) and items[j][2] == role and items[j][0] == 'g':
                 grp.append(items[j][1])
                 j += 1
             inner = build_level(grp, [], [])
@@ -301,14 +309,19 @@ def math_rows(glyphs, drawings):
     # row baselines from full-size glyphs not stacked inside fractions
     maxs = max(g.size for g in glyphs)
     inside_frac = set()
+    frac_bars = []
     for b in bars:
         r = b['rect']
-        for g in glyphs:
-            if r.x0 - 1 <= g.cx <= r.x1 + 1 and abs(g.oy - r.y0) < 2.2 * g.size:
-                inside_frac.add(id(g))
+        near = [g for g in glyphs if r.x0 - 1 <= g.cx <= r.x1 + 1 and abs(g.oy - r.y0) < 2.2 * g.size]
+        # a fraction has glyphs above and below its bar; a bar with glyphs only below is an overline
+        if any(g.oy <= r.y0 + 0.5 for g in near) and any(g.oy > r.y1 for g in near):
+            inside_frac.update(id(g) for g in near)
+            frac_bars.append(b)
     cands = sorted(g.oy for g in glyphs if g.size >= 0.92 * maxs and id(g) not in inside_frac)
     if not cands:
-        cands = sorted(((b['rect'].y0 + 0.3 * maxs) for b in bars)) or [statistics.median(g.oy for g in glyphs)]
+        cands = sorted(g.oy for g in glyphs if id(g) not in inside_frac)
+    if not cands:
+        cands = sorted(((b['rect'].y0 + 0.3 * maxs) for b in frac_bars)) or [statistics.median(g.oy for g in glyphs)]
     rows = []
     for y in cands:
         if rows and y - rows[-1][-1] < 0.9 * maxs:
@@ -378,7 +391,7 @@ def analyse_page(D, pno, img_dir, slug, counter):
 
     # markers
     labels = [g for g in glyphs if g.bold and abs(g.size - 8.8) < 0.3 and g.ch in 'ABCD' and g.x0 < 64]
-    boxes = [d['rect'] for d in drawings if d['rect'].width > 380 and 25 < d['rect'].height and d['rect'].y0 > 80]
+    boxes = [d['rect'] for d in drawings if d['rect'].width > 380 and 25 < d['rect'].height and d['rect'].y0 > 45]
     opt_boxes = []
     for lab in labels:
         cont = [r for r in boxes if r.x0 - 1 <= lab.x0 and lab.x1 <= r.x1 + 1 and r.y0 - 1 <= lab.y0 and lab.y1 <= r.y1 + 1]
@@ -473,9 +486,15 @@ def analyse_page(D, pno, img_dir, slug, counter):
         a = mg[i]
         for j in order[ii + 1:]:
             b = mg[j]
-            if b.y0 > a.y1 + 1:
+            if b.y0 > a.y1 + 8:
                 break
-            if min(a.y1, b.y1) - max(a.y0, b.y0) < 0.25 * min(a.size, b.size):
+            need = 0.25 * min(a.size, b.size)
+            # an exponent after a big delimiter, e.g. (1/8)^x, sits high above the delimiter's glyph box
+            big, small = (a, b) if a.size > b.size else (b, a)
+            if big.font.startswith('KaTeX_Size') and small.size < 0.9 * big.size and -1 <= small.x0 - big.x1 <= 3 and big.oy - 1.3 * big.size < small.oy < big.oy:
+                union(i, j)
+                continue
+            if min(a.y1, b.y1) - max(a.y0, b.y0) < need:
                 continue
             gap = max(b.x0 - a.x1, a.x0 - b.x1)
             if gap > 0.75 * max(a.size, b.size):
@@ -494,12 +513,15 @@ def analyse_page(D, pno, img_dir, slug, counter):
             br = d['rect']
             inx = [i for i, g in enumerate(mg) if br.x0 - 1 <= g.cx <= br.x1 + 1]
             above = [i for i in inx if mg[i].oy <= br.y0 + 0.5 and br.y0 - mg[i].y1 < 0.6 * mg[i].size]
+            # a numerator never sits on a line of regular text; glyphs that do belong to the previous line
+            above = [i for i in above if not any(abs(t.oy - mg[i].oy) < 1.2 and abs(t.x0 - mg[i].x0) < 150 for t in tg)]
             below = [i for i in inx if mg[i].oy > br.y1 and mg[i].y0 - br.y1 < 0.6 * mg[i].size]
             if not below:
                 continue
             hits = above + below
         else:
-            hits = [i for i, g in enumerate(mg) if r.intersects(pymupdf.Rect(g.x0, g.y0, g.x1, g.y1))]
+            rr = pymupdf.Rect(d["rect"]) + (-1.5, -1.5, 4, 1.5)  # exponents sit just right of a tall delimiter
+            hits = [i for i, g in enumerate(mg) if rr.intersects(pymupdf.Rect(g.x0, g.y0, g.x1, g.y1))]
         for i in hits:
             union(nb + k, i)
         if hits:

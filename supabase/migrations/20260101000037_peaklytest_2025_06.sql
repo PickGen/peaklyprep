@@ -4,7 +4,7 @@
 
 -- PeaklyTest Jun 2025 · Reading & Writing · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('d6a65e7e-5757-553f-b6fb-e7c4fb4bfd2f', 'PeaklyTest Jun 2025 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the Jun 2025 PeaklyTest · 27 questions · 32 minutes', 32, 150, true, 'PeaklyTest Jun 2025 · Reading & Writing', 1)
+values ('d6a65e7e-5757-553f-b6fb-e7c4fb4bfd2f', 'PeaklyTest Jun 2025 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the Jun 2025 PeaklyTest · 27 questions · 32 minutes', 32, 210, true, 'PeaklyTest Jun 2025 · Reading & Writing', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -229,7 +229,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Jun 2025 · Reading & Writing · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('a1dfcd58-4343-5bb0-9901-4ed6346b2f7b', 'PeaklyTest Jun 2025 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the Jun 2025 PeaklyTest · 27 questions · 32 minutes', 32, 151, true, 'PeaklyTest Jun 2025 · Reading & Writing', 2)
+values ('a1dfcd58-4343-5bb0-9901-4ed6346b2f7b', 'PeaklyTest Jun 2025 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the Jun 2025 PeaklyTest · 27 questions · 32 minutes', 32, 211, true, 'PeaklyTest Jun 2025 · Reading & Writing', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -435,7 +435,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Jun 2025 · Math · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('11bf08da-666f-5bd9-8b4d-e52399fcee19', 'PeaklyTest Jun 2025 · Math · Module 1', 'Math', 'Math, Module 1 of the Jun 2025 PeaklyTest · 22 questions · 35 minutes', 35, 152, true, 'PeaklyTest Jun 2025 · Math', 1)
+values ('11bf08da-666f-5bd9-8b4d-e52399fcee19', 'PeaklyTest Jun 2025 · Math · Module 1', 'Math', 'Math, Module 1 of the Jun 2025 PeaklyTest · 22 questions · 35 minutes', 35, 212, true, 'PeaklyTest Jun 2025 · Math', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -452,7 +452,7 @@ $4x - 3y = -24$', '["$x$036\n\n$y$81216", "$x$036\n\n$y$16128", "$x$81216\n\n$y$
   ('788cba49-5579-5b2b-8d12-028d294b60b0', '11bf08da-666f-5bd9-8b4d-e52399fcee19', 'A chemist combines water and isopropanol to make a mixture with a volume of 38 milliliters (mL). The volume of isopropanol in the mixture is 10 mL. What is the volume of water, in mL, in the mixture? (Assume that the volume of the mixture is the sum of the volumes of water and isopropanol before they were mixed.)', '[]'::jsonb, 10, null),
   ('677d9317-17c7-5770-bc0b-e8d66e815a86', '11bf08da-666f-5bd9-8b4d-e52399fcee19', '$y = -\frac{1}{8}xy = \frac{1}{10}x$ The solution to the given system of equations is $(x,y)$. What is the value of $x$?', '["-8", "0", "2", "10"]'::jsonb, 11, null),
   ('6fdd42e2-132a-5b26-b607-9a1fc52e0a67', '11bf08da-666f-5bd9-8b4d-e52399fcee19', 'A company has a customer loyalty program. In January 2018, there were 800 customers enrolled in the loyalty program. For the next 24 months after January 2018, the total number of customers enrolled in the loyalty program each month was 5% greater than the total number enrolled the previous month, Which equation gives the total number of customers, $c$, enrolled in the company’s loyalty program $m$ months after January 2018, where $m < 24$?', '["$c = 800(0.05)^{m}$", "$c = 800(1.05)^{m}$", "$c = 800(1.5)^{m}$", "$c = 800(5)^{m}$"]'::jsonb, 12, null),
-  ('b481bc5a-63a4-5034-b69e-b2207876f01d', '11bf08da-666f-5bd9-8b4d-e52399fcee19', 'The function $f(t) = 60,000(2)\frac{t}{580}$ gives the number of bacteria in a population $t$ minutes after an initial observation. How much time, in minutes, does it take for the number of bacteria in the population to double?', '[]'::jsonb, 13, null),
+  ('b481bc5a-63a4-5034-b69e-b2207876f01d', '11bf08da-666f-5bd9-8b4d-e52399fcee19', 'The function $f(t) = 60,000(2)^{\frac{t}{580}}$ gives the number of bacteria in a population $t$ minutes after an initial observation. How much time, in minutes, does it take for the number of bacteria in the population to double?', '[]'::jsonb, 13, null),
   ('d85cc207-fd93-5704-ad7a-34614c63f73e', '11bf08da-666f-5bd9-8b4d-e52399fcee19', 'For $x > 0$, the function $f$ is defined as follows: $f(x)$ equals 293% of $x$
 Which of the following could describe this function?', '["Decreasing exponential", "Decreasing linear", "Increasing exponential", "Increasing linear"]'::jsonb, 14, null),
   ('215095f5-7547-5c0d-bce9-c54b3e595ce8', '11bf08da-666f-5bd9-8b4d-e52399fcee19', '$y = \frac{3}{8}x + 2$
@@ -572,7 +572,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Jun 2025 · Math · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('099e912b-5c66-5471-b1b4-4e4227020137', 'PeaklyTest Jun 2025 · Math · Module 2', 'Math', 'Math, Module 2 of the Jun 2025 PeaklyTest · 22 questions · 35 minutes', 35, 153, true, 'PeaklyTest Jun 2025 · Math', 2)
+values ('099e912b-5c66-5471-b1b4-4e4227020137', 'PeaklyTest Jun 2025 · Math · Module 2', 'Math', 'Math, Module 2 of the Jun 2025 PeaklyTest · 22 questions · 35 minutes', 35, 213, true, 'PeaklyTest Jun 2025 · Math', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -580,9 +580,7 @@ insert into public.questions (id, test_id, prompt, options, position, passage) v
   ('b83227b9-41f7-55cb-a432-eaa5ac2ed8ed', '099e912b-5c66-5471-b1b4-4e4227020137', 'What is the y-intercept of the graph of $y = 6x^{2} + 4x + 3$ in the xy-plane?', '["$(0,3)$", "$(0,4)$", "$(0,6)$", "$(0,7)$"]'::jsonb, 2, null),
   ('63701291-05c8-54e0-b7c6-2169e9083a61', '099e912b-5c66-5471-b1b4-4e4227020137', 'The product of a positive number $x$ and the number that is 7 less than $x$ is equal to 18. What is the value of $x$?', '["3.5", "9", "11", "25"]'::jsonb, 3, null),
   ('7acc6dea-6c9d-5b3a-9be1-34bdf95bc499', '099e912b-5c66-5471-b1b4-4e4227020137', 'A cylinder has a diameter of 6 inches and a height of 21 inches. What is the volume, in cubic inches, of the cylinder?', '["$9π$", "$126π$", "$189π$", "$756π$"]'::jsonb, 4, null),
-  ('64faea3e-aac3-5824-8e0a-cd83f50e43cc', '099e912b-5c66-5471-b1b4-4e4227020137', 'In triangle $PQR$, is extended to point $S$. The measure of $\angle PQR$ is $132°$, and the measure of $\angle PRS$ is $166°$. What is the measure of $\angle QPR$?', '["$14°$", "$24°$", "$34°$", "$48°$"]'::jsonb, 5, '![figure](/q/jun25/008.webp)
-
-$\overline{QR}$'),
+  ('64faea3e-aac3-5824-8e0a-cd83f50e43cc', '099e912b-5c66-5471-b1b4-4e4227020137', 'In triangle $PQR$, $\overline{QR}$ is extended to point $S$. The measure of $\angle PQR$ is $132°$, and the measure of $\angle PRS$ is $166°$. What is the measure of $\angle QPR$?', '["$14°$", "$24°$", "$34°$", "$48°$"]'::jsonb, 5, '![figure](/q/jun25/008.webp)'),
   ('a678d2ae-456c-5455-9ea1-9e68cf3c225b', '099e912b-5c66-5471-b1b4-4e4227020137', 'Eli used wax to make candles. The function $f(x) = -9x + 54$ approximates the weight, in ounces, of wax Eli had remaining after making $x$ candles. Which statement is the best interpretation of the y-intercept of the graph of $y = f(x)$ in the xy-plane in this context?', '["Eli used approximately 9 ounces of wax for each candle.", "Eli had approximately 9 ounces of wax when he began to make the candles.", "Eli had approximately 54 ounces of wax when he began to make the candles.", "Eli used approximately 54 ounces of wax for each candle."]'::jsonb, 6, null),
   ('0055d907-916e-5ae1-bec0-1e078830fefc', '099e912b-5c66-5471-b1b4-4e4227020137', 'The graph shows the relationship between the number of shares of stock from Company A, $x$, and the number of shares of stock from Company B, $y$, that Sayen can purchase. Which equation could represent this relationship?', '["$y = 9x + 16$", "$9x + 16y = 720$", "$y = 16x + 9$", "$16x + 9y = 720$"]'::jsonb, 7, '![figure](/q/jun25/009.webp)'),
   ('ca5a2ce1-a963-536c-815d-ea2b79b09a7b', '099e912b-5c66-5471-b1b4-4e4227020137', 'The given equation relates the positive variables $a$, $b$, $k$, and $m$. Which equation correctly expresses $m$ in terms of $a$, $b$, and $k$?
@@ -594,13 +592,13 @@ $ak = \frac{b}{12}(8 + m)$', '["$m = \\frac{12(ak - 8)}{b}$", "$m = ak - 8 - \\f
   ('96b623ec-bd31-5c34-b810-9520b51bef86', '099e912b-5c66-5471-b1b4-4e4227020137', 'The function $F$ gives the temperature, in degrees Fahrenheit, that corresponds to a temperature of $x$ kelvins. If a temperature increased by 13.30 kelvins, by how much did the temperature increase, in degrees Fahrenheit?
 $F(x) = \frac{9}{5}(x - 273.15) + 32$', '["23.94", "55.94", "467.73", "499.73"]'::jsonb, 13, null),
   ('be97ebf0-3d3e-5ac7-8c61-d63952fe8a8e', '099e912b-5c66-5471-b1b4-4e4227020137', 'An environmental scientist is investigating the volatility of 175 organic compounds by finding the boiling point of each compound. The mean boiling point of all 175 compounds is 167 degrees Celsius. The scientist classifies each of these compounds as either semivolatile or volatile. Of the 175 compounds, 50 compounds were classified as semivolatile, and these 50 compounds have a mean boiling point of 322 degrees Celsius. The remaining 125 compounds were classified as volatile. What is the mean boiling point, in degrees Celsius, of the 125 compounds classified as volatile compounds?', '[]'::jsonb, 14, null),
-  ('56a42289-38e5-5a33-b73e-2699776827bb', '099e912b-5c66-5471-b1b4-4e4227020137', '$f(x) = 26(1.20) \frac{x}{3}$
+  ('56a42289-38e5-5a33-b73e-2699776827bb', '099e912b-5c66-5471-b1b4-4e4227020137', '$f(x) = 26(1.20)^{\frac{x}{3}}$
 For the given function $f$, the value of $f(x)$ increases by $p%$ for every increase of $x$ by 6. What is the value of $p$?', '["20", "31", "40", "44"]'::jsonb, 15, null),
   ('a2938a82-2db4-562a-a703-4d9838d35c6f', '099e912b-5c66-5471-b1b4-4e4227020137', 'A carpenter charges a flat rate of $228$ USD for the first 2 hours of work and $95$ USD for each additional hour of work. Which equation gives the total amount $y$, in dollars, that the carpenter charges for $x$ hours of work, where $x > 2$?', '["$y = 95x + 228$", "$y = 228x + 418$", "$y = 95x + 38$", "$y = 228x + 95$"]'::jsonb, 16, null),
   ('51406fc5-eeb7-54d1-9389-058fbf9e6ba6', '099e912b-5c66-5471-b1b4-4e4227020137', 'In the given system of equations, $a$ is a positive integer constant. The system has no real solutions. What is the least possible value of $a$?
 $y = -6.5$
 $y = x^{2} + 8x + a$', '[]'::jsonb, 17, null),
-  ('968ee099-76ee-59e9-8f4b-a732e1ce47fe', '099e912b-5c66-5471-b1b4-4e4227020137', '$\sqrt{^{5} 272n}(\sqrt{^{6} 272n})^{2}$
+  ('968ee099-76ee-59e9-8f4b-a732e1ce47fe', '099e912b-5c66-5471-b1b4-4e4227020137', '$^{5}\sqrt{272n}(^{6}\sqrt{272n})^{2}$
 For what value of $x$ is the given expression equivalent to $(272n)^{30x}$, where $n > 1$?', '[]'::jsonb, 18, null),
   ('774bd0b4-16b3-52aa-a18e-e9db4cf0459a', '099e912b-5c66-5471-b1b4-4e4227020137', 'One of these participants will be selected at random. What is the probability of selecting a participant from group A, given that the participant is at least 10 years of age?', '["$\\frac{5}{21}$", "$\\frac{5}{14}$", "$\\frac{17}{35}$", "$\\frac{5}{7}$"]'::jsonb, 19, '|  | 0–9 years | 10–19 years | 20+ years | Total |
 | Group A | 10 | 17 | 8 | 35 |
@@ -688,17 +686,17 @@ $\text{Total} \text{boiling} \text{points} \text{of} \text{volatile} = \text{Tot
 4. Since there are 125 volatile compounds, we can find the mean boiling point of the volatile compounds by dividing the total boiling points of the volatile by the number of volatile compounds:
 $\text{Mean} \text{boiling} \text{point} \text{of} \text{volatile} = \frac{\text{Total} \text{boiling} \text{points} \text{of} \text{volatile}}{\text{Number} \text{of} \text{volatile} \text{compounds}} = \frac{13125}{125} = 105 \text{degrees} \text{Celsius}.$
 Thus, the mean boiling point of the 125 compounds classified as volatile compounds is 105 degrees Celsius.'),
-  ('56a42289-38e5-5a33-b73e-2699776827bb', 3, null, '**Choice D is correct.** To find the percentage increase $p%$ in the function $f(x) = 26(1.20)\frac{x}{3}$ when $x$ increases by 6, we start by calculating $f(x)$ for $x$ and $x + 6$.
+  ('56a42289-38e5-5a33-b73e-2699776827bb', 3, null, '**Choice D is correct.** To find the percentage increase $p%$ in the function $f(x) = 26(1.20)^{\frac{x}{3}}$ when $x$ increases by 6, we start by calculating $f(x)$ for $x$ and $x + 6$.
 First, calculate $f(x)$:
-$f(x) = 26(1.20)\frac{x}{3}$
+$f(x) = 26(1.20)^{\frac{x}{3}}$
 Now, find $f(x + 6)$:
-$f(x + 6) = 26(1.20)\frac{x+6}{3} = 26(1.20)\frac{x}{3}(1.20)^{2}$
+$f(x + 6) = 26(1.20)^{\frac{x+6}{3}} = 26(1.20)^{\frac{x}{3}}(1.20)^{2}$
 Next, we can express $f(x + 6)$ in terms of $f(x)$:
 $f(x + 6) = f(x) \cdot (1.20)^{2}$
 The increase from $f(x)$ to $f(x + 6)$ is:
 $\text{Increase} = f(x + 6) - f(x) = f(x) \cdot (1.20)^{2} - f(x) = f(x)((1.20)^{2} - 1)$
 The percentage increase $p%$ can be calculated as:
-$p% = ($$\frac{\text{Increase}}{f(x)}$$) \times 100 = ((1.20)^{2} - 1) \times 100$
+$p% = (\frac{\text{Increase}}{f(x)}) \times 100 = ((1.20)^{2} - 1) \times 100$
 Now calculate $(1.20)^{2}$:
 $(1.20)^{2} = 1.44$
 Therefore, the percentage increase is:
@@ -714,7 +712,7 @@ Now, let’s consider the other options:
 **Faster approach:** Plug in a simple value $x > 2$ (for example $x = 3$ gives $y = 228 + 95 = 323$) and see which choice yields 323; that method works for any similar linear-rate problem.'),
   ('51406fc5-eeb7-54d1-9389-058fbf9e6ba6', null, array['10']::text[], '**The correct answer is 10.** The upward-opening parabola $y = x^{2} + 8x + a$ has its vertex at $x = -4$ with vertex value $y_{v} = a - 16$. For the horizontal line $y = -6.5$ to have no real intersection with the parabola, the entire parabola must lie above the line, so $y_{v} > -6.5$. Thus $a - 16 > -6.5$, which gives $a > 9.5$. Because $a$ is a positive integer, the least possible value is $10$.
 **Faster approach:** Compute the vertex value directly ($a - 16$) and compare it to $-6.5$; require $a - 16 > -6.5$, so $a > 9.5$, hence $a = 10$. This method (compare vertex y-value with the horizontal line) works for any similar problem.'),
-  ('968ee099-76ee-59e9-8f4b-a732e1ce47fe', null, array['2/113']::text[], '**The correct answer is 4/225.** Rewrite each radical as a fractional exponent: $\sqrt{^{5} 272n} = (272n)^{1/5}$ and $(\sqrt{^{6} 272n})^{2} = (272n)^{2/6} = (272n)^{1/3}$. Multiply by adding exponents: $1/5 + 1/3 = 3/15 + 5/15 = 8/15$, so the expression equals $(272n)^{8/15}$. Setting $8/15 = 30x$ gives $x = (8/15) \div 30 = 8/(15 \cdot 30) = 8/450 = 4/225$.
+  ('968ee099-76ee-59e9-8f4b-a732e1ce47fe', null, array['2/113']::text[], '**The correct answer is 4/225.** Rewrite each radical as a fractional exponent: $^{5}\sqrt{272n} = (272n)^{1/5}$ and $(^{6}\sqrt{272n})^{2} = (272n)^{2/6} = (272n)^{1/3}$. Multiply by adding exponents: $1/5 + 1/3 = 3/15 + 5/15 = 8/15$, so the expression equals $(272n)^{8/15}$. Setting $8/15 = 30x$ gives $x = (8/15) \div 30 = 8/(15 \cdot 30) = 8/450 = 4/225$.
 **Faster approach:** Convert each radical to fractional exponents and add exponents immediately: $1/5 +$ $2/6 = 1/5 + 1/3 = 8/15$, then solve $30x = 8/15$ to get $x = 4/225$.'),
   ('774bd0b4-16b3-52aa-a18e-e9db4cf0459a', 1, null, '**Choice B is correct.** We want P(Group A | age ≥ 10) = (number in Group A who are at least 10) / (total number who are at least 10). From the table Group A has 17 in 10–19 and 8 in 20+, so 17 + 8 = 25. The total number aged ≥10 is the sum of the last two columns: 35 + 35 = 70. Thus the probability is $25/70 = 5/14$, which is Choice B.
 **Choice A is incorrect.** $5/21$ equals $0.238$, but the correct fraction $25/70$ simplifies to $5/14 \approx 0.357$, so A is not equal to the computed conditional probability.

@@ -4,7 +4,7 @@
 
 -- PeaklyTest Jun 2024 · Reading & Writing · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('b2a94573-598d-50b7-9485-0ba3c0ba94a9', 'PeaklyTest Jun 2024 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the Jun 2024 PeaklyTest · 27 questions · 32 minutes', 32, 220, true, 'PeaklyTest Jun 2024 · Reading & Writing', 1)
+values ('b2a94573-598d-50b7-9485-0ba3c0ba94a9', 'PeaklyTest Jun 2024 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the Jun 2024 PeaklyTest · 27 questions · 32 minutes', 32, 280, true, 'PeaklyTest Jun 2024 · Reading & Writing', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -234,7 +234,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Jun 2024 · Reading & Writing · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('dce2af40-e980-5056-b8ae-6da6f4dc9a4e', 'PeaklyTest Jun 2024 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the Jun 2024 PeaklyTest · 27 questions · 32 minutes', 32, 221, true, 'PeaklyTest Jun 2024 · Reading & Writing', 2)
+values ('dce2af40-e980-5056-b8ae-6da6f4dc9a4e', 'PeaklyTest Jun 2024 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the Jun 2024 PeaklyTest · 27 questions · 32 minutes', 32, 281, true, 'PeaklyTest Jun 2024 · Reading & Writing', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -436,7 +436,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Jun 2024 · Math · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('9bf9b6d0-a285-5cf1-b6c6-f59ecb08a8b8', 'PeaklyTest Jun 2024 · Math · Module 1', 'Math', 'Math, Module 1 of the Jun 2024 PeaklyTest · 22 questions · 35 minutes', 35, 222, true, 'PeaklyTest Jun 2024 · Math', 1)
+values ('9bf9b6d0-a285-5cf1-b6c6-f59ecb08a8b8', 'PeaklyTest Jun 2024 · Math · Module 1', 'Math', 'Math, Module 1 of the Jun 2024 PeaklyTest · 22 questions · 35 minutes', 35, 282, true, 'PeaklyTest Jun 2024 · Math', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -470,7 +470,7 @@ In the given system of equations, $a$ is a positive integer constant. The system
 $y = x + a$
 In the given system of equations, $a$ is a constant. The graphs of the equations in the given system intersect at exactly one point, $(x,y)$, in the $xy$-plane. What is the value of $x$?', '["$-10$", "$-5$", "$5$", "$10$"]'::jsonb, 15, null),
   ('6dd67ba1-2eb4-59c9-a9b6-4fc3373867ad', '9bf9b6d0-a285-5cf1-b6c6-f59ecb08a8b8', 'Line $p$ in the $xy$-plane is defined by $y = x + \frac{5}{9}$ and passes through the points $(a,0)$ and $(0,b)$, where $a$ and $b$ are constants. What is the value of $a$?', '[]'::jsonb, 16, null),
-  ('02c3f8d4-63bc-5063-92ca-ee6df09ec9b7', '9bf9b6d0-a285-5cf1-b6c6-f59ecb08a8b8', 'The function $f(t) = 80,000(2)\frac{t}{790}$ gives the number of bacteria in a population $t$ minutes after an initial observation. How much time, in minutes, does it take for the number of bacteria in the population to double?', '["$2$", "$790$", "$1,580$", "$80,000$"]'::jsonb, 17, null),
+  ('02c3f8d4-63bc-5063-92ca-ee6df09ec9b7', '9bf9b6d0-a285-5cf1-b6c6-f59ecb08a8b8', 'The function $f(t) = 80,000(2)^{\frac{t}{790}}$ gives the number of bacteria in a population $t$ minutes after an initial observation. How much time, in minutes, does it take for the number of bacteria in the population to double?', '["$2$", "$790$", "$1,580$", "$80,000$"]'::jsonb, 17, null),
   ('074bcab1-7e5e-5ce2-8f4b-b82326f70fcb', '9bf9b6d0-a285-5cf1-b6c6-f59ecb08a8b8', 'Square P has a side length of $x$ inches. Square Q has a perimeter that is $32$ inches greater than the perimeter of square P. The function $f$ gives the area of square Q, in square inches. Which of the following defines $f$?', '["$f(x) = (x + 8)^{2}$", "$f(x) = (x + 32)^{2}$", "$f(x) = (32x + 8)^{2}$", "$f(x) = (32x + 32)^{2}$"]'::jsonb, 18, null),
   ('7ac56b4c-97cd-5196-b455-93a39de4a678', '9bf9b6d0-a285-5cf1-b6c6-f59ecb08a8b8', '$3.5x + 1.2y = 8$
 $17.5x + 6y = 40$
@@ -590,7 +590,7 @@ $n =$ initial amount $\times$(growth factor).'),
 **Choice B is incorrect.** A linear system of two equations in two variables cannot have exactly two solutions unless one allows nonstandard objects; here the equations either coincide, are parallel (zero solutions), or intersect once.
 **Choice D is incorrect.** There are solutions (in fact every point on the line), so the system does not have zero solutions.
 **Faster approach:** Check whether one equation is a scalar multiple of the other; if so, there are infinitely many solutions, if not and slopes are equal then none, otherwise exactly one.'),
-  ('ea8b07f5-df4d-582a-8e8b-8c93022f24a0', null, array['2209']::text[], '**The correct answer is 2209.** The area of a circle is $A = πr^{2}$. Circle A has area $π(2x)^{2} = π \cdot 4x^{2}$. Circle B has area $π(94x)^{2} = π \cdot 8836x^{2}$. The ratio (area of B) ÷ (area of A) is $\frac{π \cdot 8836x^{2}}{π \cdot 4x^{2}}$$= \frac{8836}{4} = 2209$.
+  ('ea8b07f5-df4d-582a-8e8b-8c93022f24a0', null, array['2209']::text[], '**The correct answer is 2209.** The area of a circle is $A = πr^{2}$. Circle A has area $π(2x)^{2} = π \cdot 4x^{2}$. Circle B has area $π(94x)^{2} = π \cdot 8836x^{2}$. The ratio (area of B) ÷ (area of A) is $\frac{π \cdot 8836x^{2}}{π \cdot 4x^{2}}= \frac{8836}{4} = 2209$.
 **Faster approach:** Compare radii: $\frac{94x}{2x} = 47$, so the linear scale factor is 47 and the area scale factor is $47^{2} =$ $2209$. This method avoids expanding squares immediately and is quicker for any similar problem.'),
   ('88b761b9-ffbe-5ea7-aec8-127256038a12', null, array['391']::text[], '**The correct answer is 391.** Since $g(23) = 0$, substitute $x = 23$ into $g(x) = (x + 17)(t - x)$ to get $(23 +$ $17)(t - 23) = 0$. Because $23 + 17 = 40 \ne 0$, it must be that $t - 23 = 0$, so $t = 23$. Now evaluate $g(0) = (0 +$ $17)(t - 0) = 17 \cdot t = 17 \cdot 23 = 391$.
 **Faster approach:** Use the zero at $x = 23$ to conclude $t = 23$ immediately (the other factor $x + 17$ is not zero at $x = 23$), then compute $g(0) = 17 \cdot 23$ without expanding the expression.'),
@@ -604,7 +604,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Jun 2024 · Math · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('c8fd8b31-fd59-5fdc-83dc-52eb2de316f5', 'PeaklyTest Jun 2024 · Math · Module 2', 'Math', 'Math, Module 2 of the Jun 2024 PeaklyTest · 22 questions · 35 minutes', 35, 223, true, 'PeaklyTest Jun 2024 · Math', 2)
+values ('c8fd8b31-fd59-5fdc-83dc-52eb2de316f5', 'PeaklyTest Jun 2024 · Math · Module 2', 'Math', 'Math, Module 2 of the Jun 2024 PeaklyTest · 22 questions · 35 minutes', 35, 283, true, 'PeaklyTest Jun 2024 · Math', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -727,11 +727,11 @@ From here, we can see that one of the factors is $7x + 18$. Diving further into 
 **Choice B is incorrect.** $x > 21$ contradicts $8 + 13 > x$, which requires $x < 21$, so B is impossible.
 **Choice D is incorrect.** The disjunction $x < 5$ or $x > 21$ conflicts with the needed condition $8 + x > 13$ (which requires $x > 5$) and the condition $8 + 13 > x$ (which requires $x < 21$); the correct range is between 5 and 21.
 **Faster approach:** Use the two quick rules: the third side must be less than the sum of the two given sides ( $x < 8 + 13 = 21$) and greater than their difference ($x > 13 - 8 = 5$). Combine to get $5 < x < 21$.'),
-  ('7d8fa86f-6044-549a-8cfb-28159faa7b9c', 3, null, '**Choice D is correct.** The base area is $225π = πr^{2}$, so $r^{2} = 225$ and $r = 15$. The volume formula is $V =$ $\frac{1}{3}A_{base}h = \frac{1}{3}(225π)h = 75πh$. Setting this equal to $2700π$ gives $75πh = 2700π$, so $h = 36$. The slant height $l$ is found by the Pythagorean relation $l =$$\sqrt{r^{2} + h^{2}} =$$\sqrt{15^{2} + 36^{2}} =$$\sqrt{225 + 1296} =$$\sqrt{1521} = 39$.
+  ('7d8fa86f-6044-549a-8cfb-28159faa7b9c', 3, null, '**Choice D is correct.** The base area is $225π = πr^{2}$, so $r^{2} = 225$ and $r = 15$. The volume formula is $V =$ $\frac{1}{3}A_{base}h = \frac{1}{3}(225π)h = 75πh$. Setting this equal to $2700π$ gives $75πh = 2700π$, so $h = 36$. The slant height $l$ is found by the Pythagorean relation $l =\sqrt{r^{2} + h^{2}} =\sqrt{15^{2} + 36^{2}} =\sqrt{225 + 1296} =\sqrt{1521} = 39$.
 **Choice A is incorrect.** A value of 12 is much smaller than both the height and radius and does not satisfy $l =$ $\sqrt{r^{2} + h^{2}}$ given $r = 15$ and $h = 36$.
 **Choice B is incorrect.** Fifteen equals the radius, not the slant height; the slant height must be larger than the radius when the height is nonzero.
 **Choice C is incorrect.** Thirty-six is the height of the cone, not the slant height; the slant height is $\sqrt{15^{2} + 36^{2}} = 39$.
-**Faster approach:** Compute $r$ from base area ($r =$$\sqrt{A/π}$), compute $h$ from $V = (1/3)A_{base}h$, then use $l =$ $\sqrt{r^{2} + h^{2}}$. This sequence uses the three basic formulas directly and is fast for any similar cone problem.'),
+**Faster approach:** Compute $r$ from base area ($r =\sqrt{A/π}$), compute $h$ from $V = (1/3)A_{base}h$, then use $l =$ $\sqrt{r^{2} + h^{2}}$. This sequence uses the three basic formulas directly and is fast for any similar cone problem.'),
   ('dba38fda-b252-5ea0-bd2f-05fc11f95f37', null, array['1200']::text[], '**The correct answer is 1200.** Let the height be modeled by a quadratic $h(t) = a(t - 10)^{2} + 1600$ because the vertex (maximum) occurs at $t = 10$ with $h = 1600$. The object was launched from height $0$ at $t = 0$, so $0 =$ $a(0 - 10)^{2} + 1600 = 100a + 1600$. Thus $a = -16$, and the model is $h(t) = -16(t - 10)^{2} + 1600$. Evaluate at $t = 15$: $h(15) = -16(15 - 10)^{2} + 1600 = -16(5)^{2} + 1600 = -16(25) + 1600 = -400 + 1600 = 1200$ feet.
 **Faster approach:** Use vertex form $h(t) = a(t - 10)^{2} + 1600$, plug in $(0,0)$ to get $a = -16$ quickly, then compute $h(15) = -16(5)^{2} + 1600 = 1200$ — one substitution and one arithmetic step.'),
   ('fb26768d-c7d8-587e-857b-ad7d5b029970', 0, null, '**Choice A is correct.** The total cost is the first-day fee plus $46$ for each additional day. For $d$ days there are $d -$ $1$ additional days, so $C(d) = 92 + 46(d - 1) = 46d + 46$, which matches Choice A.

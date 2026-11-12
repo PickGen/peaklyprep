@@ -4,7 +4,7 @@
 
 -- PeaklyTest Sep 2025 · Reading & Writing · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('a458eac1-3b91-5863-aa63-7e86c9bd4864', 'PeaklyTest Sep 2025 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the Sep 2025 PeaklyTest · 27 questions · 32 minutes', 32, 130, true, 'PeaklyTest Sep 2025 · Reading & Writing', 1)
+values ('a458eac1-3b91-5863-aa63-7e86c9bd4864', 'PeaklyTest Sep 2025 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the Sep 2025 PeaklyTest · 27 questions · 32 minutes', 32, 190, true, 'PeaklyTest Sep 2025 · Reading & Writing', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -236,7 +236,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Sep 2025 · Reading & Writing · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('5efe9371-cc55-5c4f-82e0-6279a0a259fc', 'PeaklyTest Sep 2025 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the Sep 2025 PeaklyTest · 27 questions · 32 minutes', 32, 131, true, 'PeaklyTest Sep 2025 · Reading & Writing', 2)
+values ('5efe9371-cc55-5c4f-82e0-6279a0a259fc', 'PeaklyTest Sep 2025 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the Sep 2025 PeaklyTest · 27 questions · 32 minutes', 32, 191, true, 'PeaklyTest Sep 2025 · Reading & Writing', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -424,7 +424,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Sep 2025 · Math · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('280773c9-dd5f-5cb9-bcbc-c744228bb8a1', 'PeaklyTest Sep 2025 · Math · Module 1', 'Math', 'Math, Module 1 of the Sep 2025 PeaklyTest · 22 questions · 35 minutes', 35, 132, true, 'PeaklyTest Sep 2025 · Math', 1)
+values ('280773c9-dd5f-5cb9-bcbc-c744228bb8a1', 'PeaklyTest Sep 2025 · Math · Module 1', 'Math', 'Math, Module 1 of the Sep 2025 PeaklyTest · 22 questions · 35 minutes', 35, 192, true, 'PeaklyTest Sep 2025 · Math', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -454,9 +454,7 @@ The given equation relates the positive numbers $a$ and $b$. Which equation corr
   ('e56391d7-00c8-5703-b201-171a80fff3d3', '280773c9-dd5f-5cb9-bcbc-c744228bb8a1', 'The measure of an angle, in radians, is $(99)(2)π$. What is the measure of the angle, in $\text{degrees}$?', '["$(99)(2)(360)$", "$(\\frac{99}{2})(360)$", "$(180)(99)(360)$", "$(99)(360)$"]'::jsonb, 18, null),
   ('bdb08b5e-4a89-526e-86ae-f203ce882f70', '280773c9-dd5f-5cb9-bcbc-c744228bb8a1', '$x^{2} + (\sqrt{k - 3})x + 26 = 0$
 In the given equation, $k$ is a constant. The equation has exactly one real solution. What is the value of $k$?', '["29", "104", "107", "101"]'::jsonb, 19, null),
-  ('d556b2f0-8806-5f54-b94a-e5590e5ac270', '280773c9-dd5f-5cb9-bcbc-c744228bb8a1', 'In triangles $RST$ and $XY Z$ shown, is parallel to and $\tan R = \frac{180}{299}$. What is the value of $\sin X$ in triangle $XY Z$?', '["$\\frac{299}{349}$", "$\\frac{180}{349}$", "$\\frac{180}{479}$", "$\\frac{299}{180}$"]'::jsonb, 20, '![figure](/q/sep25/004.webp)
-
-$\overline{XY}$$\overline{TS}$'),
+  ('d556b2f0-8806-5f54-b94a-e5590e5ac270', '280773c9-dd5f-5cb9-bcbc-c744228bb8a1', 'In triangles $RST$ and $XY Z$ shown, $\overline{XY}$ is parallel to $\overline{TS}$ and $\tan R = \frac{180}{299}$. What is the value of $\sin X$ in triangle $XY Z$?', '["$\\frac{299}{349}$", "$\\frac{180}{349}$", "$\\frac{180}{479}$", "$\\frac{299}{180}$"]'::jsonb, 20, '![figure](/q/sep25/004.webp)'),
   ('103f614d-407c-5611-82da-fc50e6d77a2f', '280773c9-dd5f-5cb9-bcbc-c744228bb8a1', '$∣x + 4∣ + 4 = ∣2x - 11∣ + 4$ What is the smallest solution to the given equation?', '[]'::jsonb, 21, null),
   ('d178a584-1354-5267-9b5d-1ef6285a46c0', '280773c9-dd5f-5cb9-bcbc-c744228bb8a1', '$y = 3x^{2} - 12x + 18$
 $y + 2 = 0$
@@ -533,12 +531,12 @@ Now, let’s examine why the other options are incorrect:
 **Choice B is incorrect.** Choice B simplifies to $99 \cdot 180$, which is half the correct value; it comes from incorrectly dividing by 2 instead of multiplying by it.
 **Choice C is incorrect.** Choice C is $(180)(99)(360)$, an extra factor of $360$ that is not present in the radian-to-degree conversion; it is far larger than the correct result.
 **Faster approach:** Cancel the $π$ immediately and apply the conversion $\times \frac{180}{π}$. Here $(99)(2)π \times \frac{180}{π} = 99 \times 360$, so pick D.'),
-  ('bdb08b5e-4a89-526e-86ae-f203ce882f70', 2, null, '**Choice C is correct.** For a quadratic $ax^{2} + bx + c = 0$ to have exactly one real solution, its discriminant must be zero: $b^{2} - 4ac = 0$. Here $a = 1$, $b =$$\sqrt{k - 3}$, and $c = 26$, so $(\sqrt{k - 3})^{2} - 4(1)(26) = 0$. That gives $k - 3 -$ $104 = 0$, so $k = 107$. The value is admissible because $k - 3 \ge 0$ is satisfied.
+  ('bdb08b5e-4a89-526e-86ae-f203ce882f70', 2, null, '**Choice C is correct.** For a quadratic $ax^{2} + bx + c = 0$ to have exactly one real solution, its discriminant must be zero: $b^{2} - 4ac = 0$. Here $a = 1$, $b =\sqrt{k - 3}$, and $c = 26$, so $(\sqrt{k - 3})^{2} - 4(1)(26) = 0$. That gives $k - 3 -$ $104 = 0$, so $k = 107$. The value is admissible because $k - 3 \ge 0$ is satisfied.
 **Choice A is incorrect.** If $k = 29$, then $b^{2} = k - 3 = 26$, and the discriminant would be $26 - 104 = -78 < 0$, so no real solutions.
 **Choice B is incorrect.** If $k = 104$, then $b^{2} = 101$, and the discriminant $101 - 104 = -3 < 0$, so no real solutions.
 **Choice D is incorrect.** If $k = 101$, then $b^{2} = 98$, and the discriminant $98 - 104 = -6 < 0$, so no real solutions.
 **Faster approach:** Immediately set the discriminant $b^{2} - 4ac = 0$ (here $k - 3 - 104 = 0$) to solve for $k$ — this works for any quadratic required to have exactly one real root.'),
-  ('d556b2f0-8806-5f54-b94a-e5590e5ac270', 0, null, '**Choice A is correct.** Because $\overline{XY} ∥ \overline{TS}$, triangle $XY Z$ is similar to triangle $RST$. From $\tan R = \frac{180}{299}$ we can take $TS = 180k$ and $RT = 299k$ for some $k$, so $RS =$$\sqrt{180^{2} + 299^{2}} = 349k$. Angle $X$ corresponds to angle $S$, so $\sin X = \sin S = \frac{RT}{RS} = \frac{299k}{349k} = \frac{299}{349}$.
+  ('d556b2f0-8806-5f54-b94a-e5590e5ac270', 0, null, '**Choice A is correct.** Because $\overline{XY} ∥ \overline{TS}$, triangle $XY Z$ is similar to triangle $RST$. From $\tan R = \frac{180}{299}$ we can take $TS = 180k$ and $RT = 299k$ for some $k$, so $RS =\sqrt{180^{2} + 299^{2}} = 349k$. Angle $X$ corresponds to angle $S$, so $\sin X = \sin S = \frac{RT}{RS} = \frac{299k}{349k} = \frac{299}{349}$.
 **Choice B is incorrect.** $\frac{180}{349}$ equals $\sin R$ (opposite $TS$ over hypotenuse $RS$), not $\sin X$.
 **Choice C is incorrect.** $\frac{180}{479}$ uses a wrong hypotenuse; the correct hypotenuse for legs $180$ and $299$ is $349$, not $479$.
 **Choice D is incorrect.** $\frac{299}{180} > 1$, which is impossible for the sine of an acute angle.
@@ -555,7 +553,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Sep 2025 · Math · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('da24769f-6b71-5359-b61f-d9827b6e5da6', 'PeaklyTest Sep 2025 · Math · Module 2', 'Math', 'Math, Module 2 of the Sep 2025 PeaklyTest · 22 questions · 35 minutes', 35, 133, true, 'PeaklyTest Sep 2025 · Math', 2)
+values ('da24769f-6b71-5359-b61f-d9827b6e5da6', 'PeaklyTest Sep 2025 · Math · Module 2', 'Math', 'Math, Module 2 of the Sep 2025 PeaklyTest · 22 questions · 35 minutes', 35, 193, true, 'PeaklyTest Sep 2025 · Math', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -585,9 +583,8 @@ The function $g$ is defined by the given equation. For what value of $x$ does $g
   ('695f102f-4444-50b7-9239-d2d527cb4955', 'da24769f-6b71-5359-b61f-d9827b6e5da6', '$25x^{2} + 10\sqrt{39}x + p = 0$
 In the given equation, $p$ is a constant. The equation has exactly one real solution. What is the value of $p$?', '["$\\sqrt{39}$", "$2\\sqrt{39}$", "$\\frac{39}{2}$", "$39$"]'::jsonb, 12, null),
   ('bdc0b4a4-e67f-5b65-9693-278aa043914b', 'da24769f-6b71-5359-b61f-d9827b6e5da6', 'The function $f$ gives the value, in dollars, of a certain piece of equipment after $x$ months of use. If the value of the equipment decreases each $\text{year}$ by $p%$ of its value the preceding year, what is the value of $p$?
-$f(x) = 2,570(0.28)\frac{x}{12}$', '["10", "28", "72", "2"]'::jsonb, 13, null),
-  ('e5ad5aee-6e25-5feb-9a62-f578303471df', 'da24769f-6b71-5359-b61f-d9827b6e5da6', 'In triangle $RST$, $RS = ST$ and the length of is 48 units. If $\tan R = \frac{7}{24}$, what is the area, in square units, of triangle $RST$?
-$\overline{RT}$', '["168", "288", "84", "336"]'::jsonb, 14, null),
+$f(x) = 2,570(0.28)^{\frac{x}{12}}$', '["10", "28", "72", "2"]'::jsonb, 13, null),
+  ('e5ad5aee-6e25-5feb-9a62-f578303471df', 'da24769f-6b71-5359-b61f-d9827b6e5da6', 'In triangle $RST$, $RS = ST$ and the length of $\overline{RT}$ is 48 units. If $\tan R = \frac{7}{24}$, what is the area, in square units, of triangle $RST$?', '["168", "288", "84", "336"]'::jsonb, 14, null),
   ('df81b425-c53d-578a-b535-c3543d8b5a19', 'da24769f-6b71-5359-b61f-d9827b6e5da6', 'An equilateral triangle has a height of $21\sqrt{3}$ units. What is the length, in units, of one side of this triangle?', '["42", "21$\\sqrt{3}$", "42$\\sqrt{3}$", "21"]'::jsonb, 15, null),
   ('3e56f72a-c4f5-5ec0-9c84-345649c46fc9', 'da24769f-6b71-5359-b61f-d9827b6e5da6', 'Which expression is $\text{NOT}$ a factor of $1,440x^{4} - 56,250$?', '["$90$", "$4x^{2} + 25$", "$2x^{2} - 5$", "$2x + 5$"]'::jsonb, 16, null),
   ('2fd48cb5-eeb5-5070-8ea5-1fab5837d1a0', 'da24769f-6b71-5359-b61f-d9827b6e5da6', '$2970x = 5940x$
@@ -605,7 +602,7 @@ How many solutions does the given equation have?', '["Infinitely many", "Exactly
 The given equation is one equation in a system of two linear equations. If the system of equations has at least one solution, which of the following equations could be the other equation in the system?
 I $7.5x + 4.5y = 9$
 II $7.5x - 4.5y = 4.5$', '["II only", "Neither I nor II", "I and II", "I only"]'::jsonb, 21, null),
-  ('29adc9d4-dbb8-58ad-8606-7ac4e82afd65', 'da24769f-6b71-5359-b61f-d9827b6e5da6', 'In the figure shown, points $A$, $B$, $C$, and $E$ lie on the circle, and $AB < BC$. Segment $AC$ is perpendicular to segment $BE$ at point $D$, and $BD =$$\sqrt{390}$. The diameter of the circle is $197$. If $\frac{CD}{AD} = r$ , what is the value of $r$?', '[]'::jsonb, 22, '![figure](/q/sep25/005.webp)')
+  ('29adc9d4-dbb8-58ad-8606-7ac4e82afd65', 'da24769f-6b71-5359-b61f-d9827b6e5da6', 'In the figure shown, points $A$, $B$, $C$, and $E$ lie on the circle, and $AB < BC$. Segment $AC$ is perpendicular to segment $BE$ at point $D$, and $BD =\sqrt{390}$. The diameter of the circle is $197$. If $\frac{CD}{AD} = r$ , what is the value of $r$?', '[]'::jsonb, 22, '![figure](/q/sep25/005.webp)')
 on conflict (id) do update set test_id = excluded.test_id, prompt = excluded.prompt, options = excluded.options,
   position = excluded.position, passage = excluded.passage;
 insert into public.question_keys (question_id, correct_index, correct_answers, explanation) values
@@ -614,8 +611,8 @@ insert into public.question_keys (question_id, correct_index, correct_answers, e
 **Choice C is incorrect.** $68°$ would make $E + F = 112°$, contrary to the stated $22°$.
 **Choice D is incorrect.** $22°$ would imply the three angles sum to $44°$, which violates the triangle-angle-sum property.
 **Faster approach:** Immediately use the triangle-angle-sum rule $E + F + G = 180°$ and compute $G = 180° -$ $(E + F)$; substitute $E + F = 22°$ to get $158°$.'),
-  ('f55137b5-cb87-5273-9b8f-a5658f337e81', 1, null, '**Choice B is correct.** All five lists have mean 85, so compare squared deviations about 85. For B: deviations are -1,0,0,0,1 so squared deviations sum to $1 + 0 + 0 + 0 + 1 = 2$, variance $= 2/5 = 0.4$, and standard deviation $=$$\sqrt{0.4} \approx 0.632$, the smallest of the four.
-**Choice A is incorrect.** A has deviations -2,-1,0,1,2 so squared deviations sum $= 10$, variance $= 10/5 = 2$, SD $=$$\sqrt{2} \approx 1.414$, larger than B.
+  ('f55137b5-cb87-5273-9b8f-a5658f337e81', 1, null, '**Choice B is correct.** All five lists have mean 85, so compare squared deviations about 85. For B: deviations are -1,0,0,0,1 so squared deviations sum to $1 + 0 + 0 + 0 + 1 = 2$, variance $= 2/5 = 0.4$, and standard deviation $=\sqrt{0.4} \approx 0.632$, the smallest of the four.
+**Choice A is incorrect.** A has deviations -2,-1,0,1,2 so squared deviations sum $= 10$, variance $= 10/5 = 2$, SD $=\sqrt{2} \approx 1.414$, larger than B.
 **Choice C is incorrect.** C has deviations -2,-2,0,2,2 so squared sum $= 16$, variance $= 16/5 = 3.2$, SD $\approx 1.789$, larger than B.
 **Choice D is incorrect.** D has deviations -3,-2,0,2,3 so squared sum $= 26$, variance $= 26/5 = 5.2$, SD $\approx 2.280$, largest of the four.
 **Faster approach:** Because all means equal, compare how tightly values cluster around the mean — count repeats and small deviations; the list with most values equal to the mean (or closest to it) has the smallest standard deviation.'),
@@ -654,7 +651,7 @@ insert into public.question_keys (question_id, correct_index, correct_answers, e
   ('c066b572-b386-5770-8b5b-0b94d1895e4b', null, array['725']::text[], '**The correct answer is 725.** Start with the given formula $h = \frac{9(v-273.15)}{5} + 32$ and solve for $v$. Subtract 32: $h -$ $32 = \frac{9(v-273.15)}{5}$. Multiply both sides by 5: $5(h - 32) = 9(v - 273.15)$. Divide by 9 and add $273.15$: $v = 273.15 +$ $\frac{5(h-32)}{9}$. Substitute $h = 845.33$: $v = 273.15 + \frac{5(845.33-32)}{9} = 273.15 + \frac{5(813.33)}{9} = 273.15 + \frac{4066.65}{9} = 273.15 +$ $451.85 = 725.00$, so $v = 725$.
 **Faster approach:** Rearrange the formula symbolically first to $v = 273.15 + \frac{5(h - 32)}{9}$, then plug in the given Fahrenheit value to avoid repeating algebraic steps.'),
   ('695f102f-4444-50b7-9239-d2d527cb4955', 3, null, '**Choice D is correct.** A quadratic has exactly one real solution when its discriminant is zero. For $25x^{2} +$ $10\sqrt{39}x + p = 0$, the discriminant is $b^{2} - 4ac = (10\sqrt{39})^{2} - 4(25)(p) = 3900 - 100p$. Setting this equal to 0 gives $3900 - 100p = 0$, so $p = 39$.
-**Choice A is incorrect.** $\sqrt{39} \approx 6.245$ does not satisfy $3900 - 100p = 0$; substituting $p =$$\sqrt{39}$ yields a positive discriminant, so two real solutions.
+**Choice A is incorrect.** $\sqrt{39} \approx 6.245$ does not satisfy $3900 - 100p = 0$; substituting $p =\sqrt{39}$ yields a positive discriminant, so two real solutions.
 **Choice B is incorrect.** $2\sqrt{39} \approx 12.49$ also does not make the discriminant zero; it leaves $3900 - 100p > 0$, giving two real solutions.
 **Choice C is incorrect.** $\frac{39}{2} = 19.5$ is not equal to 39, so the discriminant is still positive and the quadratic would have two real solutions.
 **Faster approach:** Use the discriminant condition $b^{2} = 4ac$ immediately; compute $(10\sqrt{39})^{2} = 100 \cdot 39$ and cancel the common factor 100 to get $39 = p$.'),
@@ -701,7 +698,7 @@ insert into public.question_keys (question_id, correct_index, correct_answers, e
 First, note that $AC$ is a chord, and $D$ is the midpoint of the perpendicular from $B$ to $AC$. Thus, $AC$ is a diameter of the circle. Since $AC$ is a diameter, it divides the circle into two semicircles and is also a straight line passing through the center of the circle.
 The diameter of the circle is given as $197$. Hence, $AC = 197$.
 Since $D$ is the midpoint of $AC$ and $BE$ is perpendicular to $AC$ at $D$, $AD = DC$ and both are half of $AC$ . So, $AD = DC = \frac{197}{2}$.
-We are given that $BD =$$\sqrt{390}$.
+We are given that $BD =\sqrt{390}$.
 Since triangle $ABD$ is a right triangle (with $AD$ being perpendicular to $BE$), we can apply the Pythagorean theorem to find $AD$ using the known values.
 For right triangle $ABD$, we have:
 $BD^{2} + AD^{2} = AB^{2}.$

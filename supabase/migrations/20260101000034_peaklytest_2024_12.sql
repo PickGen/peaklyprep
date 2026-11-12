@@ -4,7 +4,7 @@
 
 -- PeaklyTest Dec 2024 · Reading & Writing · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('cd58ae50-c46e-5c5c-bcdd-48b08a3de7cf', 'PeaklyTest Dec 2024 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the Dec 2024 PeaklyTest · 27 questions · 32 minutes', 32, 180, true, 'PeaklyTest Dec 2024 · Reading & Writing', 1)
+values ('cd58ae50-c46e-5c5c-bcdd-48b08a3de7cf', 'PeaklyTest Dec 2024 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the Dec 2024 PeaklyTest · 27 questions · 32 minutes', 32, 240, true, 'PeaklyTest Dec 2024 · Reading & Writing', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -236,7 +236,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Dec 2024 · Reading & Writing · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('87ea1096-604d-53d8-b1ba-af331b936bda', 'PeaklyTest Dec 2024 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the Dec 2024 PeaklyTest · 27 questions · 32 minutes', 32, 181, true, 'PeaklyTest Dec 2024 · Reading & Writing', 2)
+values ('87ea1096-604d-53d8-b1ba-af331b936bda', 'PeaklyTest Dec 2024 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the Dec 2024 PeaklyTest · 27 questions · 32 minutes', 32, 241, true, 'PeaklyTest Dec 2024 · Reading & Writing', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -444,7 +444,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Dec 2024 · Math · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('86d90024-10b7-52b5-b0e1-065291a36c12', 'PeaklyTest Dec 2024 · Math · Module 1', 'Math', 'Math, Module 1 of the Dec 2024 PeaklyTest · 22 questions · 35 minutes', 35, 182, true, 'PeaklyTest Dec 2024 · Math', 1)
+values ('86d90024-10b7-52b5-b0e1-065291a36c12', 'PeaklyTest Dec 2024 · Math · Module 1', 'Math', 'Math, Module 1 of the Dec 2024 PeaklyTest · 22 questions · 35 minutes', 35, 242, true, 'PeaklyTest Dec 2024 · Math', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -589,7 +589,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Dec 2024 · Math · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('f95c0601-f370-5957-8e27-234089d51319', 'PeaklyTest Dec 2024 · Math · Module 2', 'Math', 'Math, Module 2 of the Dec 2024 PeaklyTest · 22 questions · 35 minutes', 35, 183, true, 'PeaklyTest Dec 2024 · Math', 2)
+values ('f95c0601-f370-5957-8e27-234089d51319', 'PeaklyTest Dec 2024 · Math · Module 2', 'Math', 'Math, Module 2 of the Dec 2024 PeaklyTest · 22 questions · 35 minutes', 35, 243, true, 'PeaklyTest Dec 2024 · Math', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -597,7 +597,7 @@ insert into public.questions (id, test_id, prompt, options, position, passage) v
   ('2fbb9da1-e873-591f-b4be-842980505272', 'f95c0601-f370-5957-8e27-234089d51319', 'The graph of the polynomial function $f$ in the $xy$-plane, where $y = f(x)$, passes through the point $(5,3)$. What is the value of $f(5)$?', '["$3$", "$5$", "$8$", "$15$"]'::jsonb, 2, null),
   ('4636d9f7-e002-5c90-b9d2-97246531abad', 'f95c0601-f370-5957-8e27-234089d51319', 'A circle has a circumference of $42π$ centimeters. What is the diameter, in centimeters, of the circle?', '[]'::jsonb, 3, null),
   ('533b58c7-e789-5fcd-af41-ef8809503a64', 'f95c0601-f370-5957-8e27-234089d51319', 'For an object with a mass of $49$ kilograms, the given equation relates the kinetic energy $K$ in joules, of the object to the object’s speed $v$, in meters per second, where $K$ and $v$ are positive. Which equation correctly expresses this object’s speed, in meters per second, in terms of the object’s kinetic energy, in joules?
-$49 = \frac{2K}{v^{2}}$', '["$v =$$\\sqrt{\\frac{2K}{49}}$", "$v =$$\\sqrt{\\frac{49}{2K}}$", "$v = \\frac{49v}{2K}$", "$v = \\frac{2K}{49v}$"]'::jsonb, 4, null),
+$49 = \frac{2K}{v^{2}}$', '["$v =\\sqrt{\\frac{2K}{49}}$", "$v =\\sqrt{\\frac{49}{2K}}$", "$v = \\frac{49v}{2K}$", "$v = \\frac{2K}{49v}$"]'::jsonb, 4, null),
   ('7c7af372-df14-561c-b5a6-1e3313702f47', 'f95c0601-f370-5957-8e27-234089d51319', 'The function $f$ is defined by $f(x) = 4x^{2}$. What is the value of $f(11)$?', '["$44$", "$52$", "$88$", "$484$"]'::jsonb, 5, null),
   ('ca777b60-72a5-5a8c-bbe9-b276f1acd8ce', 'f95c0601-f370-5957-8e27-234089d51319', '$g(x) = \frac{1}{9}(5)^{x}$
 If the given function $g$ is graphed in the $xy$-plane, where $y = g(x)$, what is the $y$-intercept of the graph?', '["$(0,0)$", "$(0, \\frac{1}{9})$", "$(0, \\frac{5}{9})$", "$(0,5)$"]'::jsonb, 6, null),
@@ -609,16 +609,14 @@ If the given function $g$ is graphed in the $xy$-plane, where $y = g(x)$, what i
 
 A bin contains a mixture of T-shirts for two sports teams. The table shows the number of T-shirts in the bin, classified by size and sports team.'),
   ('9d1a0fd4-d527-51f6-b38b-9783d8fa9f56', 'f95c0601-f370-5957-8e27-234089d51319', 'The population of a certain city doubled every $75$ years from $1652$ to $1952$. The population of this city was $160,000$ in $1952$. What was the population of this city in $1652$?', '[]'::jsonb, 8, null),
-  ('a93e413d-1608-5698-9abb-19a7cd149696', 'f95c0601-f370-5957-8e27-234089d51319', 'In right triangle JKL, the tangent of $\angle L$ is $\frac{3}{4}$. What is the length of ?', '["$\\frac{35}{16}$", "$\\frac{15}{4}$", "$54$", "$72$"]'::jsonb, 9, '![figure](/q/dec24/007.webp)
-
-$\overline{JK}$'),
+  ('a93e413d-1608-5698-9abb-19a7cd149696', 'f95c0601-f370-5957-8e27-234089d51319', 'In right triangle JKL, the tangent of $\angle L$ is $\frac{3}{4}$. What is the length of $\overline{JK}$?', '["$\\frac{35}{16}$", "$\\frac{15}{4}$", "$54$", "$72$"]'::jsonb, 9, '![figure](/q/dec24/007.webp)'),
   ('e4d633e3-121d-58b3-9d27-de5d6b6804c0', 'f95c0601-f370-5957-8e27-234089d51319', '$x^{2} - \frac{25}{81} = 0$
 How many distinct real solutions does the given equation have?', '["Zero", "Exactly one", "Exactly two", "Infinitely many"]'::jsonb, 10, null),
   ('6baac326-e777-5e07-a042-17b35e9c8fe1', 'f95c0601-f370-5957-8e27-234089d51319', 'In the given equation, $a$ is a constant. The equation has infinitely many solutions. What are all possible values of $a$?
 $a(7x - 14) + 5a = 7(ax - 2a) - 35$', '["$0$ only", "$-7$ only", "Any real number", "No real number"]'::jsonb, 11, null),
   ('59ee0e56-4675-5381-af5f-f569b08a9464', 'f95c0601-f370-5957-8e27-234089d51319', 'If $x > 0$ and $x$ is $33%$ of $y$, which expression represents $y$ in terms of $x$?', '["$\\frac{100}{33}x$", "$\\frac{10}{33}x$", "$\\frac{1}{33}x$", "$\\frac{67}{100}x$"]'::jsonb, 12, null),
-  ('9998256f-9775-54d9-bec8-62a51e9d57cd', 'f95c0601-f370-5957-8e27-234089d51319', '$\sqrt{^{5} x^{m}}$
-In the given expression, m is a constant and $x > 1$. The expression can be rewritten as $\sqrt{^{7} x}$. What is the value of $m$?', '["$5/7$", "$0.714$", "$0.$", "$7143$"]'::jsonb, 13, null),
+  ('9998256f-9775-54d9-bec8-62a51e9d57cd', 'f95c0601-f370-5957-8e27-234089d51319', '$^{5}\sqrt{x^{m}}$
+In the given expression, m is a constant and $x > 1$. The expression can be rewritten as $^{7}\sqrt{x}$. What is the value of $m$?', '["$5/7$", "$0.714$", "$0.$", "$7143$"]'::jsonb, 13, null),
   ('a68fcf00-f6d6-5563-9760-2e378f2c62fc', 'f95c0601-f370-5957-8e27-234089d51319', 'A book-of-the-month club charges \$13 for the first book purchased during the month and an additional \$11 for each book after the first. Which equation describes this situation, where $y$ is the total cost, in dollars, for books purchased during a month, $x$ is the number of books purchased during the month, and $x > 0$?', '["$y = x + 13$", "$y = 11x + 13$", "$y = 11(x - 1) + 13$", "$y = (x - 1) + 13$"]'::jsonb, 14, null),
   ('2434939b-3019-55ea-928a-895bdd6cb846', 'f95c0601-f370-5957-8e27-234089d51319', '$z(w) = (0.829)^{2w}$
 The function $z$ is defined by the equation shown. The value of $z(w)$ decreases by $p%$ for each increase by $1$ in the value of $w$. Which of the following is closest to the value of $p$?', '["$0.171$", "$0.829$", "$17.1$", "$31.3$"]'::jsonb, 15, null),
@@ -631,7 +629,7 @@ The given expression can be rewritten as $\frac{a}{4}x^{2} + \frac{b}{4}x + \fra
   ('ea081645-ddad-521e-82e8-fc70db4f405c', 'f95c0601-f370-5957-8e27-234089d51319', '$f(x) = 66b^{x}$
 In the given function, $b$ is a positive constant. For every increase in the value of $x$ by 1, the value of $f(x)$ increases by $c%$, where $0 < c < 100$. Which expression gives the value of $c$ in terms of $b$?', '["$1 + \\frac{b}{100}$", "$b + 100$", "$100(b + 1)$", "$100(b - 1)$"]'::jsonb, 20, null),
   ('1c447f47-e3d2-5ce3-becc-501c9316f1f1', 'f95c0601-f370-5957-8e27-234089d51319', 'On average, a certain tree grows $87$ centimeters every $m$ months. At this rate, which expression represents the number of centimeters, on average, the tree grows every $k$ years?', '["$\\frac{29m}{4k}$", "$\\frac{29k}{4m}$", "$\\frac{1,044m}{k}$", "$\\frac{1,044k}{m}$"]'::jsonb, 21, null),
-  ('7d371309-683d-51ac-9397-bed5fd322c36', 'f95c0601-f370-5957-8e27-234089d51319', 'In the figure shown, points $A$, $B$, $C$, and $E$ lie on the circle, and $AB < BC$. Segment $AC$ is perpendicular to segment $BE$ at point $D$, and $BD =$$\sqrt{346}$. The diameter of the circle is $175$. If $\frac{CD}{AD} = r$ , what is the value of $r$?', '[]'::jsonb, 22, '![figure](/q/dec24/009.webp)')
+  ('7d371309-683d-51ac-9397-bed5fd322c36', 'f95c0601-f370-5957-8e27-234089d51319', 'In the figure shown, points $A$, $B$, $C$, and $E$ lie on the circle, and $AB < BC$. Segment $AC$ is perpendicular to segment $BE$ at point $D$, and $BD =\sqrt{346}$. The diameter of the circle is $175$. If $\frac{CD}{AD} = r$ , what is the value of $r$?', '[]'::jsonb, 22, '![figure](/q/dec24/009.webp)')
 on conflict (id) do update set test_id = excluded.test_id, prompt = excluded.prompt, options = excluded.options,
   position = excluded.position, passage = excluded.passage;
 insert into public.question_keys (question_id, correct_index, correct_answers, explanation) values
@@ -648,10 +646,10 @@ insert into public.question_keys (question_id, correct_index, correct_answers, e
   ('4636d9f7-e002-5c90-b9d2-97246531abad', null, array['42']::text[], '**The correct answer is 42.** The circumference C of a circle is given by $C = πd$, where $d$ is the diameter. Here $C = 42π$, so $πd = 42π$. Dividing both sides by $π$ gives $d = 42$. Thus the diameter is 42 centimeters.
 **Faster approach:** Recognize that circumference equals $π$ times the diameter, so simply cancel the $π$ factors in $42π$ to get the diameter $42$. This direct cancellation works for every question that gives circumference in the form $kπ$.'),
   ('533b58c7-e789-5fcd-af41-ef8809503a64', 0, null, '**Choice A is correct.** Start with $49 = \sqrt{\frac{2K}{49}}\frac{2K}{v^{2}}$. Multiply both sides by $v^{2}$ to get $49v^{2} = 2K$, then divide by 49 to get $v^{2} = \frac{2K}{49}$. Because $v$ is positive, $v =$, which is exactly Choice A.
-**Choice B is incorrect.** Choice B is $v =$$\sqrt{\frac{49}{2K}}$, which would be the reciprocal of the correct expression; it would result from incorrectly inverting both sides rather than isolating $v^{2}$.
+**Choice B is incorrect.** Choice B is $v =\sqrt{\frac{49}{2K}}$, which would be the reciprocal of the correct expression; it would result from incorrectly inverting both sides rather than isolating $v^{2}$.
 **Choice C is incorrect.** Choice C, $v = \frac{49v}{2K}$, is not an expression for $v$ in terms of $K$ alone because it still contains $v$ on the right side and does not follow from algebraic isolation.
 **Choice D is incorrect.** Choice D, $v = \frac{2K}{49v}$, likewise leaves $v$ on both sides and is equivalent to the original equation rather than an explicit solution for $v$.
-**Faster approach:** Multiply both sides by $v^{2}$ and divide by 49 to get $v^{2} = 2K/49$, then take the positive square root to obtain $v =$$\sqrt{2K/49}$.'),
+**Faster approach:** Multiply both sides by $v^{2}$ and divide by 49 to get $v^{2} = 2K/49$, then take the positive square root to obtain $v =\sqrt{2K/49}$.'),
   ('7c7af372-df14-561c-b5a6-1e3313702f47', 3, null, '**Choice D is correct.** The function is $f(x) = 4x^{2}$, so $f(11) = 4 \cdot (11)^{2} = 4 \cdot 121 = 484$. This matches choice D.
 **Choice A is incorrect.** $44$ would be $4 \cdot 11$, which omits squaring the input; the correct operation is $4 \times 11^{2}$.
 **Choice B is incorrect.** $52$ does not correspond to any simple combination of $4$, $11$, and squaring; it’s not equal to $4 \cdot 11^{2}$.
@@ -670,7 +668,7 @@ insert into public.question_keys (question_id, correct_index, correct_answers, e
 **Choice B is incorrect.** 15/4 = 3.75 is also far too small and inconsistent with JK being a large leg when hypotenuse = 90.
 **Choice D is incorrect.** 72 would correspond to a scale factor giving JK = 72 and hypotenuse 120 (since 72 = 3s → s = 24 → hypotenuse 5s = 120), which contradicts the given hypotenuse 90.
 **Faster approach:** Recognize tan = 3/4 → 3-4-5 triangle. Scale so hypotenuse 5s = 90, then compute JK = 3s; no trig functions needed.'),
-  ('e4d633e3-121d-58b3-9d27-de5d6b6804c0', 2, null, '**Choice C is correct.** Solve $x^{2} - \frac{25}{81} = 0$ by isolating the square: $x^{2} = \frac{25}{81}$. Taking square roots gives $x =$ $\pm$$\frac{25}{81} = \pm \frac{5}{9}$, which are two distinct real solutions, so the equation has exactly two distinct real solutions.
+  ('e4d633e3-121d-58b3-9d27-de5d6b6804c0', 2, null, '**Choice C is correct.** Solve $x^{2} - \frac{25}{81} = 0$ by isolating the square: $x^{2} = \frac{25}{81}$. Taking square roots gives $x =$ $\pm\frac{25}{81} = \pm \frac{5}{9}$, which are two distinct real solutions, so the equation has exactly two distinct real solutions.
 **Choice A is incorrect.** There are real solutions (±5/9), so the number of solutions is not zero.
 **Choice B is incorrect.** There are two distinct real solutions, not exactly one; the plus and minus roots are different.
 **Choice D is incorrect.** A quadratic equation of this form cannot have infinitely many solutions; it has at most two, and here it has exactly two.
@@ -684,9 +682,9 @@ insert into public.question_keys (question_id, correct_index, correct_answers, e
 **Choice B is incorrect.** $\frac{10}{33}x$ is much smaller than $\frac{100}{33}x$; it would correspond to $x$ being $330%$ of $y$, not $33%$. **Choice C is incorrect.** $\frac{1}{33}x$ is also far too small; that would make $x$ equal to $\frac{1}{33}y$, not $\frac{33}{100}y$.
 **Choice D is incorrect.** $\frac{67}{100}x$ equals $0.67x$ and does not satisfy $x = 0.33y$ when solved for $y$.
 **Faster approach:** Translate "$x$ is 33% of $y$" to $x = \frac{33}{100}y$ and immediately divide both sides by $\frac{33}{100}$ to get $y =$ $\frac{100}{33}x$.'),
-  ('9998256f-9775-54d9-bec8-62a51e9d57cd', 0, null, '**Choice A is correct.** Rewrite both expressions with fractional exponents: $\sqrt{^{5} x^{m}} = (x^{m})^{1/5} = x^{m/5}$ and $\sqrt{^{7} x} =$ $x^{1/7}$. Because $x > 1$, the functions $x^{a}$ are one-to-one, so the exponents must be equal: $m/5 = 1/7$, giving $m = 5/7$.
+  ('9998256f-9775-54d9-bec8-62a51e9d57cd', 0, null, '**Choice A is correct.** Rewrite both expressions with fractional exponents: $^{5}\sqrt{x^{m}} = (x^{m})^{1/5} = x^{m/5}$ and $^{7}\sqrt{x} =$ $x^{1/7}$. Because $x > 1$, the functions $x^{a}$ are one-to-one, so the exponents must be equal: $m/5 = 1/7$, giving $m = 5/7$.
 **Choice B is incorrect.** While $0.714$ is an approximation of $5/7 \approx 0.714285…$, the choice is not the exact value required by the equation.
-**Choice C is incorrect.** If $m = 0$ the left side equals $\sqrt{^{5} x^{0}} = 1$, which does not equal $\sqrt{^{7} x} > 1$ for $x > 1$.
+**Choice C is incorrect.** If $m = 0$ the left side equals $^{5}\sqrt{x^{0}} = 1$, which does not equal $^{7}\sqrt{x} > 1$ for $x > 1$.
 **Choice D is incorrect.** $7143$ is nowhere near $5/7$; substituting it would give exponents that do not match.
 **Faster approach:** Convert roots to fractional exponents and equate exponents directly: set $m/5 = 1/7$ and solve for $m$.'),
   ('a68fcf00-f6d6-5563-9760-2e378f2c62fc', 2, null, '**Choice C is correct.** The total cost is the \$13 for the first book plus \$11 for each additional book. If $x$ is the number of books, there are $x - 1$ additional books, so the cost is $y = 13 + 11(x - 1)$, which is equivalent to the given $y = 11(x - 1) + 13$.
@@ -729,10 +727,10 @@ insert into public.question_keys (question_id, correct_index, correct_answers, e
 **Choice B is incorrect.** It gives $\frac{29k}{4m}$, again with the wrong numerical factor (should be $1044$ in the numerator) and results from an incorrect conversion of months to years.
 **Choice C is incorrect.** It is $\frac{1044m}{k}$, which has the variables reversed (it would imply more growth when $m$ is larger), whereas the correct expression has $k$ in the numerator and $m$ in the denominator.
 **Faster approach:** Convert years to months ($k$ years = $12k$ months) and multiply: growth per month $= 87/m$, so total $= 87(12k)/m = 1044k/m$. This conversion-and-multiply method works for all such rate/unit problems.'),
-  ('7d371309-683d-51ac-9397-bed5fd322c36', null, array['173/2']::text[], '**The correct answer is 173/2.** Place the circle with center O at the origin and radius $R = \frac{175}{2} = 87.5$. Let the perpendicular chords AC (horizontal) and BE (vertical) meet at D = $(x,y)$. Then the endpoints of AC are $A =$ $(-a,y)$ and $C = (a,y)$ with $a =$$\sqrt{R^{2} - y^{2}}$, and the endpoints of BE are $B = (x,b)$ and $E = (x,-b)$ with $b =$ $\sqrt{R^{2} - x^{2}}$. Because BD is the distance from $B$ to $D$ along the vertical chord, $BD = b - y =$$\sqrt{346}$. The ratio asked for is r = CD/AD = (a-x)/(a+x).
-Use the intersecting-chords relation at D: $AD \cdot CD = BD \cdot ED$. With $BD = b - y$ and $ED = b + y$, we get $(a + x)(a - x) = (b - y)(b + y)$, so $a^{2} - x^{2} = b^{2} - y^{2}$. Substitute $a^{2} = R^{2} - y^{2}$ and $b^{2} = R^{2} - x^{2}$ to obtain $R^{2} - y^{2} - x^{2} = R^{2} - x^{2} - y^{2}$ (an identity), confirming consistency. To find r explicitly, solve the pair of linear relations coming from BD and the definitions of a and b: from $BD = b - y$ we get $y = b - BD$. Substitute $y$ into $a =$$\sqrt{R^{2} - y^{2}}$ and then compute
+  ('7d371309-683d-51ac-9397-bed5fd322c36', null, array['173/2']::text[], '**The correct answer is 173/2.** Place the circle with center O at the origin and radius $R = \frac{175}{2} = 87.5$. Let the perpendicular chords AC (horizontal) and BE (vertical) meet at D = $(x,y)$. Then the endpoints of AC are $A =$ $(-a,y)$ and $C = (a,y)$ with $a =\sqrt{R^{2} - y^{2}}$, and the endpoints of BE are $B = (x,b)$ and $E = (x,-b)$ with $b =$ $\sqrt{R^{2} - x^{2}}$. Because BD is the distance from $B$ to $D$ along the vertical chord, $BD = b - y =\sqrt{346}$. The ratio asked for is r = CD/AD = (a-x)/(a+x).
+Use the intersecting-chords relation at D: $AD \cdot CD = BD \cdot ED$. With $BD = b - y$ and $ED = b + y$, we get $(a + x)(a - x) = (b - y)(b + y)$, so $a^{2} - x^{2} = b^{2} - y^{2}$. Substitute $a^{2} = R^{2} - y^{2}$ and $b^{2} = R^{2} - x^{2}$ to obtain $R^{2} - y^{2} - x^{2} = R^{2} - x^{2} - y^{2}$ (an identity), confirming consistency. To find r explicitly, solve the pair of linear relations coming from BD and the definitions of a and b: from $BD = b - y$ we get $y = b - BD$. Substitute $y$ into $a =\sqrt{R^{2} - y^{2}}$ and then compute
 \n
-r = (a-x)/(a+x) = BD/ED $= \frac{b - y}{b + y}$. Solving $\frac{b - y}{b + y} =$ for r (with $b =$$\sqrt{R^{2} - x^{2}}$ and eliminating $x$ and $b$ using the circle relations) yields the closed form $r \frac{\sqrt{346}}{2=b \frac{-173}{2}\sqrt{346}= 8}6.5$.
+r = (a-x)/(a+x) = BD/ED $= \frac{b - y}{b + y}$. Solving $\frac{b - y}{b + y} =$ for r (with $b =\sqrt{R^{2} - x^{2}}$ and eliminating $x$ and $b$ using the circle relations) yields the closed form $r \frac{\sqrt{346}}{2=b \frac{-173}{2}\sqrt{346}= 8}6.5$.
 **Faster approach:** Put the circle at the origin and choose coordinates so the two perpendicular chords are horizontal and vertical; then express the four endpoint coordinates in terms of $R$ and the intersection point $D = (x,y)$. Use BD = b−y and the intersecting-chords relation $AD \cdot CD = BD \cdot ED$ to write r = CD/AD = BD/ED and solve the simple two-equation system for r. This coordinate setup (making the two chords align with the axes) always turns any perpendicular-chords problem into a short algebra problem and yields the ratio directly.')
 on conflict (question_id) do update set correct_index = excluded.correct_index, correct_answers = excluded.correct_answers,
   explanation = excluded.explanation;

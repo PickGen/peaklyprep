@@ -4,7 +4,7 @@
 
 -- PeaklyTest Aug 2023 · Reading & Writing · Module 1
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('bbd5c696-a0ae-5b92-a059-830a2175afb5', 'PeaklyTest Aug 2023 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the Aug 2023 PeaklyTest · 27 questions · 32 minutes', 32, 280, true, 'PeaklyTest Aug 2023 · Reading & Writing', 1)
+values ('bbd5c696-a0ae-5b92-a059-830a2175afb5', 'PeaklyTest Aug 2023 · Reading & Writing · Module 1', 'Reading & Writing', 'Reading & Writing, Module 1 of the Aug 2023 PeaklyTest · 27 questions · 32 minutes', 32, 340, true, 'PeaklyTest Aug 2023 · Reading & Writing', 1)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
@@ -216,7 +216,7 @@ on conflict (question_id) do update set correct_index = excluded.correct_index, 
 
 -- PeaklyTest Aug 2023 · Reading & Writing · Module 2
 insert into public.tests (id, title, section, description, duration_min, position, published, form_title, module_no)
-values ('e6303d99-d1c6-5f08-96d8-3e1713277540', 'PeaklyTest Aug 2023 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the Aug 2023 PeaklyTest · 27 questions · 32 minutes', 32, 281, true, 'PeaklyTest Aug 2023 · Reading & Writing', 2)
+values ('e6303d99-d1c6-5f08-96d8-3e1713277540', 'PeaklyTest Aug 2023 · Reading & Writing · Module 2', 'Reading & Writing', 'Reading & Writing, Module 2 of the Aug 2023 PeaklyTest · 27 questions · 32 minutes', 32, 341, true, 'PeaklyTest Aug 2023 · Reading & Writing', 2)
 on conflict (id) do update set title = excluded.title, section = excluded.section, description = excluded.description,
   duration_min = excluded.duration_min, position = excluded.position, form_title = excluded.form_title, module_no = excluded.module_no;
 insert into public.questions (id, test_id, prompt, options, position, passage) values
