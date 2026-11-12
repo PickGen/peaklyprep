@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { supabase } from './supabase'
 import { useAuth } from './auth'
 import { fixGarbledDeep } from './textFix'
-import type { Attempt, AttemptResult, Leaderboard, Lesson, LessonProgress, MistakeItem, NewsItem, Profile, Question, StudyGroup, Subscription, Test } from './types'
+import type { Attempt, AttemptResult, Leaderboard, LeaderboardExtra, Lesson, LessonProgress, MistakeItem, NewsItem, Profile, Question, StudyGroup, Subscription, Test } from './types'
 import { buildNotifications, type AppNotification } from './notifications'
 
 function unwrap<T>(res: { data: T | null; error: { message: string } | null }): T {
@@ -811,5 +811,40 @@ export function useSetStudentGroup() {
       if (error) throw new Error(error.message === 'No student with this e-mail' ? 'Ученик с такой почтой не найден' : error.message)
     },
     onSuccess: () => invalidateGroupQueries(qc),
+  })
+}
+
+/* admin: extra (demo) participants of the leaderboard */
+export function useLeaderboardExtras() {
+  return useQuery({
+    queryKey: ['leaderboard-extras'],
+    queryFn: async () => unwrap(await supabase.from('leaderboard_extras').select('*').order('points', { ascending: false })) as LeaderboardExtra[],
+  })
+}
+
+export function useSaveLeaderboardExtra() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async ({ id, ...row }: Partial<LeaderboardExtra> & { name?: string }) => {
+      if (id) unwrap(await supabase.from('leaderboard_extras').update(row).eq('id', id).select())
+      else unwrap(await supabase.from('leaderboard_extras').insert(row).select())
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['leaderboard-extras'] })
+      qc.invalidateQueries({ queryKey: ['leaderboard'] })
+    },
+  })
+}
+
+export function useDeleteLeaderboardExtra() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (id: string) => {
+      unwrap(await supabase.from('leaderboard_extras').delete().eq('id', id).select())
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['leaderboard-extras'] })
+      qc.invalidateQueries({ queryKey: ['leaderboard'] })
+    },
   })
 }

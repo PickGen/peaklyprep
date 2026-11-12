@@ -30,6 +30,16 @@ export interface StudyGroup {
   created_at: string
 }
 
+/** Admin-made participant shown on the leaderboard (e.g. to fill it while there are few students) */
+export interface LeaderboardExtra {
+  id: string
+  name: string
+  points: number
+  group_id: string | null
+  active: boolean
+  created_at: string
+}
+
 export interface LeaderboardRow {
   rank: number
   name: string
