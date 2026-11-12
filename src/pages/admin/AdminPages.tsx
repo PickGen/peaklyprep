@@ -2,6 +2,12 @@ import { Fragment, useState, type FormEvent, type ReactNode } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import {
   findGarbledText,
+  useDeleteGroup,
+  useGroupMembers,
+  useGroups,
+  useLeaderboard,
+  useSaveGroup,
+  useSetStudentGroup,
   useFixGarbledText,
   type GarbledItem,
   useDeleteLesson,
@@ -864,6 +870,132 @@ export function AdminSettings() {
         </form>
         <p className="text-xs text-muted">Меняй каждую неделю. Студенты сразу увидят новый номер на странице оплаты.</p>
       </div>
+    </div>
+  )
+}
+/* =============== Groups (learning-centre classes) and their weekly leaderboard =============== */
+function GroupDetails({ id, name }: { id: string; name: string }) {
+  const members = useGroupMembers(id)
+  const setGroup = useSetStudentGroup()
+  const lb = useLeaderboard('group', 0, id)
+  const [email, setEmail] = useState('')
+  return (
+    <div className="mt-4 grid gap-4 md:grid-cols-2">
+      <div>
+        <p className="text-sm font-bold">Students ({members.data?.length ?? 0})</p>
+        <form
+          className="mt-2 flex gap-2"
+          onSubmit={(e) => {
+            e.preventDefault()
+            if (email.trim()) setGroup.mutate({ email: email.trim(), groupId: id }, { onSuccess: () => setEmail('') })
+          }}
+        >
+          <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="student@email.com" className="field !min-h-10 flex-1 text-sm" />
+          <button className="btn btn-primary !min-h-10 !px-3 !py-1.5 text-sm" disabled={setGroup.isPending}>Add</button>
+        </form>
+        {setGroup.error && <p className="err mt-1">{(setGroup.error as Error).message}</p>}
+        <ul className="mt-2 space-y-1">
+          {members.data?.map((m) => (
+            <li key={m.id} className="flex items-center justify-between gap-2 rounded-xl bg-white/70 px-3 py-2 text-sm">
+              <span className="min-w-0 truncate">
+                <b>{m.full_name || '—'}</b> <span className="text-muted">{m.email}</span>
+              </span>
+              <button
+                className="shrink-0 text-xs font-semibold text-muted hover:text-red-600"
+                onClick={() => window.confirm(`Remove ${m.email} from "${name}"?`) && setGroup.mutate({ email: m.email, groupId: null })}
+              >
+                Remove
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <p className="text-sm font-bold">This week</p>
+        {lb.isLoading ? (
+          <Spinner />
+        ) : (lb.data?.rows.length ?? 0) === 0 ? (
+          <p className="mt-2 text-sm text-muted">No points yet this week.</p>
+        ) : (
+          <ol className="mt-2 space-y-1">
+            {lb.data!.rows.map((r) => (
+              <li key={`${r.rank}-${r.name}`} className="flex justify-between rounded-xl bg-white/70 px-3 py-2 text-sm">
+                <span>
+                  <b className="mr-2">{r.rank}.</b>
+                  {r.name}
+                </span>
+                <b className="text-brand-700">{r.points}</b>
+              </li>
+            ))}
+          </ol>
+        )}
+      </div>
+    </div>
+  )
+}
+
+export function AdminGroups() {
+  const groups = useGroups()
+  const save = useSaveGroup()
+  const del = useDeleteGroup()
+  const [name, setName] = useState('')
+  const [open, setOpen] = useState<string | null>(null)
+  return (
+    <div className="space-y-5">
+      <div>
+        <h1 className="text-2xl font-extrabold">Groups</h1>
+        <p className="text-sm text-muted">
+          A group is a class of a learning centre. Give its students the join code (Leaderboard page → «Join»), or add them by e-mail. Each group gets its own weekly leaderboard.
+        </p>
+      </div>
+      <form
+        className="glass flex flex-wrap gap-2 rounded-2xl p-4"
+        onSubmit={(e) => {
+          e.preventDefault()
+          if (name.trim().length >= 2) save.mutate({ name: name.trim() }, { onSuccess: () => setName('') })
+        }}
+      >
+        <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Group name, e.g. «Almaty Center — Evening»" maxLength={60} className="field flex-1" />
+        <button className="btn btn-primary" disabled={save.isPending || name.trim().length < 2}>
+          <PlusIcon className="h-4 w-4" /> New group
+        </button>
+        {save.error && <p className="err w-full">{(save.error as Error).message}</p>}
+      </form>
+      {groups.isLoading ? (
+        <Spinner />
+      ) : (groups.data?.length ?? 0) === 0 ? (
+        <p className="text-sm text-muted">No groups yet.</p>
+      ) : (
+        <ul className="space-y-3">
+          {groups.data!.map((g) => (
+            <li key={g.id} className="glass rounded-2xl p-4">
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-bold">{g.name}</p>
+                  <p className="text-xs text-muted">{g.members} students</p>
+                </div>
+                <button
+                  className="rounded-xl bg-brand-100 px-3 py-1.5 font-mono text-sm font-bold tracking-widest text-brand-800"
+                  title="Copy the join code"
+                  onClick={() => navigator.clipboard?.writeText(g.join_code)}
+                >
+                  {g.join_code} 📋
+                </button>
+                <button className="btn btn-ghost !min-h-9 !px-3 !py-1.5 text-sm" onClick={() => setOpen(open === g.id ? null : g.id)}>
+                  {open === g.id ? 'Close' : 'Students & ranking'}
+                </button>
+                <button
+                  className="btn btn-danger !min-h-9 !px-3 !py-1.5 text-xs"
+                  onClick={() => window.confirm(`Delete the group "${g.name}"? Students stay, they just leave the group.`) && del.mutate(g.id)}
+                >
+                  <TrashIcon className="h-4 w-4" />
+                </button>
+              </div>
+              {open === g.id && <GroupDetails id={g.id} name={g.name} />}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }

@@ -18,6 +18,32 @@ export interface Profile {
   exam_date: string | null
   study_minutes: number
   email_updates: boolean
+  /** study group (e.g. a learning-centre class); joined with a code */
+  group_id?: string | null
+  hide_from_leaderboard?: boolean
+}
+
+export interface StudyGroup {
+  id: string
+  name: string
+  join_code: string
+  created_at: string
+}
+
+export interface LeaderboardRow {
+  rank: number
+  name: string
+  points: number
+  is_me: boolean
+}
+
+export interface Leaderboard {
+  week_start: string
+  week_end: string
+  group: { id: string; name: string } | null
+  rows: LeaderboardRow[]
+  /** null for admins (they are not ranked) */
+  me: { points: number; hidden: boolean; rank: number | null; total: number } | null
 }
 
 export const lessonPath = (l: { id: string; kind?: LessonKind | null; title: string }) =>

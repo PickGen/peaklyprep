@@ -10,6 +10,7 @@ import { ForgotPasswordPage, LoginPage, RegisterPage, ResetPasswordPage } from '
 import { HomePage, ProfilePage } from './pages/StudentPages'
 import StatisticsPage from './pages/Statistics'
 import MistakeBankPage from './pages/MistakeBank'
+import LeaderboardPage from './pages/Leaderboard'
 import { AttemptReviewPage, LearnPage, LessonPage, PracticePage, TestRunnerPage, WordListsPage } from './pages/LearnPractice'
 import { PrivacyPage, TermsPage } from './pages/Legal'
 import PlansPage from './pages/Plans'
@@ -21,6 +22,7 @@ const AdminQuestions = lazy(() => import('./pages/admin/AdminPages').then((m) =>
 const AdminNews = lazy(() => import('./pages/admin/AdminPages').then((m) => ({ default: m.AdminNews })))
 const AdminStudents = lazy(() => import('./pages/admin/AdminPages').then((m) => ({ default: m.AdminStudents })))
 const AdminPayments = lazy(() => import('./pages/admin/AdminPages').then((m) => ({ default: m.AdminPayments })))
+const AdminGroups = lazy(() => import('./pages/admin/AdminPages').then((m) => ({ default: m.AdminGroups })))
 const AdminSettings = lazy(() => import('./pages/admin/AdminPages').then((m) => ({ default: m.AdminSettings })))
 
 const queryClient = new QueryClient({
@@ -63,6 +65,7 @@ export default function App() {
                   <Route path="checkout" element={<CheckoutPage />} />
                   <Route path="progress" element={<StatisticsPage />} />
                   <Route path="mistakes" element={<MistakeBankPage />} />
+                  <Route path="leaderboard" element={<LeaderboardPage />} />
                   <Route path="profile" element={<ProfilePage />} />
                 </Route>
 
@@ -74,6 +77,7 @@ export default function App() {
                     <Route path="news" element={<AdminNews />} />
                     <Route path="students" element={<AdminStudents />} />
                     <Route path="payments" element={<AdminPayments />} />
+                    <Route path="groups" element={<AdminGroups />} />
                     <Route path="settings" element={<AdminSettings />} />
                   </Route>
                 </Route>
