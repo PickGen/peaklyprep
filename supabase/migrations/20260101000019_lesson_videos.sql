@@ -16,3 +16,8 @@ create policy "lesson videos admin update" on storage.objects for update to auth
   using (bucket_id = 'lesson-videos' and public.is_admin()) with check (bucket_id = 'lesson-videos' and public.is_admin());
 create policy "lesson videos admin delete" on storage.objects for delete to authenticated
   using (bucket_id = 'lesson-videos' and public.is_admin());
+
+-- admins also need to see the files (storage checks it to replace or delete a file)
+drop policy if exists "lesson videos admin select" on storage.objects;
+create policy "lesson videos admin select" on storage.objects for select to authenticated
+  using (bucket_id = 'lesson-videos' and public.is_admin());
