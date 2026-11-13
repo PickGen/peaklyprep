@@ -22,15 +22,24 @@ function visitorId(): string {
  * Tells the database that the site was opened (for the admin "Statistics" page). Sent once per browser tab;
  * the database ignores repeats within 30 minutes and visits by admins. Only the random id and the page path
  * are sent. Counting must never break the site, so every failure is swallowed.
+ *
+ * The tab is marked as counted only after the database accepted the call: if it failed (no network, the
+ * counter was not set up yet), the next page load in the same tab tries again.
  */
 export function trackVisit(): void {
   if (!isConfigured || import.meta.env.DEV) return
   try {
     if (BOT.test(navigator.userAgent) || sessionStorage.getItem(SESSION_KEY)) return
     const id = visitorId()
-    sessionStorage.setItem(SESSION_KEY, '1')
     void supabase.rpc('log_visit', { p_visitor: id, p_path: location.pathname }).then(
-      () => undefined,
+      ({ error }) => {
+        if (error) return
+        try {
+          sessionStorage.setItem(SESSION_KEY, '1')
+        } catch {
+          // storage is blocked: the database still ignores repeats within 30 minutes
+        }
+      },
       () => undefined,
     )
   } catch {

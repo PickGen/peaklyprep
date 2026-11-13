@@ -150,7 +150,7 @@ export default function AdminStats() {
         note={
           visits.data
             ? `Посещение — человек открыл сайт; повторный заход считается снова, если прошло больше 30 минут. Администраторы не учитываются. ${
-                visits.data.first_day ? `Счётчик работает с ${dayLabel(visits.data.first_day)}.` : 'Счётчик включён, заходов пока не было.'
+                visits.data.first_day ? `Счётчик работает с ${dayLabel(visits.data.first_day).replace(/\.$/, '')}.` : 'Счётчик включён, заходов пока не было.'
               }`
             : undefined
         }
