@@ -554,6 +554,8 @@ export interface PaymentRequest {
   status: 'pending' | 'approved' | 'rejected'
   admin_note: string | null
   created_at: string
+  /** 'manual' = card transfer checked by the admin; 'lemonsqueezy' = paid by card online. Missing until the card payments migration is run. */
+  provider?: string
   profiles?: { email: string; full_name: string | null }
 }
 

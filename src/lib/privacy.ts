@@ -18,7 +18,7 @@ export const privacy: Record<Lang, Policy> = {
   en: {
     title: 'Privacy Policy',
     updatedLabel: 'Last Updated:',
-    updated: 'November 6, 2026',
+    updated: 'November 13, 2026',
     sections: [
       {
         h: '1. Introduction',
@@ -30,9 +30,9 @@ export const privacy: Record<Lang, Policy> = {
         ul: ['Names', 'Email addresses', 'Passwords (encrypted)'],
       },
       {
-        h: '3. Payment Information and Paddle',
+        h: '3. Payment Information and Lemon Squeezy',
         p: [
-          "We use Paddle.com as our Merchant of Record and payment processor. All payment transactions are handled by Paddle. **We do not process, record, or maintain your credit card or bank account information.** For more information on how Paddle processes your data, please review Paddle's Privacy Policy at https://paddle.com/privacy.",
+          "We use Lemon Squeezy as our Merchant of Record and payment processor. All payment transactions are handled by Lemon Squeezy. **We do not process, record, or maintain your credit card or bank account information.** For more information on how Lemon Squeezy processes your data, please review Lemon Squeezy's Privacy Policy at https://www.lemonsqueezy.com/privacy.",
         ],
       },
       {
@@ -42,7 +42,7 @@ export const privacy: Record<Lang, Policy> = {
       },
       {
         h: '5. How We Share Your Information',
-        p: ['We only share information with Paddle to process your payments and manage your subscriptions. We do not sell, rent, or trade your personal information to third parties.'],
+        p: ['We only share information with Lemon Squeezy to process your payments and manage your subscriptions. We do not sell, rent, or trade your personal information to third parties.'],
       },
       {
         h: '6. Contact Us',
@@ -53,7 +53,7 @@ export const privacy: Record<Lang, Policy> = {
   ru: {
     title: 'Политика конфиденциальности',
     updatedLabel: 'Последнее обновление:',
-    updated: '6 ноября 2026 г.',
+    updated: '13 ноября 2026 г.',
     sections: [
       {
         h: '1. Введение',
@@ -65,9 +65,9 @@ export const privacy: Record<Lang, Policy> = {
         ul: ['Имя', 'Адрес электронной почты', 'Пароли (в зашифрованном виде)'],
       },
       {
-        h: '3. Платежная информация и Paddle',
+        h: '3. Платежная информация и Lemon Squeezy',
         p: [
-          'Мы используем Paddle.com в качестве нашего официального продавца (Merchant of Record) и платежного шлюза. Все платежные транзакции обрабатываются Paddle. **Мы не обрабатываем, не записываем и не храним данные вашей кредитной карты или банковского счета.** Для получения дополнительной информации о том, как Paddle обрабатывает ваши данные, ознакомьтесь с Политикой конфиденциальности Paddle по адресу https://paddle.com/privacy.',
+          'Мы используем Lemon Squeezy в качестве нашего официального продавца (Merchant of Record) и платежного шлюза. Все платежные транзакции обрабатываются Lemon Squeezy. **Мы не обрабатываем, не записываем и не храним данные вашей кредитной карты или банковского счета.** Для получения дополнительной информации о том, как Lemon Squeezy обрабатывает ваши данные, ознакомьтесь с Политикой конфиденциальности Lemon Squeezy по адресу https://www.lemonsqueezy.com/privacy.',
         ],
       },
       {
@@ -77,7 +77,7 @@ export const privacy: Record<Lang, Policy> = {
       },
       {
         h: '5. Как мы делимся вашей информацией',
-        p: ['Мы передаем информацию только сервису Paddle для обработки ваших платежей и управления подписками. Мы не продаем, не сдаем в аренду и не передаем вашу личную информацию третьим лицам.'],
+        p: ['Мы передаем информацию только сервису Lemon Squeezy для обработки ваших платежей и управления подписками. Мы не продаем, не сдаем в аренду и не передаем вашу личную информацию третьим лицам.'],
       },
       {
         h: '6. Свяжитесь с нами',
@@ -88,7 +88,7 @@ export const privacy: Record<Lang, Policy> = {
   kk: {
     title: 'Құпиялылық саясаты',
     updatedLabel: 'Соңғы жаңартылуы:',
-    updated: '6 қараша 2026 ж.',
+    updated: '13 қараша 2026 ж.',
     sections: [
       {
         h: '1. Кіріспе',
@@ -100,9 +100,9 @@ export const privacy: Record<Lang, Policy> = {
         ul: ['Аты-жөні', 'Электрондық пошта мекенжайы', 'Құпия сөздер (шифрланған түрде)'],
       },
       {
-        h: '3. Төлем ақпараты және Paddle',
+        h: '3. Төлем ақпараты және Lemon Squeezy',
         p: [
-          'Біз Paddle.com сервисін ресми сатушы (Merchant of Record) және төлемді өңдеуші ретінде қолданамыз. Барлық төлем транзакцияларын Paddle жүзеге асырады. **Біз сіздің несие картаңыздың немесе банк шотыңыздың деректерін өңдемейміз, жазбаймыз және сақтамаймыз.** Paddle сіздің деректеріңізді қалай өңдейтіні туралы қосымша ақпарат алу үшін https://paddle.com/privacy мекенжайы бойынша Paddle Құпиялылық саясатымен танысыңыз.',
+          'Біз Lemon Squeezy сервисін ресми сатушы (Merchant of Record) және төлемді өңдеуші ретінде қолданамыз. Барлық төлем транзакцияларын Lemon Squeezy жүзеге асырады. **Біз сіздің несие картаңыздың немесе банк шотыңыздың деректерін өңдемейміз, жазбаймыз және сақтамаймыз.** Lemon Squeezy сіздің деректеріңізді қалай өңдейтіні туралы қосымша ақпарат алу үшін https://www.lemonsqueezy.com/privacy мекенжайы бойынша Lemon Squeezy Құпиялылық саясатымен танысыңыз.',
         ],
       },
       {
@@ -112,7 +112,7 @@ export const privacy: Record<Lang, Policy> = {
       },
       {
         h: '5. Ақпаратыңызбен бөлісу',
-        p: ['Біз сіздің төлемдеріңізді өңдеу және жазылымдарыңызды басқару үшін ақпаратты тек Paddle сервисіне береміз. Біз сіздің жеке ақпаратыңызды үшінші тараптарға сатпаймыз, жалға бермейміз немесе бөліспейміз.'],
+        p: ['Біз сіздің төлемдеріңізді өңдеу және жазылымдарыңызды басқару үшін ақпаратты тек Lemon Squeezy сервисіне береміз. Біз сіздің жеке ақпаратыңызды үшінші тараптарға сатпаймыз, жалға бермейміз немесе бөліспейміз.'],
       },
       {
         h: '6. Бізбен байланыс',

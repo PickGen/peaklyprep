@@ -2,7 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../lib/auth'
-import { useAppSetting, useSubmitPaymentRequest, useMyPaymentRequests } from '../lib/api'
+import { useAppSetting, useSubmitPaymentRequest, useMyPaymentRequests, useMySubscription } from '../lib/api'
+import { buildCheckoutUrl, checkoutSettingKey, cleanSetting } from '../lib/cardCheckout'
 import { PLANS } from '../components/Pricing'
 import { CrownIcon } from '../components/Icons'
 import { Spinner } from '../components/Layouts'
@@ -62,6 +63,22 @@ export default function CheckoutPage() {
 
   const hasPending = myRequests.data?.some((r) => r.status === 'pending' && r.plan === plan)
 
+  // Paying by card online (Lemon Squeezy). The button appears only when the admin has saved a checkout
+  // link for this plan; the provider then tells our server about the paid order and access opens by itself.
+  const linkSetting = useAppSetting(checkoutSettingKey(plan))
+  const payUrl = session ? buildCheckoutUrl(cleanSetting(linkSetting.data), session.user.id, plan) : null
+  const sub = useMySubscription()
+  const { refetch: refetchSub } = sub
+  const expires = sub.data?.expires_at ?? null
+  // set when the student opens the card checkout: the access end date they had at that moment
+  const [waiting, setWaiting] = useState<{ before: string | null } | null>(null)
+  useEffect(() => {
+    if (!waiting) return
+    const timer = setInterval(() => void refetchSub(), 5000)
+    return () => clearInterval(timer)
+  }, [waiting, refetchSub])
+  const paidUntil = waiting && expires && expires !== waiting.before && new Date(expires) > new Date() ? expires : null
+
   if (!PLANS.find((p) => p.id === plan)) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
@@ -99,6 +116,53 @@ export default function CheckoutPage() {
     }
   }
 
+  if (paidUntil) {
+    return (
+      <div className="mx-auto max-w-md py-10">
+        <Reveal>
+          <div className="glass rounded-3xl p-8 text-center">
+            <div className="mx-auto mb-4 grid h-16 w-16 place-items-center rounded-2xl bg-green-100">
+              <span className="text-3xl">✓</span>
+            </div>
+            <h2 className="text-xl font-extrabold">Оплата прошла!</h2>
+            <p className="mt-3 text-sm text-muted">Доступ открыт до {new Date(paidUntil).toLocaleDateString('ru-RU')}. Можно заниматься.</p>
+            <Link to="/app" className="btn btn-primary mt-6 w-full">Начать заниматься</Link>
+          </div>
+        </Reveal>
+      </div>
+    )
+  }
+
+  if (waiting) {
+    return (
+      <div className="mx-auto max-w-md py-10">
+        <Reveal>
+          <div className="glass rounded-3xl p-8 text-center">
+            <div className="mb-4 flex justify-center">
+              <Spinner />
+            </div>
+            <h2 className="text-xl font-extrabold">Ждём подтверждение оплаты</h2>
+            <p className="mt-3 text-sm text-muted">
+              Оплатите в открывшейся вкладке. Как только платёж пройдёт, доступ откроется сам — обычно в течение минуты. Эту страницу можно не закрывать.
+            </p>
+            {payUrl && (
+              <a href={payUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary mt-6 w-full">
+                Открыть страницу оплаты ещё раз
+              </a>
+            )}
+            <button type="button" className="btn btn-ghost mt-3 w-full" onClick={() => setWaiting(null)}>
+              Назад к способам оплаты
+            </button>
+            <p className="mt-4 text-xs text-muted">
+              Оплатили, а доступ не открылся за 10 минут? Напишите нам:{' '}
+              <a href="mailto:support@peaklyprep.com" className="font-semibold text-brand-600">support@peaklyprep.com</a>
+            </p>
+          </div>
+        </Reveal>
+      </div>
+    )
+  }
+
   if (status === 'done' || hasPending) {
     return (
       <div className="mx-auto max-w-md py-10">
@@ -134,10 +198,33 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          {/* Payment method */}
-          <div className="mb-4 rounded-2xl border-2 border-brand-600 bg-brand-50 p-4">
-            <div className="flex items-center gap-2 font-semibold text-brand-700">
-              <span>💳</span> Оплата банковской картой
+          {/* Card online: instant access */}
+          {payUrl && (
+            <>
+              <div className="rounded-2xl border-2 border-brand-600 bg-brand-50 p-4">
+                <p className="font-semibold text-brand-700">💳 Картой онлайн</p>
+                <p className="mt-1 text-xs text-muted">
+                  Visa или Mastercard любого банка. Доступ на {label.toLowerCase()} откроется сразу после оплаты, без ожидания проверки.
+                </p>
+                <a
+                  href={payUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setWaiting({ before: expires })}
+                  className="btn btn-primary mt-3 w-full"
+                >
+                  Оплатить ${amount} картой →
+                </a>
+                <p className="mt-2 text-[11px] text-muted">Платёж принимает Lemon Squeezy — данные карты мы не видим и не храним.</p>
+              </div>
+              <p className="my-4 text-center text-xs font-semibold uppercase tracking-widest text-muted">или переводом</p>
+            </>
+          )}
+
+          {/* Manual transfer */}
+          <div className={`mb-4 rounded-2xl p-4 ${payUrl ? 'border border-[#e6e0f7] bg-white' : 'border-2 border-brand-600 bg-brand-50'}`}>
+            <div className={`flex items-center gap-2 font-semibold ${payUrl ? 'text-ink' : 'text-brand-700'}`}>
+              <span>{payUrl ? '🏦' : '💳'}</span> {payUrl ? 'Перевод на карту (проверяем вручную)' : 'Оплата банковской картой'}
             </div>
           </div>
 

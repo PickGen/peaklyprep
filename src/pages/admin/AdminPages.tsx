@@ -38,6 +38,7 @@ import {
   useAppSetting,
   useUpdateAppSetting,
 } from '../../lib/api'
+import { CARD_PLANS, checkoutSettingKey, cleanSetting, isCheckoutLink } from '../../lib/cardCheckout'
 import { hasGarbled } from '../../lib/textFix'
 import { fieldErrors, lessonSchema, newsSchema, questionImportSchema, questionSchema, testSchema, type FieldErrors } from '../../lib/schemas'
 import { SECTIONS, lessonKind, type LeaderboardExtra, type Lesson, type LessonKind, type NewsItem, type Question, type Test } from '../../lib/types'
@@ -854,6 +855,9 @@ export function AdminPayments() {
                     {STATUS_LABEL[r.status]}
                   </span>
                 </div>
+                {r.provider && r.provider !== 'manual' && (
+                  <p className="text-xs font-semibold text-brand-700">💳 Оплата картой онлайн — доступ открыт автоматически, проверять не нужно</p>
+                )}
                 {r.receipt_url && (
                   <a href={r.receipt_url} target="_blank" rel="noreferrer" className="text-xs text-brand-600 underline">📎 Посмотреть чек</a>
                 )}
@@ -881,6 +885,52 @@ export function AdminPayments() {
 }
 
 /* =============== Settings =============== */
+const CHECKOUT_PLAN_LABEL: Record<string, string> = { '1m': '1 месяц — $7', '3m': '3 месяца — $15', '6m': '6 месяцев — $25', '12m': '12 месяцев — $50' }
+
+/** One plan's Lemon Squeezy checkout link. An empty value switches online card payment off for the plan. */
+function CheckoutLinkRow({ plan }: { plan: string }) {
+  const setting = useAppSetting(checkoutSettingKey(plan))
+  const update = useUpdateAppSetting()
+  const current = cleanSetting(setting.data)
+  const [draft, setDraft] = useState<string | null>(null)
+  const [saved, setSaved] = useState(false)
+  const value = (draft ?? current).trim()
+  const invalid = value !== '' && !isCheckoutLink(value)
+
+  async function save(e: FormEvent) {
+    e.preventDefault()
+    if (invalid || value === current) return
+    await update.mutateAsync({ key: checkoutSettingKey(plan), value })
+    setDraft(null)
+    setSaved(true)
+    setTimeout(() => setSaved(false), 2000)
+  }
+
+  return (
+    <form onSubmit={save} className="space-y-1">
+      <label className="block text-sm font-semibold" htmlFor={`ls-link-${plan}`}>
+        {CHECKOUT_PLAN_LABEL[plan] ?? plan} {current ? <span className="font-normal text-green-700">· включено</span> : <span className="font-normal text-muted">· выключено</span>}
+      </label>
+      <div className="flex gap-2">
+        <input
+          id={`ls-link-${plan}`}
+          type="url"
+          className="field flex-1 text-sm"
+          placeholder="https://….lemonsqueezy.com/checkout/buy/…"
+          value={draft ?? current}
+          onChange={(e) => setDraft(e.target.value)}
+          disabled={setting.isLoading}
+        />
+        <button className="btn btn-primary !min-h-10 !px-3 !py-1.5 text-sm" disabled={update.isPending || invalid || value === current}>
+          {saved ? '✓' : update.isPending ? '…' : 'Сохранить'}
+        </button>
+      </div>
+      {invalid && <p className="text-xs text-red-700">Нужна ссылка вида https://ваш-магазин.lemonsqueezy.com/checkout/buy/…</p>}
+      {update.error && <p className="text-xs text-red-700">{(update.error as Error).message}</p>}
+    </form>
+  )
+}
+
 export function AdminSettings() {
   const cardSetting = useAppSetting('card_number')
   const updateSetting = useUpdateAppSetting()
@@ -917,6 +967,17 @@ export function AdminSettings() {
           </button>
         </form>
         <p className="text-xs text-muted">Меняй каждую неделю. Студенты сразу увидят новый номер на странице оплаты.</p>
+      </div>
+      <div className="glass rounded-2xl p-5 space-y-4">
+        <h2 className="font-bold text-lg">Оплата картой онлайн (Lemon Squeezy)</h2>
+        <p className="text-sm text-muted">
+          Вставьте ссылку на оплату каждого тарифа из Lemon Squeezy (Products → Share → Copy link). У тарифа со ссылкой на странице оплаты появится кнопка
+          «Оплатить картой», и доступ будет открываться сам. Чтобы выключить — сотрите ссылку и сохраните.
+        </p>
+        {CARD_PLANS.map((plan) => (
+          <CheckoutLinkRow key={plan} plan={plan} />
+        ))}
+        <p className="text-xs text-muted">Цена товара в Lemon Squeezy должна совпадать с ценой тарифа: доступ выдаётся по оплаченной сумме.</p>
       </div>
     </div>
   )
