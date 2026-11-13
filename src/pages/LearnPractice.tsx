@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { formatDate, useI18n } from '../lib/i18n'
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useAttemptReview, useDeleteAttempts, useLesson, useLessonProgress, useLessons, useHasAccess, useMyAttempts, useQuestionCounts, useQuestions, useSubmitAttempt, useTest, useTests, useToggleLessonDone } from '../lib/api'
-import { SECTIONS, lessonKind, lessonPath, type AttemptResult, type LessonKind, type Section, type Test } from '../lib/types'
+import { SECTIONS, lessonKind, lessonPath, videoFirst, type AttemptResult, type LessonKind, type Section, type Test } from '../lib/types'
 import { useAuth } from '../lib/auth'
 import { Reveal } from '../components/Reveal'
 import { ArrowLeft, CalculatorIcon, CheckIcon, ClockIcon, CloseIcon, FileIcon, PlayIcon, TrashIcon } from '../components/Icons'
@@ -102,7 +102,8 @@ function LessonList({ kind }: { kind: LessonKind }) {
   const progress = useLessonProgress()
   const [filter, setFilter] = useState<Section | 'All'>('All')
   const done = new Set(progress.data?.map((p) => p.lesson_id))
-  const published = (lessons.data ?? []).filter((l) => l.published && lessonKind(l) === kind)
+  // video lessons lead the list, the "Continue" button and every section
+  const published = videoFirst((lessons.data ?? []).filter((l) => l.published && lessonKind(l) === kind))
   const remaining = published.filter((l) => !done.has(l.id))
   const doneCount = published.length - remaining.length
   const minLeft = remaining.reduce((s, l) => s + l.duration_min, 0)
