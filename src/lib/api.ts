@@ -923,8 +923,15 @@ export function useStudentCounts() {
         students(),
         students().gte('created_at', since(7)),
         students().gte('created_at', since(30)),
+        // students only: an admin account may hold test subscriptions
         fetchAllRows<{ user_id: string }>((from, to) =>
-          supabase.from('subscriptions').select('user_id').gt('expires_at', new Date(now).toISOString()).order('id').range(from, to),
+          supabase
+            .from('subscriptions')
+            .select('user_id, profiles!inner(role)')
+            .eq('profiles.role', 'student')
+            .gt('expires_at', new Date(now).toISOString())
+            .order('id')
+            .range(from, to),
         ),
       ])
       for (const r of [total, week, month]) if (r.error) throw new Error(r.error.message)
