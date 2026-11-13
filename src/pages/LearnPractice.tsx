@@ -112,6 +112,8 @@ function LessonList({ kind }: { kind: LessonKind }) {
   const groups = SECTIONS.filter((s) => filter === 'All' || s === filter)
     .map((s) => ({ section: s, items: published.filter((l) => l.section === s) }))
     .filter((g) => g.items.length > 0)
+    // a section that has video lessons goes above one that has none
+    .sort((a, b) => Number(b.items.some((l) => l.video_url)) - Number(a.items.some((l) => l.video_url)))
 
   if (subLoading) return <Spinner />
   // without a subscription the server only returns free items; with none of them, show the paywall
