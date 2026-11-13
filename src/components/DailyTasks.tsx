@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../lib/auth'
 import { useI18n } from '../lib/i18n'
 import { useHasAccess, useLessonProgress, useLessons, useMyAttempts, useQuestionCounts, useTests } from '../lib/api'
-import { lessonPath } from '../lib/types'
+import { lessonPath, videoFirst } from '../lib/types'
 import { CheckRingIcon, ClipboardCheckIcon, ClipboardIcon, PlayRingIcon } from './Icons'
 
 interface Task {
@@ -48,7 +48,7 @@ function useDailyTasks(): { tasks: Task[]; loading: boolean; minutesLeft: number
     const lastAttempt = new Map<string, number>()
     for (const a of attempts.data ?? []) lastAttempt.set(a.test_id, Math.max(lastAttempt.get(a.test_id) ?? 0, new Date(a.created_at).getTime()))
     const testQueue = allTests.filter((t) => !testsToday.has(t.id)).sort((a, b) => (lastAttempt.get(a.id) ?? 0) - (lastAttempt.get(b.id) ?? 0))
-    const lessonQueue = allLessons.filter((l) => !doneIds.has(l.id))
+    const lessonQueue = videoFirst(allLessons.filter((l) => !doneIds.has(l.id)))
 
     const spent = done.reduce((s, t) => s + t.minutes, 0)
     let left = Math.max(budget - spent, 0)

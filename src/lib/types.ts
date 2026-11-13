@@ -8,6 +8,11 @@ export function lessonKind(l: { kind?: LessonKind | null; title: string }): Less
   return l.kind ?? (/sat\s*words?/i.test(l.title) ? 'word_list' : 'lesson')
 }
 
+/** Lessons that have a video go first; the rest keep their admin-set order (Array.prototype.sort is stable). */
+export function videoFirst<T extends { video_url?: string | null }>(items: readonly T[]): T[] {
+  return [...items].sort((a, b) => Number(Boolean(b.video_url)) - Number(Boolean(a.video_url)))
+}
+
 export interface Profile {
   id: string
   email: string
