@@ -389,6 +389,7 @@ export function AppShell() {
 }
 /* ---------- Admin shell ---------- */
 const adminTabs = [
+  { to: '/admin/stats', label: 'Statistics' },
   { to: '/admin', label: 'Lessons', end: true },
   { to: '/admin/tests', label: 'Tests & Questions' },
   { to: '/admin/news', label: 'News' },

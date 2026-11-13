@@ -24,6 +24,7 @@ const AdminStudents = lazy(() => import('./pages/admin/AdminPages').then((m) => 
 const AdminPayments = lazy(() => import('./pages/admin/AdminPages').then((m) => ({ default: m.AdminPayments })))
 const AdminGroups = lazy(() => import('./pages/admin/AdminPages').then((m) => ({ default: m.AdminGroups })))
 const AdminSettings = lazy(() => import('./pages/admin/AdminPages').then((m) => ({ default: m.AdminSettings })))
+const AdminStats = lazy(() => import('./pages/admin/AdminStats'))
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: 30_000, retry: 1, refetchOnWindowFocus: false } },
@@ -72,6 +73,7 @@ export default function App() {
                 <Route element={<RequireAdmin />}>
                   <Route path="admin" element={<AdminShell />}>
                     <Route index element={<AdminLessons />} />
+                    <Route path="stats" element={<AdminStats />} />
                     <Route path="tests" element={<AdminTests />} />
                     <Route path="tests/:id" element={<AdminQuestions />} />
                     <Route path="news" element={<AdminNews />} />
