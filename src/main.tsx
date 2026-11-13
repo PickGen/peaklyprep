@@ -3,8 +3,10 @@ import { createRoot } from 'react-dom/client'
 import { registerSW } from 'virtual:pwa-register'
 import './index.css'
 import App from './App'
+import { trackVisit } from './lib/visits'
 
 registerSW({ immediate: true })
+trackVisit()
 
 // Keep the layout fixed at 100%: block pinch-zoom and Ctrl + wheel / Ctrl +, -, 0 zooming
 const stop = (e: Event) => e.preventDefault()

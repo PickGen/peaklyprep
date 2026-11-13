@@ -4,6 +4,7 @@ import { useAuth } from './auth'
 import { fixGarbledDeep } from './textFix'
 import type { Attempt, AttemptResult, Leaderboard, LeaderboardExtra, Lesson, LessonProgress, MistakeItem, NewsItem, Profile, Question, StudyGroup, Subscription, Test } from './types'
 import { buildNotifications, type AppNotification } from './notifications'
+import type { PaymentRow } from './adminStats'
 
 function unwrap<T>(res: { data: T | null; error: { message: string } | null }): T {
   if (res.error) throw new Error(res.error.message)
@@ -610,6 +611,7 @@ export function useUpdatePaymentRequest() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['all_payment_requests'] })
       qc.invalidateQueries({ queryKey: ['students'] })
+      qc.invalidateQueries({ queryKey: ['admin-stats'] })
     },
   })
 }
@@ -845,6 +847,93 @@ export function useDeleteLeaderboardExtra() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['leaderboard-extras'] })
       qc.invalidateQueries({ queryKey: ['leaderboard'] })
+    },
+  })
+}
+
+/* ---------- Admin statistics ---------- */
+/** The API returns at most 1000 rows per request; read every page so that totals are never cut short. */
+async function fetchAllRows<T>(page: (from: number, to: number) => PromiseLike<{ data: unknown; error: { message: string } | null }>): Promise<T[]> {
+  const size = 1000
+  const out: T[] = []
+  for (let from = 0; ; from += size) {
+    const res = await page(from, from + size - 1)
+    if (res.error) throw new Error(res.error.message)
+    const rows = (res.data ?? []) as T[]
+    out.push(...rows)
+    if (rows.length < size) return out
+  }
+}
+
+/** Every payment request (amount, plan, status, date) for the revenue numbers; admins only (RLS). */
+export function useRevenueRows() {
+  return useQuery({
+    queryKey: ['admin-stats', 'payments'],
+    queryFn: () =>
+      fetchAllRows<PaymentRow>((from, to) =>
+        supabase.from('payment_requests').select('amount_usd, plan, status, created_at').order('created_at').order('id').range(from, to),
+      ),
+  })
+}
+
+export interface VisitStats {
+  today: number
+  today_unique: number
+  week: number
+  week_unique: number
+  month: number
+  month_unique: number
+  total: number
+  total_unique: number
+  /** the first day that has a recorded visit ('YYYY-MM-DD'), null while there are none */
+  first_day: string | null
+  daily: { day: string; visits: number; visitors: number }[]
+}
+
+/** Visit counter totals. Fails until the site_visits migration has been run in the database. */
+export function useVisitStats(days = 30) {
+  return useQuery({
+    queryKey: ['admin-stats', 'visits', days],
+    retry: false,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc('visit_stats', { p_days: days })
+      if (error) throw new Error(error.message)
+      return data as VisitStats
+    },
+  })
+}
+
+export interface StudentCounts {
+  total: number
+  /** registered in the last 7 / 30 days */
+  week: number
+  month: number
+  /** students whose subscription has not expired */
+  subscribed: number
+}
+
+export function useStudentCounts() {
+  return useQuery({
+    queryKey: ['admin-stats', 'students'],
+    queryFn: async (): Promise<StudentCounts> => {
+      const now = Date.now()
+      const since = (days: number) => new Date(now - days * 86_400_000).toISOString()
+      const students = () => supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('role', 'student')
+      const [total, week, month, subs] = await Promise.all([
+        students(),
+        students().gte('created_at', since(7)),
+        students().gte('created_at', since(30)),
+        fetchAllRows<{ user_id: string }>((from, to) =>
+          supabase.from('subscriptions').select('user_id').gt('expires_at', new Date(now).toISOString()).order('id').range(from, to),
+        ),
+      ])
+      for (const r of [total, week, month]) if (r.error) throw new Error(r.error.message)
+      return {
+        total: total.count ?? 0,
+        week: week.count ?? 0,
+        month: month.count ?? 0,
+        subscribed: new Set(subs.map((x) => x.user_id)).size,
+      }
     },
   })
 }
