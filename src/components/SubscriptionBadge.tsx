@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useMySubscription } from '../lib/api'
+import { useFreeAccess, useMySubscription } from '../lib/api'
 import { useAuth } from '../lib/auth'
 import { planReminder } from '../lib/notifications'
 import { formatDate, useI18n } from '../lib/i18n'
@@ -7,16 +7,20 @@ import { ArrowRight, CrownIcon } from './Icons'
 import { planName } from './Pricing'
 
 /** "until 7 January 2031" style date (Kazakh gets the correct case ending) */
-export const fmtLong = (iso: string) => formatDate(iso, { day: 'numeric', month: 'long', year: 'numeric', until: true })
+export const fmtLong = (iso: string | Date) => formatDate(iso, { day: 'numeric', month: 'long', year: 'numeric', until: true })
 
 /** Shows which plan the student bought and until when (next to the name in the profile). */
 export function SubscriptionBadge() {
   const { tr } = useI18n()
   const sub = useMySubscription()
+  const free = useFreeAccess()
   if (sub.isLoading) return null
   const s = sub.data
   const active = s && new Date(s.expires_at) > new Date()
 
+  if (!active && free.until) {
+    return <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-800 ring-1 ring-emerald-200">🎁 {tr('Free until {d}', { d: fmtLong(free.until) })}</span>
+  }
   if (!active) {
     return (
       <Link to="/app/plans" className="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-3 py-1 text-xs font-bold text-brand-700 ring-1 ring-brand-100 hover:bg-brand-100">
@@ -34,12 +38,29 @@ export function SubscriptionBadge() {
     </span>  )
 }
 
+/** Home page: the whole site is free for everyone until the date set by the admin. */
+export function FreeAccessBanner({ className = '' }: { className?: string }) {
+  const { tr } = useI18n()
+  const free = useFreeAccess()
+  if (!free.until) return null
+  return (
+    <section role="status" className={`${className} flex items-start gap-3 rounded-2xl bg-emerald-50 p-4 ring-1 ring-emerald-200`}>
+      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-emerald-100 text-xl" aria-hidden="true">🎁</span>
+      <div className="min-w-0">
+        <p className="font-bold text-emerald-900">{tr('PeaklyPrep is free until {d}', { d: fmtLong(free.until) })}</p>
+        <p className="text-sm text-emerald-800">{tr('All lessons and practice tests are open — no plan needed.')}</p>
+      </div>
+    </section>
+  )
+}
+
 /** Home page reminder: the plan ends within 7 days, or ended less than 30 days ago. */
 export function PlanReminder({ className = '' }: { className?: string }) {
   const { tr } = useI18n()
   const { isAdmin } = useAuth()
   const sub = useMySubscription()
-  const r = planReminder(sub.data ?? null, new Date(), isAdmin)
+  const free = useFreeAccess()
+  const r = planReminder(sub.data ?? null, new Date(), isAdmin, Boolean(free.until))
   if (!r || !sub.data) return null
   const ended = r.kind === 'ended'
   return (
@@ -71,6 +92,7 @@ export function PlanReminder({ className = '' }: { className?: string }) {
 export function PlanCard() {
   const { tr } = useI18n()
   const sub = useMySubscription()
+  const free = useFreeAccess()
   const s = sub.data
   const active = s && new Date(s.expires_at) > new Date()
   return (
@@ -81,7 +103,7 @@ export function PlanCard() {
         </span>
         <div className="min-w-0">
           <p className="text-xs font-bold uppercase tracking-widest text-muted">{tr('Subscription')}</p>
-          <p className="text-lg font-extrabold leading-tight">{active ? planName(s.plan, tr) : tr('No active plan')}</p>
+          <p className="text-lg font-extrabold leading-tight">{active ? planName(s.plan, tr) : free.until ? tr('Free until {d}', { d: fmtLong(free.until) }) : tr('No active plan')}</p>
         </div>
       </div>
       <Link to="/app/plans" className="btn btn-primary !min-h-11 w-full !px-5 !py-2.5 text-sm sm:w-auto">

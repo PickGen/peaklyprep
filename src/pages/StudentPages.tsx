@@ -10,7 +10,7 @@ import { Reveal } from '../components/Reveal'
 import { BarsIcon, BookIcon, CalendarIcon, LayersIcon, CheckSquareIcon, MistakeIcon, ChevronRight, ClockIcon, EditIcon, GlassTile, GlobeIcon, LogoutIcon, MailIcon, NewsIcon, ShieldIcon, StarIcon, TargetIcon, UserIcon } from '../components/Icons'
 import { Spinner } from '../components/Layouts'
 import { DailyTasks } from '../components/DailyTasks'
-import { PlanCard, PlanReminder, SubscriptionBadge } from '../components/SubscriptionBadge'
+import { FreeAccessBanner, PlanCard, PlanReminder, SubscriptionBadge } from '../components/SubscriptionBadge'
 import { ScoreForecast, toForecastAttempts } from '../components/ScoreForecast'
 import { forecast } from '../lib/score'
 
@@ -140,6 +140,7 @@ export function HomePage() {
         <h1 className="pt-8 text-[2rem] font-extrabold md:pt-0 md:text-4xl">{tr("Hi, {name}!", { name: first })}</h1>
       </Reveal>
 
+      <FreeAccessBanner className="mt-5 md:mt-6" />
       <PlanReminder className="mt-5 md:mt-6" />
 
       <Reveal delay={40} className="mt-6 hidden md:block">

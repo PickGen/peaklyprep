@@ -39,6 +39,7 @@ import {
   useUpdateAppSetting,
 } from '../../lib/api'
 import { hasGarbled } from '../../lib/textFix'
+import { FREE_UNTIL_KEY, activeFreeUntil, endOfDate, endOfDayAfter } from '../../lib/freeAccess'
 import { fieldErrors, lessonSchema, newsSchema, questionImportSchema, questionSchema, testSchema, type FieldErrors } from '../../lib/schemas'
 import { SECTIONS, lessonKind, type LeaderboardExtra, type Lesson, type LessonKind, type NewsItem, type Question, type Test } from '../../lib/types'
 import { ArrowLeft, EditIcon, PlusIcon, TrashIcon } from '../../components/Icons'
@@ -881,6 +882,49 @@ export function AdminPayments() {
 }
 
 /* =============== Settings =============== */
+/** Opens the whole site to every signed-in student until a date (needs the free_period migration in the database). */
+function FreeAccessSetting() {
+  const setting = useAppSetting(FREE_UNTIL_KEY)
+  const update = useUpdateAppSetting()
+  const [date, setDate] = useState('')
+  const until = activeFreeUntil(setting.data, new Date())
+  const save = (value: string) => update.mutate({ key: FREE_UNTIL_KEY, value })
+  const fmt = (d: Date) => d.toLocaleString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+
+  return (
+    <div className="glass rounded-2xl p-5 space-y-4">
+      <h2 className="font-bold text-lg">Бесплатный доступ для всех</h2>
+      <p className="text-sm text-muted">
+        Сейчас:{' '}
+        {setting.isLoading ? '...' : until ? <span className="font-bold text-emerald-700">открыт до {fmt(until)}</span> : <span className="font-bold text-ink">выключен</span>}
+      </p>
+      <button type="button" className="btn btn-primary w-full" disabled={update.isPending} onClick={() => save(endOfDayAfter(new Date(), 7))}>
+        {until ? 'Продлить: 7 дней с сегодняшнего дня' : 'Открыть на 7 дней'}
+      </button>
+      <form
+        className="flex gap-2"
+        onSubmit={(e) => {
+          e.preventDefault()
+          const value = endOfDate(date)
+          if (!value) return
+          save(value)
+          setDate('')
+        }}
+      >
+        <input type="date" className="field flex-1" aria-label="Бесплатно до даты" value={date} onChange={(e) => setDate(e.target.value)} />
+        <button className="btn btn-ghost" disabled={update.isPending || !date}>До этой даты</button>
+      </form>
+      {until && (
+        <button type="button" className="btn btn-ghost w-full !text-red-600" disabled={update.isPending} onClick={() => save('')}>
+          Выключить сейчас
+        </button>
+      )}
+      {update.error && <p className="err">{(update.error as Error).message}</p>}
+      <p className="text-xs text-muted">Пока доступ открыт, все уроки и тесты доступны любому зарегистрированному ученику без тарифа. В конце срока платный доступ вернётся сам.</p>
+    </div>
+  )
+}
+
 export function AdminSettings() {
   const cardSetting = useAppSetting('card_number')
   const updateSetting = useUpdateAppSetting()
@@ -918,6 +962,7 @@ export function AdminSettings() {
         </form>
         <p className="text-xs text-muted">Меняй каждую неделю. Студенты сразу увидят новый номер на странице оплаты.</p>
       </div>
+      <FreeAccessSetting />
     </div>
   )
 }

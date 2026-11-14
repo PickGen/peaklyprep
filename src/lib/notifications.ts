@@ -30,6 +30,8 @@ export interface NotificationSources {
   examDate: string | null
   /** admins only: payment requests waiting for a decision */
   pendingPayments?: { id: string; created_at: string }[]
+  /** the site-wide free period is running: nothing is locked, so "your plan has ended" is not shown */
+  freeAccess?: boolean
 }
 
 const DAY = 86_400_000
@@ -59,7 +61,7 @@ export function buildNotifications(s: NotificationSources): AppNotification[] {
         tone: 'warning',
         icon: 'crown',
       })
-    } else if (exp <= now && now - exp < 30 * DAY) {
+    } else if (exp <= now && now - exp < 30 * DAY && !s.freeAccess) {
       out.push({
         key: `sub-ended-${day}`,
         title: 'Your plan has ended',
@@ -125,10 +127,11 @@ export function buildNotifications(s: NotificationSources): AppNotification[] {
 }
 
 /** The plan reminder shown on the home page (null when there is nothing to remind about). */
-export function planReminder(sub: { expires_at: string } | null, now: Date, isAdmin: boolean): { kind: 'ending' | 'ended'; days: number } | null {
+export function planReminder(sub: { expires_at: string } | null, now: Date, isAdmin: boolean, freeAccess = false): { kind: 'ending' | 'ended'; days: number } | null {
   if (!sub || isAdmin) return null
   const left = daysUntil(sub.expires_at, now)
   const exp = new Date(sub.expires_at).getTime()
   if (exp > now.getTime()) return left <= 7 ? { kind: 'ending', days: Math.max(left, 1) } : null
-  return now.getTime() - exp < 30 * DAY ? { kind: 'ended', days: 0 } : null
+  // while the whole site is free nothing is locked, so there is nothing to remind about
+  return !freeAccess && now.getTime() - exp < 30 * DAY ? { kind: 'ended', days: 0 } : null
 }
