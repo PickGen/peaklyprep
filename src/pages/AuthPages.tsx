@@ -1,7 +1,10 @@
 import { useState, type FormEvent } from 'react'
 import { useI18n } from '../lib/i18n'
 import { Link } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { useAuth } from '../lib/auth'
+import { authErrorKey, isEmailNotConfirmed } from '../lib/authErrors'
+import { emailConfirmationRequired, isConfigured } from '../lib/supabase'
 import { fieldErrors, forgotPasswordSchema, loginSchema, registerSchema, resetPasswordSchema, type FieldErrors } from '../lib/schemas'
 import { Brand } from '../components/Brand'
 import { Spinner } from '../components/Layouts'
@@ -43,11 +46,46 @@ function Field({ label, name, type = 'text', error, autoComplete }: { label: str
   )
 }
 
+/** "Send the email again" for someone whose confirmation letter got lost. One extra letter per screen. */
+function ResendConfirmation({ email }: { email: string }) {
+  const { tr } = useI18n()
+  const { resendConfirmation } = useAuth()
+  const [state, setState] = useState<'idle' | 'sending' | 'sent'>('idle')
+  const [error, setError] = useState('')
+
+  async function resend() {
+    setError('')
+    setState('sending')
+    try {
+      await resendConfirmation(email)
+      setState('sent')
+    } catch (err) {
+      setError(tr(authErrorKey(err, 'Could not send the email')))
+      setState('idle')
+    }
+  }
+
+  return (
+    <div className="space-y-2">
+      {state === 'sent' ? (
+        <p className="rounded-xl bg-green-50 px-3 py-2 text-sm text-green-800">{tr('Email sent again. Check your inbox.')}</p>
+      ) : (
+        <button type="button" className="btn btn-ghost w-full" onClick={resend} disabled={state === 'sending'}>
+          {state === 'sending' ? tr('Sending…') : tr('Send the email again')}
+        </button>
+      )}
+      {error && <p className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
+    </div>
+  )
+}
+
 export function LoginPage() {
   const { tr } = useI18n()
   const { signIn } = useAuth()
   const [errors, setErrors] = useState<FieldErrors>({})
   const [formError, setFormError] = useState('')
+  // the address of an account that exists but was never confirmed: offer to send the letter again
+  const [unconfirmed, setUnconfirmed] = useState('')
   const [busy, setBusy] = useState(false)
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -56,12 +94,14 @@ export function LoginPage() {
     if (!parsed.success) return setErrors(fieldErrors(parsed.error))
     setErrors({})
     setFormError('')
+    setUnconfirmed('')
     setBusy(true)
     try {
       await signIn(parsed.data.email, parsed.data.password)
       // GuestOnly redirects to the right place (admin panel / student app) once the profile loads
     } catch (err) {
-      setFormError(tr(err instanceof Error ? err.message : 'Could not log in'))
+      setFormError(tr(authErrorKey(err, 'Could not log in')))
+      if (isEmailNotConfirmed(err)) setUnconfirmed(parsed.data.email)
     } finally {
       setBusy(false)
     }
@@ -81,6 +121,12 @@ export function LoginPage() {
         <button className="btn btn-primary w-full" disabled={busy}>
           {busy ? tr('Logging in…') : tr('Log in')}
         </button>
+        {unconfirmed && (
+          <>
+            <p className="text-center text-xs text-muted">{tr('No email? Check the Spam folder — it can take a couple of minutes.')}</p>
+            <ResendConfirmation key={unconfirmed} email={unconfirmed} />
+          </>
+        )}
       </form>
       <p className="mt-5 text-center text-sm text-muted">
         {tr("New here?")}{' '}
@@ -97,8 +143,11 @@ export function RegisterPage() {
   const { signUp } = useAuth()
   const [errors, setErrors] = useState<FieldErrors>({})
   const [formError, setFormError] = useState('')
-  const [notice, setNotice] = useState('')
+  // the address the confirmation letter went to; set once the account is created and waits for the link
+  const [sentTo, setSentTo] = useState('')
   const [busy, setBusy] = useState(false)
+  // Tell the student about the letter before they sign up, but only while the project really sends one.
+  const confirmation = useQuery({ queryKey: ['email_confirmation_required'], queryFn: emailConfirmationRequired, enabled: isConfigured, staleTime: Infinity, retry: 1 })
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -109,9 +158,9 @@ export function RegisterPage() {
     setBusy(true)
     try {
       const { needsConfirmation } = await signUp(parsed.data.fullName, parsed.data.email, parsed.data.password)
-      if (needsConfirmation) setNotice(tr('Check your inbox to confirm your email, then log in.'))
+      if (needsConfirmation) setSentTo(parsed.data.email)
     } catch (err) {
-      setFormError(tr(err instanceof Error ? err.message : 'Could not create account'))
+      setFormError(tr(authErrorKey(err, 'Could not create account')))
     } finally {
       setBusy(false)
     }
@@ -119,18 +168,32 @@ export function RegisterPage() {
 
   return (
     <Shell title="Create your account" subtitle="Start preparing for the SAT today">
-      {notice ? (
+      {sentTo ? (
         <div className="space-y-4 text-center">
-          <p className="rounded-xl bg-brand-50 px-4 py-3 text-sm text-brand-800">{notice}</p>
+          <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-brand-50 text-2xl" aria-hidden="true">
+            📩
+          </div>
+          <h2 className="text-lg font-extrabold">{tr('Confirm your email')}</h2>
+          <p className="rounded-xl bg-brand-50 px-4 py-3 text-sm text-brand-800">
+            {tr('We sent an email to {email}. Open it and tap the link in it — then you can log in.', { email: sentTo })}
+          </p>
+          <p className="text-xs text-muted">{tr('No email? Check the Spam folder — it can take a couple of minutes.')}</p>
           <Link to="/login" className="btn btn-primary w-full">
             {tr("Go to log in")}
           </Link>
+          <ResendConfirmation email={sentTo} />
+          <p className="text-xs text-muted">{tr('Already signed up with this email? Just log in.')}</p>
         </div>
       ) : (
         <form onSubmit={onSubmit} className="space-y-4" noValidate>
           <Field label="Full name" name="fullName" autoComplete="name" error={errors.fullName} />
           <Field label="Email" name="email" type="email" autoComplete="email" error={errors.email} />
           <Field label="Password" name="password" type="password" autoComplete="new-password" error={errors.password} />
+          {confirmation.data === true && (
+            <p className="rounded-xl bg-brand-50 px-3 py-2 text-xs text-brand-800">
+              📩 {tr('After you sign up, we will email you a link. Open it to confirm your email — only then can you log in.')}
+            </p>
+          )}
           {formError && <p className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{formError}</p>}
           <button className="btn btn-primary w-full" disabled={busy}>
             {busy ? tr('Creating…') : tr('Get Started')}

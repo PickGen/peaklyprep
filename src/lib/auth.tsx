@@ -11,6 +11,8 @@ interface AuthState {
   isAdmin: boolean
   signIn: (email: string, password: string) => Promise<void>
   signUp: (fullName: string, email: string, password: string) => Promise<{ needsConfirmation: boolean }>
+  /** Sends the "confirm your email" letter once more to someone who signed up but has not confirmed. */
+  resendConfirmation: (email: string) => Promise<void>
   signOut: () => Promise<void>
   /** Emails a reset link that opens /reset-password. */
   requestPasswordReset: (email: string) => Promise<void>
@@ -64,6 +66,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         })
         if (error) throw error
         return { needsConfirmation: !data.session }
+      },
+      resendConfirmation: async (email) => {
+        const { error } = await supabase.auth.resend({ type: 'signup', email })
+        if (error) throw error
       },
       signOut: async () => {
         await supabase.auth.signOut()
