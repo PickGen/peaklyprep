@@ -64,3 +64,21 @@ test('every tr() string in the app is translated', () => {
   const missing = [...usedKeys()].filter(([k]) => !(k in D)).map(([k, f]) => `${f}: ${k}`)
   assert.deepEqual(missing, [])
 })
+
+test('the site is in English until the visitor picks a language (the browser language is not used)', () => {
+  const detect = i18n.slice(i18n.indexOf('function detect()'), i18n.indexOf('\n}\n', i18n.indexOf('function detect()')))
+  assert.ok(detect.includes("return 'en'"))
+  assert.ok(!/navigator/.test(i18n))
+})
+
+test('student pages and shared components hold no hard-coded Russian or Kazakh text', () => {
+  const left = []
+  for (const dir of ['src/pages', 'src/components']) {
+    for (const f of files(join(root, dir))) {
+      readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
+        if (/[Ѐ-ӿ]/.test(line)) left.push(`${f.slice(root.length)}:${i + 1}`)
+      })
+    }
+  }
+  assert.deepEqual(left, [])
+})

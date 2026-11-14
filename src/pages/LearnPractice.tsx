@@ -27,12 +27,13 @@ function FreeModeBanner() {
 const freeChip = 'rounded-full bg-sky-100 px-2 py-0.5 text-[11px] font-bold text-sky-800'
 
 export function Paywall() {
+  const { tr } = useI18n()
   return (
     <div className="flex flex-col items-center justify-center py-20 text-center px-5">
       <div className="text-5xl mb-4">🔒</div>
-      <h2 className="text-2xl font-extrabold mb-2">Нужна подписка</h2>
-      <p className="text-muted text-sm mb-6 max-w-xs">Оплатите доступ, и мы активируем его вручную в течение нескольких часов.</p>
-      <Link to="/app/plans" className="btn btn-primary">Выбрать план →</Link>
+      <h2 className="text-2xl font-extrabold mb-2">{tr('Subscription required')}</h2>
+      <p className="text-muted text-sm mb-6 max-w-xs">{tr('Pay for access and we will activate it manually within a few hours.')}</p>
+      <Link to="/app/plans" className="btn btn-primary">{tr('Choose a plan →')}</Link>
     </div>
   )
 }

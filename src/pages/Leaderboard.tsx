@@ -84,7 +84,7 @@ function GroupBox() {
           {tr('Join')}
         </button>
       </div>
-      {join.error && <p className="err mt-2">{(join.error as Error).message}</p>}
+      {join.error && <p className="err mt-2">{tr((join.error as Error).message)}</p>}
     </form>
   )
 }
