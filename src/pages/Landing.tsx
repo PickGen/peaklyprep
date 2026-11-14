@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useI18n } from '../lib/i18n'
 import { useAuth } from '../lib/auth'
+import { useFreeAccess } from '../lib/api'
+import { fmtLong } from '../components/SubscriptionBadge'
 import { MountainHero } from '../components/MountainHero'
 import { Reveal } from '../components/Reveal'
 import { ScoreShowcase } from '../components/ScoreShowcase'
@@ -11,6 +13,7 @@ import { ArrowRight, BookIcon, GlassTile, LayersIcon } from '../components/Icons
 export default function Landing() {
   const { tr } = useI18n()
   const { session, isAdmin } = useAuth()
+  const free = useFreeAccess()
   const { hash } = useLocation()
   useEffect(() => {
     if (!hash) return
@@ -23,6 +26,12 @@ export default function Landing() {
     <main className="overflow-x-clip">
       <section className="relative mx-auto grid grid-cols-1 max-w-7xl items-center gap-4 px-5 pb-6 pt-4 md:px-10 lg:grid-cols-[1.02fr_1fr] lg:pt-10">
         <div className="relative z-10">
+          {free.until && (
+            <p role="status" className="mb-5 inline-flex items-start gap-2 rounded-2xl bg-emerald-50 px-4 py-2.5 text-sm font-bold text-emerald-800 ring-1 ring-emerald-200">
+              <span aria-hidden="true">🎁</span>
+              <span>{tr('Free until {d}: every lesson and practice test is open. Just sign up.', { d: fmtLong(free.until) })}</span>
+            </p>
+          )}
           <Reveal>
             <h1 className="text-[2.5rem] font-extrabold leading-[1.08] sm:text-6xl lg:text-[3.3rem] xl:text-[3.8rem]">
               <span className="lg:whitespace-nowrap">{tr("Prepare for the SAT.")}</span>

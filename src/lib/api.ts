@@ -4,6 +4,7 @@ import { useAuth } from './auth'
 import { fixGarbledDeep } from './textFix'
 import type { Attempt, AttemptResult, Leaderboard, LeaderboardExtra, Lesson, LessonProgress, MistakeItem, NewsItem, Profile, Question, StudyGroup, Subscription, Test } from './types'
 import { buildNotifications, type AppNotification } from './notifications'
+import { FREE_UNTIL_KEY, activeFreeUntil } from './freeAccess'
 import type { PaymentRow } from './adminStats'
 
 function unwrap<T>(res: { data: T | null; error: { message: string } | null }): T {
@@ -471,12 +472,19 @@ export function useAttemptReview(attemptId: string | undefined) {
 /* ---------- Subscriptions ---------- */
 const PLAN_MONTHS: Record<Subscription['plan'], number> = { '1m': 1, '3m': 3, '6m': 6, '12m': 12 }
 
-/** Whether the signed-in user may open lessons and tests: an active subscription, or an admin. */
+/** The site-wide free period set by the admin: `until` is its end while it is running, otherwise null. */
+export function useFreeAccess() {
+  const setting = useAppSetting(FREE_UNTIL_KEY)
+  return { loading: setting.isLoading, until: activeFreeUntil(setting.data, new Date()) }
+}
+
+/** Whether the signed-in user may open lessons and tests: an active subscription, the free period, or an admin. */
 export function useHasAccess() {
   const { isAdmin } = useAuth()
   const sub = useMySubscription()
-  const active = isAdmin || (sub.data ? new Date(sub.data.expires_at) > new Date() : false)
-  return { loading: !isAdmin && sub.isLoading, active }
+  const free = useFreeAccess()
+  const active = isAdmin || Boolean(free.until) || (sub.data ? new Date(sub.data.expires_at) > new Date() : false)
+  return { loading: !isAdmin && (sub.isLoading || free.loading), active }
 }
 
 /** The signed-in student's newest subscription (it may already be expired - check expires_at). */
@@ -638,9 +646,11 @@ export function useNotifications() {
   const all = useAllPaymentRequests(isAdmin)
   const news = useNews()
   const reads = useNotificationReads()
+  const free = useFreeAccess()
   const items: AppNotification[] = buildNotifications({
     now: new Date(),
     isAdmin,
+    freeAccess: Boolean(free.until),
     subscription: sub.data ?? null,
     payments: payments.data ?? [],
     news: news.data ?? [],
