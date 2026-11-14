@@ -9,6 +9,7 @@ export const LANGS: { code: Lang; label: string; locale: string }[] = [
 
 const KEY = 'peakly.lang'
 
+/** English for everyone, whatever the browser language, until the visitor picks another language themselves. */
 function detect(): Lang {
   try {
     const saved = localStorage.getItem(KEY)
@@ -16,9 +17,6 @@ function detect(): Lang {
   } catch {
     /* storage unavailable */
   }
-  const nav = (typeof navigator !== 'undefined' ? navigator.language : 'en').toLowerCase()
-  if (nav.startsWith('ru')) return 'ru'
-  if (nav.startsWith('kk')) return 'kk'
   return 'en'
 }
 
@@ -380,6 +378,33 @@ const D: Record<string, [string, string]> = {
   'Current plan': ['Текущий тариф', 'Ағымдағы тариф'],
   'No active plan': ['Нет активного тарифа', 'Белсенді тариф жоқ'],
   'Active until {d}': ['Активен до {d}', '{d} дейін белсенді'],
+  'Copy': ['Копировать', 'Көшіру'],
+  'Copied': ['Скопировано', 'Көшірілді'],
+  'The file is larger than 10 MB. Attach a smaller screenshot.': ['Файл больше 10 МБ. Прикрепите скриншот поменьше.', 'Файл 10 МБ-тан үлкен. Кішірек скриншот тіркеңіз.'],
+  'This plan does not exist.': ['Такого тарифа нет.', 'Мұндай тариф жоқ.'],
+  'Could not upload the receipt. Try again or send without it.': ['Не удалось загрузить чек. Попробуйте снова или отправьте без чека.', 'Чекті жүктеу мүмкін болмады. Қайталап көріңіз немесе чексіз жіберіңіз.'],
+  'Could not send the request. Please try again.': ['Не удалось отправить заявку. Попробуйте снова.', 'Өтінімді жіберу мүмкін болмады. Қайталап көріңіз.'],
+  'Request sent!': ['Заявка отправлена!', 'Өтінім жіберілді!'],
+  'We will check the payment and activate your access within a few hours. You can follow the status on the Plans page.': ['Мы проверим оплату и активируем доступ в течение нескольких часов. Следите за статусом в разделе «Тарифы».', 'Төлемді тексеріп, бірнеше сағат ішінде қолжетімділікті қосамыз. Күйін «Тарифтер» бөлімінен қадағалаңыз.'],
+  'Go to plans': ['Перейти к тарифам', 'Тарифтерге өту'],
+  'Access to lessons and practice tests': ['Доступ к урокам и пробным тестам', 'Сабақтар мен сынақ тесттеріне қолжетімділік'],
+  'Payment by bank card': ['Оплата банковской картой', 'Банк картасымен төлеу'],
+  'Recipient': ['Получатель', 'Алушы'],
+  'Card number': ['Номер карты', 'Карта нөмірі'],
+  'Plan': ['Тариф', 'Тариф'],
+  'Amount': ['Сумма', 'Сома'],
+  'Transfer the exact amount to the card above.': ['Переведите точную сумму на карту выше.', 'Дәл соманы жоғарыдағы картаға аударыңыз.'],
+  'Attach a screenshot of the receipt (optional, but it speeds up the check).': ['Прикрепите скриншот чека (необязательно, но ускорит проверку).', 'Чектің скриншотын тіркеңіз (міндетті емес, бірақ тексеруді жеделдетеді).'],
+  'Press the Send for review button — we will activate your access manually.': ['Нажмите «Отправить на проверку» — мы активируем доступ вручную.', '«Тексеруге жіберу» түймесін басыңыз — қолжетімділікті қолмен қосамыз.'],
+  'Receipt attached': ['Чек прикреплён', 'Чек тіркелді'],
+  'Replace': ['Заменить', 'Ауыстыру'],
+  'Remove': ['Убрать', 'Алып тастау'],
+  'Attach receipt': ['Прикрепить чек', 'Чекті тіркеу'],
+  'PDF, JPG or PNG': ['PDF, JPG или PNG', 'PDF, JPG немесе PNG'],
+  'Send for review': ['Отправить на проверку', 'Тексеруге жіберу'],
+  'Subscription required': ['Нужна подписка', 'Жазылым қажет'],
+  'Pay for access and we will activate it manually within a few hours.': ['Оплатите доступ, и мы активируем его вручную в течение нескольких часов.', 'Қолжетімділік үшін төлеңіз, біз оны бірнеше сағат ішінде қолмен қосамыз.'],
+  'No group with this code': ['Группа с таким кодом не найдена', 'Мұндай коды бар топ табылмады'],
   'Free until {d}': ['Бесплатно до {d}', '{d} дейін тегін'],
   'Free access': ['Бесплатный доступ', 'Тегін қолжетімділік'],
   'PeaklyPrep is free until {d}': ['PeaklyPrep бесплатный до {d}', 'PeaklyPrep {d} дейін тегін'],

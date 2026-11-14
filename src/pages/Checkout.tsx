@@ -3,22 +3,23 @@ import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../lib/auth'
 import { useAppSetting, useSubmitPaymentRequest, useMyPaymentRequests } from '../lib/api'
-import { PLANS } from '../components/Pricing'
+import { PLANS, planName } from '../components/Pricing'
+import { useI18n } from '../lib/i18n'
 import { CrownIcon } from '../components/Icons'
 import { Spinner } from '../components/Layouts'
 import { Reveal } from '../components/Reveal'
 
 const PLAN_USD: Record<string, number> = { '1m': 7, '3m': 15, '6m': 25, '12m': 50 }
-const PLAN_LABEL: Record<string, string> = { '1m': '1 месяц', '3m': '3 месяца', '6m': '6 месяцев', '12m': '12 месяцев' }
 
 function CopyButton({ text }: { text: string }) {
+  const { tr } = useI18n()
   const [copied, setCopied] = useState(false)
   const copy = () => {
     navigator.clipboard.writeText(text).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000) })
   }
   return (
     <button onClick={copy} className="ml-2 text-brand-600 hover:text-brand-700 text-xs font-semibold transition-colors">
-      {copied ? '✓ Скопировано' : 'Копировать'}
+      {copied ? '✓ ' + tr('Copied') : tr('Copy')}
     </button>
   )
 }
@@ -26,10 +27,11 @@ function CopyButton({ text }: { text: string }) {
 export default function CheckoutPage() {
   const [params] = useSearchParams()
   const nav = useNavigate()
+  const { tr } = useI18n()
   const { session } = useAuth()
   const plan = params.get('plan') ?? '1m'
   const amount = PLAN_USD[plan] ?? 7
-  const label = PLAN_LABEL[plan] ?? '1 месяц'
+  const label = planName(plan, tr)
 
   const cardSetting = useAppSetting('card_number')
   const cardNumber = (cardSetting.data ?? '').replace(/"/g, '')
@@ -49,7 +51,7 @@ export default function CheckoutPage() {
     if (file.size > 10 * 1024 * 1024) {
       setReceipt(null)
       if (fileRef.current) fileRef.current.value = ''
-      setErrorMsg('Файл больше 10 МБ. Прикрепите скриншот поменьше.')
+      setErrorMsg(tr('The file is larger than 10 MB. Attach a smaller screenshot.'))
       return
     }
     setReceipt(file)
@@ -65,7 +67,7 @@ export default function CheckoutPage() {
   if (!PLANS.find((p) => p.id === plan)) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
-        <p className="text-muted">Неверный план. <Link to="/app/plans" className="text-brand-600 font-semibold">Выбрать план</Link></p>
+        <p className="text-muted">{tr('This plan does not exist.')} <Link to="/app/plans" className="text-brand-600 font-semibold">{tr('Choose a plan →')}</Link></p>
       </div>
     )
   }
@@ -84,7 +86,7 @@ export default function CheckoutPage() {
       const { error: uploadError } = await supabase.storage.from('receipts').upload(path, file)
       if (uploadError) {
         setStatus('error')
-        setErrorMsg('Ошибка загрузки чека. Попробуйте снова или отправьте без чека.')
+        setErrorMsg(tr('Could not upload the receipt. Try again or send without it.'))
         return
       }
       receiptUrl = supabase.storage.from('receipts').getPublicUrl(path).data.publicUrl
@@ -95,7 +97,7 @@ export default function CheckoutPage() {
       setStatus('done')
     } catch (e: unknown) {
       setStatus('error')
-      setErrorMsg(e instanceof Error ? e.message : 'Ошибка отправки. Попробуйте снова.')
+      setErrorMsg(e instanceof Error ? e.message : tr('Could not send the request. Please try again.'))
     }
   }
 
@@ -107,9 +109,9 @@ export default function CheckoutPage() {
             <div className="mx-auto mb-4 grid h-16 w-16 place-items-center rounded-2xl bg-green-100">
               <span className="text-3xl">✓</span>
             </div>
-            <h2 className="text-xl font-extrabold">Заявка отправлена!</h2>
-            <p className="mt-3 text-sm text-muted">Мы проверим оплату и активируем доступ в течение нескольких часов. Следите за статусом в разделе «Планы».</p>
-            <Link to="/app/plans" className="btn btn-primary mt-6 w-full">Перейти к планам</Link>
+            <h2 className="text-xl font-extrabold">{tr('Request sent!')}</h2>
+            <p className="mt-3 text-sm text-muted">{tr('We will check the payment and activate your access within a few hours. You can follow the status on the Plans page.')}</p>
+            <Link to="/app/plans" className="btn btn-primary mt-6 w-full">{tr('Go to plans')}</Link>
           </div>
         </Reveal>
       </div>
@@ -120,7 +122,7 @@ export default function CheckoutPage() {
     <div className="mx-auto max-w-md py-6 px-4">
       <Reveal>
         <Link to="/app/plans" className="mb-4 inline-flex items-center gap-1 text-sm text-muted hover:text-ink">
-          ← Назад
+          ← {tr('Back')}
         </Link>
 
         <div className="glass rounded-3xl p-6">
@@ -129,46 +131,46 @@ export default function CheckoutPage() {
               <CrownIcon className="h-5 w-5 text-brand-600" />
             </div>
             <div>
-              <p className="text-xs text-muted font-semibold uppercase tracking-widest">Подписка</p>
-              <p className="font-extrabold">Доступ к занятиям.</p>
+              <p className="text-xs text-muted font-semibold uppercase tracking-widest">{tr('Subscription')}</p>
+              <p className="font-extrabold">{tr('Access to lessons and practice tests')}</p>
             </div>
           </div>
 
           {/* Payment method */}
           <div className="mb-4 rounded-2xl border-2 border-brand-600 bg-brand-50 p-4">
             <div className="flex items-center gap-2 font-semibold text-brand-700">
-              <span>💳</span> Оплата банковской картой
+              <span>💳</span> {tr('Payment by bank card')}
             </div>
           </div>
 
           {/* Details */}
           <div className="mb-5 space-y-3 rounded-2xl bg-white border border-[#e6e0f7] p-4">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-muted">Получатель</span>
+              <span className="text-muted">{tr('Recipient')}</span>
               <span className="font-bold">PeaklyPrep</span>
             </div>
             <div className="flex items-center justify-between text-sm">
-              <span className="text-muted">Номер карты</span>
+              <span className="text-muted">{tr('Card number')}</span>
               <span className="font-mono font-semibold">
                 {cardSetting.isLoading ? '...' : cardNumber || '—'}
                 {cardNumber && <CopyButton text={cardNumber.replace(/\s/g, '')} />}
               </span>
             </div>
             <div className="flex items-center justify-between text-sm">
-              <span className="text-muted">Тариф</span>
+              <span className="text-muted">{tr('Plan')}</span>
               <span className="font-semibold">{label}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted">Сумма</span>
+              <span className="text-sm text-muted">{tr('Amount')}</span>
               <span className="text-xl font-extrabold text-brand-600">${amount}</span>
             </div>
           </div>
 
           {/* Instructions */}
           <ol className="mb-5 space-y-1 text-xs text-muted list-decimal list-inside">
-            <li>Переведите точную сумму на карту выше.</li>
-            <li>Прикрепите скриншот чека (необязательно, но ускорит проверку).</li>
-            <li>Нажмите «Отправить на проверку» — мы активируем доступ вручную.</li>
+            <li>{tr('Transfer the exact amount to the card above.')}</li>
+            <li>{tr('Attach a screenshot of the receipt (optional, but it speeds up the check).')}</li>
+            <li>{tr('Press the Send for review button — we will activate your access manually.')}</li>
           </ol>
 
           {/* Receipt upload */}
@@ -181,12 +183,12 @@ export default function CheckoutPage() {
                 <div className="grid h-14 w-14 shrink-0 place-items-center rounded-lg bg-white text-2xl">📄</div>
               )}
               <div className="min-w-0 flex-1 text-left">
-                <p className="text-sm font-semibold text-green-800">✓ Чек прикреплён</p>
-                <p className="truncate text-xs text-muted">{receipt.name} · {Math.max(1, Math.round(receipt.size / 1024))} КБ</p>
+                <p className="text-sm font-semibold text-green-800">✓ {tr('Receipt attached')}</p>
+                <p className="truncate text-xs text-muted">{receipt.name} · {Math.max(1, Math.round(receipt.size / 1024))} KB</p>
               </div>
               <div className="flex shrink-0 flex-col items-end gap-1 text-xs font-semibold">
-                <button type="button" onClick={() => fileRef.current?.click()} className="text-brand-600 hover:text-brand-700">Заменить</button>
-                <button type="button" onClick={clearReceipt} className="text-muted hover:text-red-600">Убрать</button>
+                <button type="button" onClick={() => fileRef.current?.click()} className="text-brand-600 hover:text-brand-700">{tr('Replace')}</button>
+                <button type="button" onClick={clearReceipt} className="text-muted hover:text-red-600">{tr('Remove')}</button>
               </div>
             </div>
           ) : (
@@ -196,8 +198,8 @@ export default function CheckoutPage() {
               onClick={() => fileRef.current?.click()}
             >
               <div className="text-2xl mb-1">📎</div>
-              <p className="text-sm font-semibold text-brand-700">Прикрепить чек</p>
-              <p className="text-xs text-muted">PDF, JPG или PNG</p>
+              <p className="text-sm font-semibold text-brand-700">{tr('Attach receipt')}</p>
+              <p className="text-xs text-muted">{tr('PDF, JPG or PNG')}</p>
             </button>
           )}
 
@@ -208,7 +210,7 @@ export default function CheckoutPage() {
             disabled={status === 'uploading'}
             className="btn btn-primary w-full"
           >
-            {status === 'uploading' ? <Spinner /> : <>Отправить на проверку →</>}
+            {status === 'uploading' ? <Spinner /> : <>{tr('Send for review')} →</>}
           </button>
         </div>
       </Reveal>

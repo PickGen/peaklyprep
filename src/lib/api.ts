@@ -751,7 +751,7 @@ export function useJoinGroup() {
   return useMutation({
     mutationFn: async (code: string) => {
       const { data, error } = await supabase.rpc('join_group', { p_code: code })
-      if (error) throw new Error(error.message === 'Group not found' ? 'Группа с таким кодом не найдена' : error.message)
+      if (error) throw new Error(error.message === 'Group not found' ? 'No group with this code' : error.message)
       return data as { id: string; name: string }
     },
     onSuccess: () => invalidateGroupQueries(qc),
